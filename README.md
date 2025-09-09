@@ -16,7 +16,7 @@ A Progressive Web App for emergency medical reference with fuzzy search function
 1. Go to GitHub and create a new repository named `hatzolah-cpg`
 2. Clone the repository locally:
 ```bash
-git clone https://github.com/yourusername/hatzolah-cpg.git
+git clone https://github.com/ilyulev/hatzolah-cpg.git
 cd hatzolah-cpg
 ```
 
@@ -61,7 +61,7 @@ npm run deploy
 4. Select branch: `gh-pages`
 5. Click Save
 
-Your app will be available at: `https://yourusername.github.io/hatzolah-cpg/`
+Your app will be available at: `https://ilyulev.github.io/hatzolah-cpg/`
 
 ## Adding App Icons
 
