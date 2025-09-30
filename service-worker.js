@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hatzolah-cpg-v4.9';
+const CACHE_NAME = 'hatzolah-cpg-v4.10';
 const urlsToCache = [
   '/hatzolah-cpg/',
   '/hatzolah-cpg/index.html',
