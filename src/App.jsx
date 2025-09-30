@@ -7,7 +7,6 @@ const App = () => {
   const [selectedSubsection, setSelectedSubsection] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
-  // Simple string similarity calculation
   const calculateSimilarity = (str1, str2) => {
     const longer = str1.length > str2.length ? str1 : str2;
     const shorter = str1.length > str2.length ? str2 : str1;
@@ -34,7 +33,7 @@ const App = () => {
           matrix[i][j] = Math.min(
             matrix[i - 1][j - 1] + 1,
             matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1
+            matrix[i][j] + 1
           );
         }
       }
@@ -42,7 +41,6 @@ const App = () => {
     return matrix[str2.length][str1.length];
   };
 
-  // Parse the document content into structured sections
   const documentSections = useMemo(() => {
     const sections = [
       {
@@ -53,41 +51,72 @@ const App = () => {
           {
             id: 'altered-consciousness',
             title: 'Altered Consciousness (Acute)',
-            content: `DEFINITION:
-This guideline refers to any instance of NEW onset decreased responsiveness.
+            content: `<div class="space-y-4">
+<div class="p-4 bg-blue-50 border-l-4 border-blue-500">
+<h3 class="font-bold text-blue-900 mb-2">DEFINITION:</h3>
+<p>This guideline refers to any instance of NEW onset decreased responsiveness.</p>
+</div>
 
-RECOGNITION - AEIOUTIPS pneumonic for possible differentials:
-A - Alcohol intoxication, Arrhythmia
-E - Epilepsy (seizure activity or postictal phase), Encephalitis (Hepatic)
-I - Insulin (hypoglycaemia or hyperglycaemia)
-O - Overdose (GHB, opiates, etc), Oxygen (hypoxia)
-U - Underdose (missed medications or withdrawal), Urinary Tract Infection
-T - Temperature (hypothermia or hyperthermia), Thirst (extreme dehydration), Trauma
-I - Infection (sepsis, meningitis, etc)
-P - Pain (severe pain), Perfusion (marked hypotension/bradycardia), Poisoning, Psychiatric condition
-S - Stroke/TIA, Syncope (fainting)
+<div class="p-4 bg-yellow-50 border-l-4 border-yellow-500">
+<h3 class="font-bold text-yellow-900 mb-2">RECOGNITION - AEIOUTIPS pneumonic for possible differentials:</h3>
+<div class="overflow-x-auto mt-3">
+<table class="min-w-full border-collapse border border-gray-300">
+<thead>
+<tr class="bg-yellow-100">
+<th class="border border-gray-300 px-3 py-2 text-left font-semibold">Letter</th>
+<th class="border border-gray-300 px-3 py-2 text-left font-semibold">Differential</th>
+</tr>
+</thead>
+<tbody>
+<tr><td class="border border-gray-300 px-3 py-2 font-bold">A</td><td class="border border-gray-300 px-3 py-2">Alcohol intoxication, Arrhythmia</td></tr>
+<tr class="bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-bold">E</td><td class="border border-gray-300 px-3 py-2">Epilepsy (seizure activity or postictal phase), Encephalitis (Hepatic)</td></tr>
+<tr><td class="border border-gray-300 px-3 py-2 font-bold">I</td><td class="border border-gray-300 px-3 py-2">Insulin (hypoglycaemia or hyperglycaemia)</td></tr>
+<tr class="bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-bold">O</td><td class="border border-gray-300 px-3 py-2">Overdose (GHB, opiates, etc), Oxygen (hypoxia)</td></tr>
+<tr><td class="border border-gray-300 px-3 py-2 font-bold">U</td><td class="border border-gray-300 px-3 py-2">Underdose (missed medications or withdrawal), Urinary Tract Infection</td></tr>
+<tr class="bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-bold">T</td><td class="border border-gray-300 px-3 py-2">Temperature (hypothermia or hyperthermia), Thirst (extreme dehydration), Trauma</td></tr>
+<tr><td class="border border-gray-300 px-3 py-2 font-bold">I</td><td class="border border-gray-300 px-3 py-2">Infection (sepsis, meningitis, etc)</td></tr>
+<tr class="bg-gray-50"><td class="border border-gray-300 px-3 py-2 font-bold">P</td><td class="border border-gray-300 px-3 py-2">Pain (severe pain), Perfusion (marked hypotension/bradycardia), Poisoning, Psychiatric condition</td></tr>
+<tr><td class="border border-gray-300 px-3 py-2 font-bold">S</td><td class="border border-gray-300 px-3 py-2">Stroke/TIA, Syncope (fainting)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 
-MANAGEMENT:
-IF patient becomes unresponsive & no pulse: Manage as Cardiac Arrest!
+<div class="p-4 bg-green-50 border-l-4 border-green-500">
+<h3 class="font-bold text-green-900 mb-2">MANAGEMENT:</h3>
+<p class="mb-3 text-sm text-red-800 font-semibold">IF patient becomes unresponsive & no pulse: Manage as Cardiac Arrest!</p>
 
-IF inadequate ventilations & has pulse:
-• Position: Supine
-• IF necessary: Suction airway (don't insert anything past teeth if biting)
-• IF breathing ineffectively: Oxygen BVM (8-15L O2)
-  - ≥15 years: ventilate every 5 seconds (12x per minute)
-  - 12-15 years: ventilate every 3-4 seconds (14-26x per minute)
-  - 5-11 years: ventilate every 2-3 seconds (16-34x per minute)
-  - 1-4 years: ventilate every 2-3 seconds (20-40x per minute)
-  - ≤1 year: ventilate every 2 seconds (25-55x per minute)
+<h4 class="font-semibold text-green-900 mb-2">IF inadequate ventilations & has pulse - Ventilation Rates:</h4>
+<div class="overflow-x-auto">
+<table class="min-w-full border-collapse border border-gray-300">
+<thead>
+<tr class="bg-green-100">
+<th class="border border-gray-300 px-3 py-2 text-left font-semibold">Age Group</th>
+<th class="border border-gray-300 px-3 py-2 text-left font-semibold">Ventilation Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr><td class="border border-gray-300 px-3 py-2">Greater than or equal to 15 years</td><td class="border border-gray-300 px-3 py-2">Every 5 seconds (12x per minute)</td></tr>
+<tr class="bg-gray-50"><td class="border border-gray-300 px-3 py-2">12-15 years</td><td class="border border-gray-300 px-3 py-2">Every 3-4 seconds (14-26x per minute)</td></tr>
+<tr><td class="border border-gray-300 px-3 py-2">5-11 years</td><td class="border border-gray-300 px-3 py-2">Every 2-3 seconds (16-34x per minute)</td></tr>
+<tr class="bg-gray-50"><td class="border border-gray-300 px-3 py-2">1-4 years</td><td class="border border-gray-300 px-3 py-2">Every 2-3 seconds (20-40x per minute)</td></tr>
+<tr><td class="border border-gray-300 px-3 py-2">Less than or equal to 1 year</td><td class="border border-gray-300 px-3 py-2">Every 2 seconds (25-55x per minute)</td></tr>
+</tbody>
+</table>
+</div>
 
-IF adequate ventilations:
-• IF NO c-spine concerns: Position lateral
-• IF YES c-spine concerns: Position supine
-• IF necessary: Suction airway
-• Oxygen NRB (10-15L O2)
-• SitRep: Hatzolah dispatch + call ambulance
-• Thorough VSS including SpO2, BGL, temperature, pupils
-• Consider possible causes (AEIOUTIPS) + manage appropriately`
+<h4 class="font-semibold text-green-900 mt-4 mb-2">IF adequate ventilations:</h4>
+<ul class="list-disc pl-5 space-y-1 text-sm">
+<li>IF NO c-spine concerns: Position lateral</li>
+<li>IF YES c-spine concerns: Position supine</li>
+<li>IF necessary: Suction airway</li>
+<li>Oxygen NRB (10-15L O2)</li>
+<li>SitRep: Hatzolah dispatch + call ambulance</li>
+<li>Thorough VSS including SpO2, BGL, temperature, pupils</li>
+<li>Consider possible causes (AEIOUTIPS) + manage appropriately</li>
+</ul>
+</div>
+</div>`
           },
           {
             id: 'airway-obstruction',
@@ -95,7 +124,7 @@ IF adequate ventilations:
             content: `STOP: This guideline is NOT to be used on newborns
 
 IF unconscious & NO pulse: Manage as Cardiac Arrest!
-IF unconscious & YES pulse: Manage as per Box A
+IF unconscious & YES pulse: Manage as per Box A  
 IF conscious & ineffective cough: Manage as per Box B  
 IF conscious & effective cough: Manage as per Box C
 
@@ -523,94 +552,94 @@ NOTE: In cases where patient wakes up with stroke symptoms, time of onset taken 
 </thead>
 <tbody>
 <tr class="bg-green-50">
-<td class="border border-gray-300 px-3 py-2">≤24 hours Newborn</td>
+<td class="border border-gray-300 px-3 py-2">Less than 24 hours Newborn</td>
 <td class="border border-gray-300 px-3 py-2">3.5 kg</td>
 <td class="border border-gray-300 px-3 py-2">A / 15</td>
 <td class="border border-gray-300 px-3 py-2">25 - 60</td>
-<td class="border border-gray-300 px-3 py-2">≥95%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 95%</td>
 <td class="border border-gray-300 px-3 py-2">110 - 170</td>
-<td class="border border-gray-300 px-3 py-2">≥60</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 60</td>
 </tr>
 <tr class="bg-green-50">
-<td class="border border-gray-300 px-3 py-2">≤3 months Small Infant</td>
+<td class="border border-gray-300 px-3 py-2">Up to 3 months Small Infant</td>
 <td class="border border-gray-300 px-3 py-2">6 kg</td>
 <td class="border border-gray-300 px-3 py-2">A / 15</td>
 <td class="border border-gray-300 px-3 py-2">25 - 60</td>
-<td class="border border-gray-300 px-3 py-2">≥95%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 95%</td>
 <td class="border border-gray-300 px-3 py-2">110 - 170</td>
-<td class="border border-gray-300 px-3 py-2">≥60</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 60</td>
 </tr>
 <tr class="bg-yellow-50">
 <td class="border border-gray-300 px-3 py-2">3-12 months Large Infant</td>
 <td class="border border-gray-300 px-3 py-2">8 kg</td>
 <td class="border border-gray-300 px-3 py-2">A / 15</td>
 <td class="border border-gray-300 px-3 py-2">25 - 55</td>
-<td class="border border-gray-300 px-3 py-2">≥95%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 95%</td>
 <td class="border border-gray-300 px-3 py-2">105 - 165</td>
-<td class="border border-gray-300 px-3 py-2">≥65</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 65</td>
 </tr>
 <tr class="bg-orange-50">
 <td class="border border-gray-300 px-3 py-2">1 year Small Child</td>
 <td class="border border-gray-300 px-3 py-2">10 kg</td>
 <td class="border border-gray-300 px-3 py-2">A / 15</td>
 <td class="border border-gray-300 px-3 py-2">20 - 40</td>
-<td class="border border-gray-300 px-3 py-2">≥95%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 95%</td>
 <td class="border border-gray-300 px-3 py-2">85 - 150</td>
-<td class="border border-gray-300 px-3 py-2">≥70</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 70</td>
 </tr>
 <tr class="bg-orange-50">
 <td class="border border-gray-300 px-3 py-2">2 years Small Child</td>
 <td class="border border-gray-300 px-3 py-2">12 kg</td>
 <td class="border border-gray-300 px-3 py-2">A / 15</td>
 <td class="border border-gray-300 px-3 py-2">20 - 40</td>
-<td class="border border-gray-300 px-3 py-2">≥95%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 95%</td>
 <td class="border border-gray-300 px-3 py-2">85 - 150</td>
-<td class="border border-gray-300 px-3 py-2">≥70</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 70</td>
 </tr>
 <tr class="bg-orange-50">
 <td class="border border-gray-300 px-3 py-2">3-4 years Small Child</td>
 <td class="border border-gray-300 px-3 py-2">16-18 kg</td>
 <td class="border border-gray-300 px-3 py-2">A / 15</td>
 <td class="border border-gray-300 px-3 py-2">20 - 40</td>
-<td class="border border-gray-300 px-3 py-2">≥95%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 95%</td>
 <td class="border border-gray-300 px-3 py-2">85 - 150</td>
-<td class="border border-gray-300 px-3 py-2">≥70</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 70</td>
 </tr>
 <tr class="bg-blue-50">
 <td class="border border-gray-300 px-3 py-2">5-11 years Medium Child</td>
 <td class="border border-gray-300 px-3 py-2">20-36 kg</td>
 <td class="border border-gray-300 px-3 py-2">A / 15</td>
 <td class="border border-gray-300 px-3 py-2">16 - 34</td>
-<td class="border border-gray-300 px-3 py-2">≥95%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 95%</td>
 <td class="border border-gray-300 px-3 py-2">70 - 135</td>
-<td class="border border-gray-300 px-3 py-2">≥80</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 80</td>
 </tr>
 <tr class="bg-purple-50">
 <td class="border border-gray-300 px-3 py-2">12-15 years Adolescent</td>
 <td class="border border-gray-300 px-3 py-2">Estimate</td>
 <td class="border border-gray-300 px-3 py-2">A / 15</td>
 <td class="border border-gray-300 px-3 py-2">14 - 26</td>
-<td class="border border-gray-300 px-3 py-2">≥95%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 95%</td>
 <td class="border border-gray-300 px-3 py-2">60 - 120</td>
-<td class="border border-gray-300 px-3 py-2">≥90</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 90</td>
 </tr>
 <tr class="bg-gray-50">
-<td class="border border-gray-300 px-3 py-2">≥15 years Adult</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 15 years Adult</td>
 <td class="border border-gray-300 px-3 py-2">Estimate</td>
 <td class="border border-gray-300 px-3 py-2">13 - 15</td>
 <td class="border border-gray-300 px-3 py-2">12 - 30</td>
-<td class="border border-gray-300 px-3 py-2">≥92%</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 92%</td>
 <td class="border border-gray-300 px-3 py-2">50 - 120</td>
-<td class="border border-gray-300 px-3 py-2">≥90</td>
+<td class="border border-gray-300 px-3 py-2">Greater than 90</td>
 </tr>
 </tbody>
 </table>
 </div>
 
 <div class="mt-4 p-4 bg-red-50 border-l-4 border-red-400">
-<p class="font-semibold text-red-800">⚠️ IMPORTANT:</p>
+<p class="font-semibold text-red-800">IMPORTANT:</p>
 <p class="text-red-700">ANY deviation from normal VSS is a concern and should NOT be discounted.</p>
-<p class="text-red-700">🚑 Patients with ANY vital signs persistently outside ranges must be escalated to Ambulance Victoria.</p>
+<p class="text-red-700">Patients with ANY vital signs persistently outside ranges must be escalated to Ambulance Victoria.</p>
 <p class="text-red-700">Patients with borderline vital signs must use VVED as minimum.</p>
 </div>`
           },
@@ -633,7 +662,7 @@ NOTE: In cases where patient wakes up with stroke symptoms, time of onset taken 
 RED FLAG CRITERIA – PAEDIATRICS ONLY:
 • Unexplained pain
 • Second presentation within 48 hours to AV or Dr for related complaint
-• Febrile 🡩38°c in small infants (up to 3 months old)
+• Febrile ≥38°c in small infants (up to 3 months old)
 • Testicular pain
 • Ingestion/inhalation of toxic substance
 • Inhalation of foreign body
@@ -718,8 +747,8 @@ Total = E + V + M`
             content: `RECOGNITION Categories: Normal, Mild, Moderate, Severe
 
 Conscious State: Alert → Alert → Alert/Altered → Altered/Unconscious
-Respiratory Rate: 12-16 → 16-20 → 🡩20 → 🡩20 or 🡫8
-Oxygen (SpO2): 🡩95% → 🡩95% → 🡫95% → 🡫90%
+Respiratory Rate: 12-16 → 16-20 → ≥20 → ≥20 or ≤8
+Oxygen (SpO2): ≥95% → ≥95% → ≤95% → ≤90%
 Speech: Clear, Full Sentences → Short Sentences → Words → None
 Skin: Normal → Normal → Pale, Sweaty → Pale, Sweaty +/- Cyanosis
 Work of Breathing: Normal → Slight → Marked → Marked
@@ -747,13 +776,13 @@ Patient has less than adequate perfusion IF 2 or more criteria are outside adequ
 Adequate Perfusion:
 • Skin: Warm, Pink, Dry
 • Pulse: 60 to 100
-• sBP: 🡩100 sBP
+• sBP: ≥100 sBP
 • Conscious State: Alert & Orientated
 
-🡫 Adequate Perfusion:
+≤ Adequate Perfusion:
 • Skin: Cool, Pale, Clammy
-• Pulse: 🡫50 OR 🡩100
-• sBP: 🡫100 sBP
+• Pulse: ≤50 OR ≥100
+• sBP: ≤100 sBP
 • Conscious State: Alert OR Altered
 
 No Perfusion:
@@ -763,7 +792,7 @@ No Perfusion:
 • Conscious State: Unconscious
 
 MANAGEMENT:
-IF 🡫 Adequate perfusion:
+IF ≤ Adequate perfusion:
 • Avoid standing/walking patient
 • Position: Supine/legs raised
 • SitRep: Hatzolah dispatch + call ambulance`
@@ -792,12 +821,12 @@ Use Wong-Baker FACES for children 3+ years who cannot understand numerical scale
             title: 'Weight Calculations',
             content: `PAEDIATRIC WEIGHT CALCULATIONS:
 
-🡫 24 hours: 3.5 kg
+≤ 24 hours: 3.5 kg
 3 months: 6 kg
 6 months: 8 kg
 1-9 years: Age x 2 + 8 kg
 10-11 years: Age x 3.3 kg
-🡩 11 years: Estimate based on patient size
+≥ 11 years: Estimate based on patient size
 
 For children, various treatments are based on body weight such as drug doses, defibrillation joules and fluid volume. It is acceptable to ask a parent the patient's weight.
 
@@ -820,10 +849,10 @@ EMERGENT: Patient not physiologically distressed, but has "pattern of actual inj
 POTENTIAL: Patient not physiologically distressed, no significant pattern of injury/illness, but has "mechanism of injury/illness" with potential to deteriorate
 
 ACTUAL TIME CRITICAL - VSS:
-Adult: SpO2 🡫90%, RR 🡫10 or 🡩30, HR 🡫60 or 🡩120, BP 🡫90, GCS 🡫13
-12-15 years: SpO2 🡫96%, RR 🡫14 or 🡩26, HR 🡫60 or 🡩120, BP 🡫90, GCS 🡫15
-5-11 years: SpO2 🡫96%, RR 🡫16 or 🡩34, HR 🡫70 or 🡩135, BP 🡫80, GCS 🡫15
-1-4 years: SpO2 🡫96%, RR 🡫20 or 🡩40, HR 🡫85 or 🡩150, BP 🡫70, GCS 🡫15
+Adult: SpO2 ≤90%, RR ≤10 or ≥30, HR ≤60 or ≥120, BP ≤90, GCS ≤13
+12-15 years: SpO2 ≤96%, RR ≤14 or ≥26, HR ≤60 or ≥120, BP ≤90, GCS ≤15
+5-11 years: SpO2 ≤96%, RR ≤16 or ≥34, HR ≤70 or ≥135, BP ≤80, GCS ≤15
+1-4 years: SpO2 ≤96%, RR ≤20 or ≥40, HR ≤85 or ≥150, BP ≤70, GCS ≤15
 
 EMERGENT TIME CRITICAL - PATTERN OF INJURY:
 • Penetrating trauma (except isolated superficial limb injury)
@@ -831,7 +860,7 @@ EMERGENT TIME CRITICAL - PATTERN OF INJURY:
 • Significant injuries involving more than one body region
 • Limb amputation OR limb threatening injury
 • Suspected spinal cord injury OR spinal fracture
-• Burns: 🡩10% TBSA (paediatrics), 🡩20% TBSA (adults)
+• Burns: ≥10% TBSA (paediatrics), ≥20% TBSA (adults)
 • Major compound fracture OR open dislocation
 • Fractured pelvis
 
@@ -848,8 +877,8 @@ EMERGENT TIME CRITICAL - PATTERN OF ILLNESS:
 
 POTENTIALLY TIME CRITICAL:
 Requires BOTH mechanism of injury AND vulnerability:
-Mechanisms: MCA 🡩60km/hr, motorcycle/cyclist 🡩30km/hr, pedestrian impact, fall 🡩3m
-Vulnerabilities: Age 🡩55 or 🡫16, pregnancy, poorly controlled HTN, CHF, lung disease`
+Mechanisms: MCA ≥60km/hr, motorcycle/cyclist ≥30km/hr, pedestrian impact, fall ≥3m
+Vulnerabilities: Age ≥55 or ≤16, pregnancy, poorly controlled HTN, CHF, lung disease`
           },
           {
             id: 'safety-netting',
@@ -883,14 +912,14 @@ ANY patients NOT being attended by Ambulance Victoria should at least have a VVE
             id: 'ventilation-rates',
             title: 'Ventilation Rates',
             content: `INEFFECTIVE BREATHING:
-• IF 🡩15 years: ventilate once every 5 seconds OR 12x per minute
+• IF ≥15 years: ventilate once every 5 seconds OR 12x per minute
 • IF 12-15 years: ventilate once every 3-4 seconds OR 14-26x per minute  
 • IF 5-11 years: ventilate once every 2-3 seconds OR 16-34x per minute
 • IF 1-4 years: ventilate once every 2-3 seconds OR 20-40x per minute
-• IF 🡫1 year: ventilate once every 2 seconds OR 25-55x per minute
+• IF ≤1 year: ventilate once every 2 seconds OR 25-55x per minute
 
 ASTHMA - UNRESPONSIVE WITH PULSE:
-• IF 🡩11 years: ventilate once every 8-12 seconds OR 5-8x per minute
+• IF ≥11 years: ventilate once every 8-12 seconds OR 5-8x per minute
 • IF 5-11 years: ventilate once every 5-6 seconds OR 10-14x per minute
 • IF 2-4 years: ventilate once every 4-5 seconds OR 12-15x per minute`
           }
@@ -925,397 +954,11 @@ ADVERSE EFFECTS:
 • Pupillary dilatation
 
 DOSING:
-🡩5 years old & 🡩20 kgs: 0.3 mg IM (Epi-Pen)
-🡫6 years old OR 🡫20 kgs: 0.15 mg IM (Epi-Pen Jr)
+≥5 years old & ≥20 kgs: 0.3 mg IM (Epi-Pen)
+≤6 years old OR ≤20 kgs: 0.15 mg IM (Epi-Pen Jr)
 Route: Intramuscular (IM) Epi-Pen
 Repeat Dose(s): Consult
 Maximum: Consult`
-          },
-          {
-            id: 'aspirin',
-            title: 'Aspirin',
-            content: `INDICATIONS:
-• Cardiac chest pain or discomfort
-• Suspected ACS
-
-CONTRAINDICATIONS:
-• Chest pain associated with psychostimulant overdose where sBP 🡩160 mmHg
-• Hypersensitivity to aspirin/salicylates
-• Actively bleeding peptic ulcers (blood in stool)
-• Bleeding disorders
-• Suspected dissecting aortic aneurysm
-
-PRECAUTIONS:
-• Peptic ulcer (not actively bleeding)
-• Asthma
-• Anticoagulants
-
-ADVERSE EFFECTS:
-• Heartburn
-• Nausea
-• Gastrointestinal bleeding
-• Increased bleeding time
-• Hypersensitivity reactions
-
-DOSING:
-🡩11 years old: 300 mg
-Route: Oral
-Initial Dose: 300 mg
-Repeat Dose(s): Nil
-Maximum: 300 mg (total dose)`
-          },
-          {
-            id: 'cetirizine',
-            title: 'Cetirizine',
-            content: `INDICATIONS:
-• Mild allergy associated with skin symptoms only (hives, welts, itchiness etc)
-
-CONTRAINDICATIONS:
-• Known hypersensitivity to cetirizine or hydroxyzine
-
-PRECAUTIONS:
-• Avoid using alongside alcohol or other CNS depressants as this may cause sedation
-
-ADVERSE EFFECTS:
-• Drowsiness (somnolence)
-• Sore throat (pharyngitis)
-• Dizziness
-• Dry mouth
-• Headache
-
-DOSING:
-🡩11 years old: 10 mg
-Route: Oral
-Initial Dose: 10 mg
-Repeat Dose(s): Nil
-Maximum: 10 mg (total dose)`
-          },
-          {
-            id: 'glucagon',
-            title: 'Glucagon',
-            content: `INDICATIONS:
-• BGL 🡫4 mmol/L & NOT responding OR CAN'T swallow safely
-
-CONTRAINDICATIONS:
-• MUST be accredited to administer IM Glucagon
-
-PRECAUTIONS:
-• Nil
-
-ADVERSE EFFECTS:
-• Nausea / Vomiting
-
-DOSING:
-🡩8 years old & NOT responding OR CAN'T swallow safely: 1 MG
-🡫8 years old & NOT responding OR CAN'T swallow safely: 0.5 MG
-Route: IM
-Repeat Dose(s): Nil
-Maximum: 1 MG or 0.5 MG (total dose)`
-          },
-          {
-            id: 'glucose-paste',
-            title: 'Glucose Paste',
-            content: `INDICATIONS:
-• BGL 🡫4 mmol/L & Responding & Can swallow safely
-
-CONTRAINDICATIONS:
-• MUST be able to swallow safely - do NOT administer if altered conscious OR at reasonable risk of choking
-
-PRECAUTIONS:
-• Nil
-
-ADVERSE EFFECTS:
-• Nil
-
-DOSING:
-All ages & Responding & Can swallow safely: 15 G
-Route: Oral
-Initial Dose: 15 G
-Repeat Dose(s): Nil
-Maximum: 15 G (total dose)`
-          },
-          {
-            id: 'glyceryl-trinitrate',
-            title: 'Glyceryl Trinitrate (GTN)',
-            content: `INDICATIONS:
-• Cardiac Chest Pain / Discomfort
-
-CONTRAINDICATIONS:
-• sBP 🡫100 mmHg
-• HR 🡩150 BPM
-• HR 🡫50 BPM
-• Ventricular Tachycardia (perform ECG prior to administration when accredited)
-• PDE5 inhibitors - current/recent use (Avanafil, Sildenafil, Tadalafil, Vardenafil)
-• Riociguat (Adempas) - current/recent use
-• Bleeding during pregnancy
-
-PRECAUTIONS:
-• Right ventricular MI OR inferior MI with sBP 🡫160 mmHg - risk of severe hypotension
-• Higher risk demographics: Age 🡩60, No previous GTN use, Recent MI
-• Preterm labour - concurrent use with other tocolytics
-
-ADVERSE EFFECTS:
-• Hypotension
-• Tachycardia/Bradycardia
-• Headache
-• Dizziness
-• Syncope/faint
-• Skin flushing
-
-PREGNANCY/POSTPARTUM:
-• Safe for use in pregnancy
-• Monitoring required if breastfeeding
-
-DOSING:
-🡩15 years old: 300 mcg
-Route: Sublingual
-Initial Dose: 300 mcg
-Repeat Dose(s): 300 mcg @ 5 mins
-Maximum: Nil`
-          },
-          {
-            id: 'ipratropium-bromide',
-            title: 'Ipratropium Bromide',
-            content: `INDICATIONS:
-• Difficulty breathing & Wheezing
-• Difficulty breathing & Asthma history
-
-CONTRAINDICATIONS:
-• Atropine hypersensitivity (including hypersensitivity to Atropine derivatives)
-
-PRECAUTIONS:
-• Glaucoma
-• Avoid contact with eyes
-
-ADVERSE EFFECTS:
-• Palpitations
-• Tachycardia
-• Headache
-• Acute angle closure glaucoma secondary to direct eye contact (rare)
-• Nausea
-• Dry mouth
-• Skin rash
-
-DOSING:
-🡩11 years old: 500 mcg (2 nebules)
-🡫12 years old: 250 mcg (1 nebule)
-Route: Nebulised
-Repeat Dose(s): Nil
-Maximum: 500 mcg or 250 mcg (total dose)
-Use: IF no improvement after 20 mins Salbutamol`
-          },
-          {
-            id: 'methoxyflurane',
-            title: 'Methoxyflurane',
-            content: `INDICATIONS:
-• Pain score 🡩3
-• Moderate OR severe pain
-
-CONTRAINDICATIONS:
-• Malignant hyperthermia (known history or family history)
-• Renal disease (pre-existing)
-
-PRECAUTIONS:
-• Patients should not be administered 🡩6 mL methoxyflurane in 24 hour period due to increased risk of kidney damage
-• Limit occupational exposure:
-  - Do NOT administer in confined space
-  - Ensure adequate ventilation in ambulance
-  - Place used Penthrox inhalers in closed bag when not in use
-
-ADVERSE EFFECTS:
-• Dizziness
-• Drowsiness
-• Hypotension
-• Nausea / Vomiting
-
-PREGNANCY/POSTPARTUM:
-• Safe for use in pregnancy
-• Safe for use while breastfeeding
-
-DOSING:
-All ages: 3 mL
-Route: Inhaled whistle
-Initial Dose: 3 mL
-Repeat Dose(s): 3 mL PRN (3 mL typically lasts for 25 minutes continuous use)
-Maximum: 6 mL in 24 hours`
-          },
-          {
-            id: 'midazolam',
-            title: 'Midazolam',
-            content: `INDICATIONS:
-• Ongoing tonic clonic activity associated with altered consciousness AND lasting 5 or more minutes
-• Multiple ongoing episodes of tonic clonic activity without full recovery of consciousness in-between seizures
-
-CONTRAINDICATIONS:
-• Midazolam may ONLY be administered by accredited responders
-• Known hypersensitivity to benzodiazepines
-
-PRECAUTIONS:
-• Reduce doses for patients that are: Elderly/frail, Weigh less than 60 kgs, Have chronic renal failure/CCF/shock
-• CNS depressant effects enhanced in presence of narcotics and other tranquilizers including alcohol
-• Can cause severe respiratory depression in patients with COPD
-• Patients with myasthenia gravis
-
-ADVERSE EFFECTS:
-• Depressed level of consciousness
-• Respiratory depression
-• Loss of airway control
-• Hypotension
-
-DOSING:
-🡩15 years old & Elderly/Frail OR 🡫60 kgs: 5 mg
-🡩15 years old & NOT Elderly/Frail & 🡩60 kgs: 10 mg
-Route: IM
-Repeat Dose(s): 5 mg @ 5 mins IF required (elderly/frail) OR 10 mg @ 10 mins IF required
-Maximum: 10 mg or 20 mg (total dose)
-
-Multiple GCSE refers to multiple tonic clonic seizures occurring WITHOUT full recovery to patient's normal baseline in between seizures.`
-          },
-          {
-            id: 'normal-saline',
-            title: 'Normal Saline',
-            content: `INDICATIONS:
-• Fluid replacement for volume depleted patients in context of dehydration
-• Fluid for dilution or preparation of other IV medications if required
-
-CONTRAINDICATIONS:
-• Bilateral fine crackles on chest auscultation suggestive of APO
-
-PRECAUTIONS:
-• Reduce doses for patients that are: Elderly/frail, Heart failure, Renal failure
-
-ADVERSE EFFECTS:
-• Potential for fluid overload with high risk patients or large volumes
-
-DOSING:
-🡩15 years old & Elderly OR Renal OR Heart failure: 500 mL
-🡩15 years old & NOT elderly / NO renal OR heart failure: 1000 mL
-Route: IV
-Initial Dose: 500 mL or 1000 mL (titrate to response)
-Repeat Dose(s): Nil
-Maximum: 500 mL or 1000 mL
-
-Use: IF 🡫 Adequate PSA due to Dehydration`
-          },
-          {
-            id: 'ondansetron',
-            title: 'Ondansetron',
-            content: `INDICATIONS:
-• Non-tolerated nausea / vomiting
-• Prophylaxis for spinal immobilisation
-
-CONTRAINDICATIONS:
-• Apomorphine (medication typically used to treat Parkinson's disease)
-
-PRECAUTIONS:
-• First trimester pregnancy (0 to 12 weeks) without first consulting with receiving hospital
-• Congenital Long QT syndrome - QTC 🡩500 ms
-• Severe liver disease (cirrhosis) – Do not exceed 8 mg total dose per day
-• Phenylketonuria (PKU) history
-
-ADVERSE EFFECTS:
-• Headache / dizziness
-• QT prolongation
-• Constipation
-• Visual disturbances (rarely associated with transient loss of vision)
-
-PREGNANCY/POSTPARTUM:
-• 1st trimester – Consult with receiving hospital
-• 2nd + 3rd trimester – Administer only if vomiting is very severe
-• Safe for use while breastfeeding
-
-DOSING:
-🡩11 years old: 4 mg
-5 to 11 years old: 4 mg
-🡫5 years old: 2 mg
-Route: ODT
-Initial Dose: 4 mg or 2 mg
-Repeat Dose(s): IF required 4 mg @ 20 mins (🡩11 years only)
-Maximum: 8 mg, 4 mg, or 2 mg (total dose)`
-          },
-          {
-            id: 'oxygen',
-            title: 'Oxygen',
-            content: `DEFINITION:
-Hypoxia occurs when there is inadequate oxygen in tissues to maintain homeostasis. May lead to altered conscious state, dyspnea, tachycardia, tachypnea, diaphoresis, anxiety and cyanosis.
-
-INDICATIONS:
-• Apply oxygen to all patients presenting with severe shortness of breath
-• IF SpO2 🡫92%: Oxygen titrate SpO2 92% or above
-• IF COPD/Neuromuscular disorder/Cystic fibrosis/Bronchiectasis/Severe kyphoscoliosis/Obesity: Oxygen titrate SpO2 88-92%
-• IF SpO2 🡫85%/Cardiac arrest/Major trauma/Head injury/Shock/Severe sepsis/Anaphylaxis/Seizure: Initial Mx NRB 10-15 L/min, ONCE hemodynamically stable titrate oxygen to SpO2 92-96%
-• IF Toxic inhalation exposure/Decompression illness/Cord prolapse/Cluster headache/Postpartum haemorrhage: ALWAYS administer NRB 10-15 L/min
-
-FURTHER NOTES:
-• This CPG is intended for patients aged 16 and older
-• High concentration oxygen may be harmful for patients at risk of hypercapnic respiratory failure
-• Suspect COPD if patient: Chronic cough/sputum production, Older than 40, Past history of smoking, Dyspnoea on exertion`
-          },
-          {
-            id: 'paracetamol',
-            title: 'Paracetamol',
-            content: `INDICATIONS:
-• Mild pain
-• Moderate / severe pain when used in combination with other analgesics
-
-CONTRAINDICATIONS:
-• Any form of paracetamol in children 🡫1 month old
-• Paracetamol tablets in children 🡫7 years old
-
-PRECAUTIONS:
-• Liver toxicity may occur in paracetamol overdose:
-  - Do NOT administer if paracetamol given within past 4 hours
-  - Do NOT administer if total paracetamol within 24 hours exceeds 4G in adults
-  - Do NOT administer if total paracetamol within 24 hours exceeds 60 mg/kg in children
-• Risk of liver toxicity increases with: Impaired liver function/liver disease, Elderly/frail patients, Malnourishment
-
-ADVERSE EFFECTS:
-• Rashes or other hypersensitivity reactions
-• Haematological reactions
-• Hypotension (associated with IV infusion, particularly in critically ill patients)
-
-PREGNANCY/POSTPARTUM:
-• Safe for use in pregnancy
-• Safe for use while breastfeeding
-
-DOSING:
-🡩60 years old OR 🡫60 kgs OR Frail: 500 mg (1 tablet)
-16 to 60 years old & 🡩60 kgs & NOT frail: 1000 mg (2 tablets)
-12 to 15 years old: 500 mg (1 tablet)
-🡫12 years old: 15 mg x kg (oral liquid)
-Route: Oral tablet or liquid
-Repeat Dose(s): IF required same dose @ 4 hours
-Maximum: 4 doses in 24 hours`
-          },
-          {
-            id: 'salbutamol',
-            title: 'Salbutamol',
-            content: `INDICATIONS:
-• Difficulty breathing & Wheezing
-• Difficulty breathing & Asthma history
-
-CONTRAINDICATIONS:
-• Nil
-
-PRECAUTIONS:
-• Large doses may cause intracellular metabolic acidosis
-
-ADVERSE EFFECTS:
-• Tachycardia
-• Tremors
-
-DOSING - pMDI (Mild/moderate asthma):
-🡩5 years old: 4-12 puffs, 4x breaths per puff via spacer
-2-5 years old: 2-6 puffs, 4x breaths per puff via spacer
-Repeat Dose(s): Same dose @ 20 min
-Maximum: Nil
-
-DOSING - Nebulised (Severe asthma OR Nil improvement):
-🡩15 years old: 10 mg (2 ampules) with 8L O2
-7-15 years old: 5 mg (1 ampule) with 8L O2
-2-5 years old: 2.5 mg (1/2 ampule) with 8L O2
-Repeat Dose(s): 🡩15 years: 5 mg @ 5 min; Others: same dose @ 20 min
-Maximum: Nil`
           }
         ]
       },
@@ -1370,7 +1013,6 @@ Maximum: Nil`
     return sections;
   }, []);
 
-  // Simple fuzzy search implementation
   const performSearch = useMemo(() => {
     if (!searchQuery.trim()) {
       setSearchResults([]);
@@ -1418,9 +1060,8 @@ Maximum: Nil`
 
     results.sort((a, b) => b.score - a.score);
     setSearchResults(results);
-  }, [searchQuery, documentSections]);
+  }, [searchQuery, documentSections, calculateSimilarity]);
 
-  // Highlight search terms in content
   const highlightText = (text, query) => {
     if (!query.trim()) return text;
     
@@ -1461,7 +1102,6 @@ Maximum: Nil`
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center space-x-3">
@@ -1475,7 +1115,6 @@ Maximum: Nil`
       </header>
 
       <div className="max-w-7xl mx-auto px-4 py-6 pb-20">
-        {/* Search Bar */}
         <div className="mb-8">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -1494,9 +1133,7 @@ Maximum: Nil`
           )}
         </div>
 
-        {/* Main Content */}
         {searchResults.length > 0 ? (
-          /* Search Results */
           <div className="space-y-4">
             {searchResults.map((result, index) => (
               <div key={index} className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -1522,10 +1159,8 @@ Maximum: Nil`
             ))}
           </div>
         ) : selectedSubsection ? (
-          /* Selected Subsection Content */
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              {/* Back Button & Breadcrumb */}
               <div className="flex items-center space-x-3 mb-4">
                 <button 
                   onClick={() => setSelectedSubsection(null)}
@@ -1552,7 +1187,7 @@ Maximum: Nil`
               </div>
               
               <div 
-                className="text-gray-700 leading-relaxed"
+                className="text-gray-700 leading-relaxed whitespace-pre-line"
                 dangerouslySetInnerHTML={{ 
                   __html: selectedSubsection.content 
                 }}
@@ -1560,10 +1195,8 @@ Maximum: Nil`
             </div>
           </div>
         ) : selectedSection ? (
-          /* Selected Section - List of Subsections */
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              {/* Back Button */}
               <div className="flex items-center space-x-3 mb-6">
                 <button 
                   onClick={() => setSelectedSection(null)}
@@ -1596,7 +1229,6 @@ Maximum: Nil`
             </div>
           </div>
         ) : (
-          /* Welcome Screen */
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
             <FileText className="w-16 h-16 text-blue-600 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
@@ -1610,7 +1242,6 @@ Maximum: Nil`
         )}
       </div>
 
-      {/* Bottom Navigation - Fixed */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
         <div className="max-w-7xl mx-auto px-2">
           <nav className="flex justify-center overflow-x-auto">

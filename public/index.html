@@ -69,4 +69,13 @@
   </script>
   
 </body>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/hatzolah-cpg/service-worker.js')
+        .then(reg => console.log('✅ SW registered for offline access'))
+        .catch(err => console.log('❌ SW registration failed:', err));
+    });
+  }
+</script>
 </html>
