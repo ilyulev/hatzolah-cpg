@@ -106,6 +106,53 @@ function DosingCards({ dosingArray }) {
   );
 }
 
+// Humanise a camelCase content key, e.g. "primarySurvey" → "Primary Survey".
+// Whole-key clinical acronyms are upper-cased ("cpr" → "CPR", "rosc" → "ROSC").
+const KEY_ACRONYMS = new Set(['cpr', 'rosc', 'aed', 'gcs', 'avpu', 'dolors', 'copd', 'bgl', 'gtn', 'ed']);
+function humanizeKey(k) {
+  if (KEY_ACRONYMS.has(k.toLowerCase())) return k.toUpperCase();
+  return k.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase()).trim();
+}
+
+// Generic recursive renderer for arbitrary content values. Shared by the quick-view
+// fallback and the detailed-view overlay so every content shape renders real content
+// instead of an empty placeholder.
+function renderValue(val, depth = 0) {
+  if (val === null || val === undefined) return null;
+  if (typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean') {
+    return <span className="text-sm text-gray-700">{String(val)}</span>;
+  }
+  if (Array.isArray(val)) {
+    return (
+      <ul className="space-y-1 ml-2">
+        {val.map((item, i) => (
+          <li key={i} className="flex items-start text-sm text-gray-700">
+            <span className="text-gray-400 mr-2 flex-shrink-0">•</span>
+            {item && typeof item === 'object' ? renderValue(item, depth + 1) : String(item)}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  if (typeof val === 'object') {
+    // Render { headers, rows } shapes as a real table
+    if (Array.isArray(val.headers) && Array.isArray(val.rows)) {
+      return <SimpleTable headers={val.headers} rows={val.rows} />;
+    }
+    return (
+      <div className={`space-y-2 ${depth > 0 ? 'ml-3 pl-3 border-l-2 border-gray-200' : ''}`}>
+        {Object.entries(val).map(([k, v]) => (
+          <div key={k}>
+            <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{humanizeKey(k)}</p>
+            {renderValue(v, depth + 1)}
+          </div>
+        ))}
+      </div>
+    );
+  }
+  return null;
+}
+
 // Renders quick view for a generic protocol
 function QuickProtocolContent({ proto }) {
   const c = proto.content || {};
@@ -256,11 +303,24 @@ function QuickProtocolContent({ proto }) {
     );
   }
 
-  // Fallback: show raw content fields as JSON
+  // Fallback: render every content section generically so no protocol shows an
+  // empty card. (Covers bespoke shapes like primarySurvey, flowchart, ageGroups, …)
+  const sections = Object.entries(c);
+  if (sections.length === 0) {
+    return (
+      <QuickSection title="Content" color="#6b7280">
+        <p className="text-xs text-gray-500 italic">No quick-view content for this protocol.</p>
+      </QuickSection>
+    );
+  }
   return (
-    <QuickSection title="Content" color="#6b7280">
-      <p className="text-xs text-gray-500 italic">Full detail in the detailed view →</p>
-    </QuickSection>
+    <>
+      {sections.map(([section, value]) => (
+        <QuickSection key={section} title={humanizeKey(section)} color="#6b7280">
+          {renderValue(value)}
+        </QuickSection>
+      ))}
+    </>
   );
 }
 
@@ -333,38 +393,6 @@ export function ProtocolView({ proto, userLevel, onBack }) {
 function DetailedViewOverlay({ proto, onClose }) {
   const c = proto.content || {};
 
-  const renderValue = (val, depth = 0) => {
-    if (val === null || val === undefined) return null;
-    if (typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean') {
-      return <span className="text-sm text-gray-700">{String(val)}</span>;
-    }
-    if (Array.isArray(val)) {
-      return (
-        <ul className="space-y-1 ml-2">
-          {val.map((item, i) => (
-            <li key={i} className="flex items-start text-sm text-gray-700">
-              <span className="text-gray-400 mr-2 flex-shrink-0">•</span>
-              {typeof item === 'object' ? renderValue(item, depth + 1) : item}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    if (typeof val === 'object') {
-      return (
-        <div className={`space-y-2 ${depth > 0 ? 'ml-3 pl-3 border-l-2 border-gray-200' : ''}`}>
-          {Object.entries(val).map(([k, v]) => (
-            <div key={k}>
-              <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{k.replace(/([A-Z])/g, ' $1')}</p>
-              {renderValue(v, depth + 1)}
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <div className="fixed inset-0 bg-white z-50 flex flex-col">
       {/* Detailed header */}
@@ -384,7 +412,7 @@ function DetailedViewOverlay({ proto, onClose }) {
         {Object.entries(c).map(([section, value]) => (
           <div key={section} className="bg-white rounded-xl shadow-sm p-4">
             <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wide mb-3 pb-2 border-b border-gray-100">
-              {section.replace(/([A-Z])/g, ' $1').trim()}
+              {humanizeKey(section)}
             </h3>
             {renderValue(value)}
           </div>
