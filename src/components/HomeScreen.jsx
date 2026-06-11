@@ -30,8 +30,9 @@ export function HomeScreen({ userLevel, allProtocols, onProtocolSelect, onCatego
   // Group all visible protocols by category
   const grouped = {};
   allProtocols.forEach(([key, proto]) => {
-    const isPerform   = canPerformLevels.includes(proto.level);
-    const isReference = referenceLevels.includes(proto.level);
+    // `universal` protocols (foundational assessments, e.g. Vital Signs) are in-scope for every level
+    const isPerform   = proto.universal === true || canPerformLevels.includes(proto.level);
+    const isReference = !proto.universal && referenceLevels.includes(proto.level);
     if (!isPerform && !isReference) return;
 
     const cat = proto.category || 'medical';

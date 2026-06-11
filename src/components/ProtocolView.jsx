@@ -235,10 +235,10 @@ export function ProtocolView({ proto, userLevel, onBack }) {
   const [showDetailed, setShowDetailed] = useState(false);
 
   const levelConfig = PRACTICE_LEVELS[proto.level] || PRACTICE_LEVELS.FR;
-  const isReference = !['CB', 'FR', 'SR'].includes(proto.level) ||
+  const isReference = !proto.universal && (
+    !['CB', 'FR', 'SR'].includes(proto.level) ||
     (userLevel === 'CB' && proto.level !== 'CB') ||
-    (userLevel === 'FR' && proto.level === 'SR') ||
-    false;
+    (userLevel === 'FR' && proto.level === 'SR'));
 
   return (
     <div className="flex flex-col h-full">

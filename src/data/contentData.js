@@ -26,7 +26,8 @@ export const assessmentsContent = {
 
   'vital-signs': {
     title: 'Vital Sign Values',
-    level: 'CB',
+    level: 'ALL',
+    universal: true, // foundational assessment (p5, not L1) — in-scope for every practice level
     category: 'primary',
     summary: 'Age-based acceptable vital sign ranges',
     content: {
@@ -63,7 +64,8 @@ export const assessmentsContent = {
 
   'clinical-flags': {
     title: 'Clinical Flags',
-    level: 'CB',
+    level: 'ALL',
+    universal: true, // foundational assessment (p7, not L1) — in-scope for every practice level
     category: 'primary',
     summary: 'Red and yellow flag criteria for escalation',
     content: {
@@ -1645,6 +1647,16 @@ export const PRACTICE_LEVELS = {
     color: '#92400e',
     bg: '#fef3c7',
     headerGradient: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
+  },
+  // Display config for `universal: true` protocols (foundational content shown to every level).
+  // Not a selectable practice level — never used as a userLevel, only as a protocol's level badge.
+  ALL: {
+    id: 'ALL',
+    label: 'All Levels',
+    description: 'Foundational reference — available to every practice level',
+    color: '#334155',
+    bg: '#e2e8f0',
+    headerGradient: 'linear-gradient(135deg, #334155 0%, #64748b 100%)',
   },
 };
 
