@@ -1,11 +1,16 @@
-node_modules/*
-dist/*
+# Directory-form ignores: nothing under these is tracked, even their *.json
+# (the dir form means the !*.json re-include below cannot resurrect files here).
+node_modules/
+dist/
 
 # Local CPG source PDF (do not commit binary)
 source/*.pdf
 
-# This machine's global gitignore excludes *.json — re-include for this repo
-# (package.json, dosing-corrections ledger, etc. must be tracked)
+# This machine's global gitignore excludes *.json — re-include so this repo's
+# tracked config (package.json, manifests, scripts data) isn't lost.
 !*.json
+# ...but never track these:
 # npm artifact — pnpm-only project
 package-lock.json
+# machine-local Claude settings
+.claude/settings.local.json

@@ -12,7 +12,9 @@ export default defineConfig({
     minify: 'terser'
   },
   server: {
-    port: 3000,
-    open: true
+    // Honour an assigned PORT (e.g. the preview harness) so the dev server can
+    // auto-pick a free port; falls back to 3000 for a plain `pnpm dev`.
+    port: process.env.PORT ? Number(process.env.PORT) : 3000,
+    open: false
   }
 })
