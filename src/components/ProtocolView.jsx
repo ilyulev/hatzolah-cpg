@@ -181,6 +181,41 @@ function QuickProtocolContent({ proto }) {
     );
   }
 
+  // Clinical flags (red / yellow escalation criteria)
+  if (c.redFlags || c.yellowFlags) {
+    const renderFlagGroup = (flags) =>
+      Array.isArray(flags) ? (
+        <BulletList items={flags} />
+      ) : (
+        <div className="space-y-2">
+          {Object.entries(flags).map(([k, v]) => (
+            <div key={k}>
+              <p className="text-xs font-semibold text-gray-500 uppercase mb-1">
+                {k.replace(/([A-Z])/g, ' $1').trim()}
+              </p>
+              <BulletList items={v} />
+            </div>
+          ))}
+        </div>
+      );
+    return (
+      <>
+        {c.redFlags && (
+          <QuickSection title="🔴 Red Flags" color="#dc2626">
+            {c.definition?.red && <p className="text-sm text-gray-700 mb-2">{c.definition.red}</p>}
+            {renderFlagGroup(c.redFlags)}
+          </QuickSection>
+        )}
+        {c.yellowFlags && (
+          <QuickSection title="🟡 Yellow Flags" color="#d97706">
+            {c.definition?.yellow && <p className="text-sm text-gray-700 mb-2">{c.definition.yellow}</p>}
+            {renderFlagGroup(c.yellowFlags)}
+          </QuickSection>
+        )}
+      </>
+    );
+  }
+
   // Assessment with table
   if (c.table) {
     return (
