@@ -1,0 +1,13 @@
+{
+  "_doc": "Human-verified dosing corrections for CPG v6.2. The extractor (scripts/extract_pdf.mjs) overlays these onto the auto-extracted blocks, clears their flags, and marks them VERIFIED. Match by drug (required) + optional page + optional indication substring + optional `match` (substring of the field's current value, to pick one band). Omit `page` to fix every occurrence — the same dosing block is repeated on condition pages AND in pharmacology. Symbol convention: ↑ = 'and above' (≥), ↓ = 'and below' (≤).",
+  "corrections": [
+    {
+      "drug": "Cetirizine",
+      "field": "demographic",
+      "match": "11 years old",
+      "value": "↑11 years old",
+      "verifiedBy": "user",
+      "note": "11 and above (≥11). Up-arrow glyph preferred over ≥. Applies to Allergy condition page (p42) and pharmacology (p142)."
+    }
+  ]
+}

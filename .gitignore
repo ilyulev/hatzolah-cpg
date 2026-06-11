@@ -1,2 +1,11 @@
 node_modules/*
 dist/*
+
+# Local CPG source PDF (do not commit binary)
+source/*.pdf
+
+# This machine's global gitignore excludes *.json — re-include for this repo
+# (package.json, dosing-corrections ledger, etc. must be tracked)
+!*.json
+# npm artifact — pnpm-only project
+package-lock.json

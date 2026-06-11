@@ -1,0 +1,42 @@
+{
+  "name": "hatzolah-cpg-pwa",
+  "version": "1.0.0",
+  "description": "Hatzolah Clinical Practice Guidelines PWA with fuzzy search",
+  "private": true,
+  "homepage": "https://ilyulev.github.io/hatzolah-cpg",
+  "dependencies": {
+    "lucide-react": "^0.263.1",
+    "pdf-parse-fork": "^1.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.2.1",
+    "@vitejs/plugin-react": "^4.0.0",
+    "autoprefixer": "^10.4.27",
+    "gh-pages": "^5.0.0",
+    "tailwindcss": "^4.2.1",
+    "terser": "^5.44.0",
+    "vite": "^7.1.5"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "pnpm run build",
+    "deploy": "pnpx gh-pages -d dist",
+    "extract-pdf": "node scripts/extract_pdf.mjs"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
