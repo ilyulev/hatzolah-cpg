@@ -2,7 +2,7 @@
  * LevelSelection — first-launch screen for choosing practice level
  */
 import React from 'react';
-import { PRACTICE_LEVELS } from '../data/contentData';
+import { PRACTICE_LEVELS, SELECTABLE_LEVELS } from '../data/contentData';
 
 const levelDetails = {
   CB: {
@@ -60,7 +60,8 @@ export function LevelSelection({ onSelect }) {
 
       {/* Level Cards */}
       <div className="w-full max-w-sm space-y-4">
-        {Object.entries(PRACTICE_LEVELS).map(([key, config]) => {
+        {SELECTABLE_LEVELS.map((key) => {
+          const config = PRACTICE_LEVELS[key];
           const detail = levelDetails[key];
           return (
             <button

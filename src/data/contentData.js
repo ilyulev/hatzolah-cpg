@@ -1660,6 +1660,10 @@ export const PRACTICE_LEVELS = {
   },
 };
 
+// The practice levels a user can actually select (excludes the 'ALL' display
+// pseudo-level above). Used by LevelSelection and Settings.
+export const SELECTABLE_LEVELS = ['CB', 'FR', 'SR'];
+
 // What each level can PERFORM
 export const CAN_PERFORM = {
   CB: ['CB'],

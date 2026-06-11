@@ -3,7 +3,7 @@
  */
 import React, { useState } from 'react';
 import { X, AlertTriangle, CheckCircle2 } from 'lucide-react';
-import { PRACTICE_LEVELS } from '../data/contentData';
+import { PRACTICE_LEVELS, SELECTABLE_LEVELS } from '../data/contentData';
 
 export function Settings({ userLevel, onChangeLevel, onClose }) {
   const [pendingLevel, setPendingLevel] = useState(null);
@@ -35,7 +35,8 @@ export function Settings({ userLevel, onChangeLevel, onClose }) {
         <div className="bg-white rounded-xl p-4 shadow-sm">
           <p className="text-xs font-semibold text-gray-500 uppercase mb-3">Practice Level</p>
           <div className="space-y-3">
-            {Object.entries(PRACTICE_LEVELS).map(([key, config]) => {
+            {SELECTABLE_LEVELS.map((key) => {
+              const config = PRACTICE_LEVELS[key];
               const isActive = key === userLevel;
               return (
                 <button
