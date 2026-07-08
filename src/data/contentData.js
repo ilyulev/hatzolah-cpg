@@ -1081,7 +1081,8 @@ export const medicationsContent = {
 
   'adrenaline': {
     title: 'Adrenaline',
-    level: 'CB',        // CB and FR both administer; CB via Epi-Pen only
+    level: 'ALL',
+    universal: true, // Epi-Pen — administered by every practice level
     category: 'emergency',
     summary: 'Anaphylaxis and thunderstorm asthma — IM Epi-Pen',
     content: {
@@ -1199,7 +1200,8 @@ export const medicationsContent = {
 
   'glucose-paste': {
     title: 'Glucose Paste',
-    level: 'CB',
+    level: 'ALL',
+    universal: true, // no clinical skill required — every practice level
     category: 'endocrine',
     summary: 'Hypoglycaemia — conscious and can swallow safely',
     content: {
@@ -1541,7 +1543,8 @@ export const medicationsContent = {
 
   'salbutamol': {
     title: 'Salbutamol',
-    level: 'CB',       // CB has puffer; FR adds nebulised
+    level: 'ALL',
+    universal: true, // puffer at CB; nebulised routes at FR/SR
     category: 'respiratory',
     summary: 'Asthma/wheeze — puffer or nebulised',
     content: {
