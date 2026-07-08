@@ -35,24 +35,43 @@ function BulletList({ items }) {
 
 function SimpleTable({ headers, rows }) {
   if (!headers || !rows) return null;
+  // Wide reference tables scroll horizontally on phones; cells never wrap and the
+  // first column stays pinned so the row label (e.g. Age) remains visible.
   return (
     <div className="overflow-x-auto -mx-1">
       <table className="min-w-full text-xs border-collapse">
         <thead>
-          <tr className="bg-gray-100">
+          <tr>
             {headers.map((h, i) => (
-              <th key={i} className="px-2 py-1.5 text-left font-semibold text-gray-700 border border-gray-200">{h}</th>
+              <th
+                key={i}
+                className={`px-2 py-1.5 text-left font-semibold text-gray-700 border border-gray-200 whitespace-nowrap bg-gray-100 ${
+                  i === 0 ? 'sticky left-0 z-10' : ''
+                }`}
+              >
+                {h}
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, ri) => (
-            <tr key={ri} className={ri % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-              {row.map((cell, ci) => (
-                <td key={ci} className="px-2 py-1.5 border border-gray-200 text-gray-700">{cell}</td>
-              ))}
-            </tr>
-          ))}
+          {rows.map((row, ri) => {
+            const stripe = ri % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+            return (
+              <tr key={ri}>
+                {row.map((cell, ci) => (
+                  <td
+                    key={ci}
+                    className={`px-2 py-1.5 border border-gray-200 text-gray-700 whitespace-nowrap ${stripe} ${
+                      ci === 0 ? 'sticky left-0 z-10 font-medium' : ''
+                    }`}
+                  >
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

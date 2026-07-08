@@ -10,13 +10,15 @@ import { BottomNav } from './components/BottomNav';
 import { MedicationsSection } from './components/MedicationsSection';
 import { AlertsSection } from './components/AlertsSection';
 import { InfoSection } from './components/InfoSection';
+import { AcronymsView } from './components/AcronymsView';
 import { HalakhaSection } from './components/HalakhaSection';
 import { assessmentsContent, conditionsContent } from './data/contentData';
 
 const INITIAL_STACKS = {
   home: { view: 'grid', category: null, perform: [], reference: [], protocol: null },
   medications: { view: 'list', protocol: null },
-  // alerts / info / halakha are flat — no drill-down state needed
+  info: { topic: null }, // 'acronyms' | future reference topics
+  // alerts / halakha are flat — no drill-down state needed
 };
 
 function App() {
@@ -112,7 +114,12 @@ function App() {
   } else if (active === 'alerts') {
     body = <AlertsSection />;
   } else if (active === 'info') {
-    body = <InfoSection />;
+    if (stacks.info?.topic === 'acronyms') {
+      showTopBar = false;
+      body = <AcronymsView onBack={() => patchStack('info', { topic: null })} />;
+    } else {
+      body = <InfoSection onTopicSelect={(topic) => patchStack('info', { topic })} />;
+    }
   } else if (active === 'halakha') {
     body = <HalakhaSection />;
   }
