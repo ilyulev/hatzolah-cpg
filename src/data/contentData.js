@@ -1541,10 +1541,43 @@ export const medicationsContent = {
     },
   },
 
-  'salbutamol': {
+  // Dual-level entries (like anaphylaxis-cb/-fr): the CB version carries the
+  // puffer route only — nebulised salbutamol is an FR/SR skill, so a single
+  // universal entry would show out-of-scope dosing to Code Blue responders.
+  'salbutamol-cb': {
+    title: 'Salbutamol (L1)',
+    level: 'CB',
+    category: 'respiratory',
+    summary: 'Asthma/wheeze — puffer via spacer',
+    content: {
+      indications: ['Difficulty breathing AND wheezing', 'Difficulty breathing AND asthma history'],
+      contraindications: ['Nil'],
+      precautions: ['Large doses may cause intracellular metabolic acidosis'],
+      adverseEffects: ['Tachycardia', 'Tremors'],
+      dosing: [
+        {
+          indication: 'Mild/moderate asthma — puffer',
+          demographic: '↑5 years old',
+          route: 'pMDI (puffer) via spacer',
+          initial: '4–12 puffs, 4 breaths per puff',
+          repeat: '4–12 puffs @ 20 min',
+          max: 'Nil',
+        },
+        {
+          indication: 'Mild/moderate asthma — puffer',
+          demographic: '2–5 years old',
+          route: 'pMDI (puffer) via spacer',
+          initial: '2–6 puffs, 4 breaths per puff',
+          repeat: '2–6 puffs @ 20 min',
+          max: 'Nil',
+        },
+      ],
+    },
+  },
+
+  'salbutamol-fr': {
     title: 'Salbutamol',
-    level: 'ALL',
-    universal: true, // puffer at CB; nebulised routes at FR/SR
+    level: 'FR',
     category: 'respiratory',
     summary: 'Asthma/wheeze — puffer or nebulised',
     content: {
