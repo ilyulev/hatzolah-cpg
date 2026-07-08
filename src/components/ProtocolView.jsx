@@ -423,7 +423,15 @@ function DetailedViewOverlay({ proto, onClose }) {
           <h2 className="text-white font-bold text-base truncate">{proto.title}</h2>
           <p className="text-gray-400 text-xs">Full protocol detail</p>
         </div>
-        <BookOpen className="w-5 h-5 text-gray-300 flex-shrink-0" />
+        {/* Same position as the opener in ProtocolView's header — the 📖 button
+            toggles the detailed view both ways (users tap where they opened it). */}
+        <button
+          onClick={onClose}
+          className="ml-3 flex-shrink-0 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg p-2 transition-all"
+          title="Back to quick view"
+        >
+          <BookOpen className="w-5 h-5 text-white" />
+        </button>
       </div>
 
       {/* Detailed scrollable content */}
