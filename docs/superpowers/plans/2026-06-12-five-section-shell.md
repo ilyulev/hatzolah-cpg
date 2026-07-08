@@ -21,6 +21,64 @@
 
 ---
 
+### Task 0: Universal medications (user-approved data fix)
+
+**Files:**
+- Modify: `src/data/contentData.js` (three medication entries)
+
+Adrenaline (Epi-Pen), Glucose Paste and Salbutamol are available to every
+practice level (CLAUDE.md medication table), but are tagged `level: 'CB'`,
+which the visibility rules grey out as "Reference Only" for FR/SR. Apply the
+same universal treatment as `vital-signs`/`clinical-flags` (user approved:
+"ALL badge is fine").
+
+- [ ] **Step 1: In `src/data/contentData.js`, update the three entries**
+
+`'adrenaline'`: replace `level: 'CB',        // CB and FR both administer; CB via Epi-Pen only` with:
+```javascript
+    level: 'ALL',
+    universal: true, // Epi-Pen — administered by every practice level
+```
+`'glucose-paste'`: replace `level: 'CB',` with:
+```javascript
+    level: 'ALL',
+    universal: true, // no clinical skill required — every practice level
+```
+`'salbutamol'`: replace `level: 'CB',       // CB has puffer; FR adds nebulised` with:
+```javascript
+    level: 'ALL',
+    universal: true, // puffer at CB; nebulised routes at FR/SR
+```
+
+- [ ] **Step 2: Verify data parses; level counts shift from 15 CB to 12 CB / 5 ALL**
+
+```bash
+node -e "
+const fs=require('fs'),os=require('os'),path=require('path');
+const tmp=path.join(os.tmpdir(),'cd-univ2.mjs');
+fs.writeFileSync(tmp,fs.readFileSync('src/data/contentData.js','utf8'));
+import('file://'+tmp).then(m=>{
+  const all={...m.assessmentsContent,...m.conditionsContent,...m.medicationsContent};
+  const counts={};
+  for(const p of Object.values(all)) counts[p.level]=(counts[p.level]||0)+1;
+  console.log(counts);
+  for(const k of ['adrenaline','glucose-paste','salbutamol'])
+    if(m.medicationsContent[k].universal!==true) throw new Error(k+' not universal');
+  console.log('OK'); fs.unlinkSync(tmp);
+});
+"
+```
+Expected: `{ ALL: 5, CB: 12, FR: 34, SR: 4 }` then `OK`.
+
+- [ ] **Step 3: Commit**
+
+```bash
+git add src/data/contentData.js
+git commit -m "Make Adrenaline, Glucose Paste, Salbutamol universal (all levels)"
+```
+
+---
+
 ### Task 1: Extension data files (Alerts / Info / Halakha seeds)
 
 **Files:**
