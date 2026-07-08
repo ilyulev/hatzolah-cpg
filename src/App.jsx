@@ -1,33 +1,39 @@
 import React, { useState } from 'react';
-import { Settings as SettingsIcon } from 'lucide-react';
 import { useUserLevel } from './hooks/useUserLevel';
 import { LevelSelection } from './components/LevelSelection';
 import { HomeScreen } from './components/HomeScreen';
 import { CategoryView } from './components/CategoryView';
 import { ProtocolView } from './components/ProtocolView';
 import { Settings } from './components/Settings';
-import {
-  assessmentsContent,
-  conditionsContent,
-  medicationsContent,
-} from './data/contentData';
+import { TopBar } from './components/TopBar';
+import { BottomNav } from './components/BottomNav';
+import { MedicationsSection } from './components/MedicationsSection';
+import { AlertsSection } from './components/AlertsSection';
+import { InfoSection } from './components/InfoSection';
+import { HalakhaSection } from './components/HalakhaSection';
+import { assessmentsContent, conditionsContent } from './data/contentData';
+
+const INITIAL_STACKS = {
+  home: { view: 'grid', category: null, perform: [], reference: [], protocol: null },
+  medications: { view: 'list', protocol: null },
+  // alerts / info / halakha are flat — no drill-down state needed
+};
 
 function App() {
   const { userLevel, loaded, selectLevel } = useUserLevel();
-  const [view, setView] = useState('home'); // 'home' | 'category' | 'protocol' | 'settings'
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [performProtos, setPerformProtos] = useState([]);
-  const [refProtos, setRefProtos] = useState([]);
-  const [selectedProtocol, setSelectedProtocol] = useState(null);
+  const [section, setSection] = useState('home');
+  const [stacks, setStacks] = useState(INITIAL_STACKS);
+  const [showLevelSheet, setShowLevelSheet] = useState(false);
 
-  // Combine all protocols into single array
-  const allProtocols = [
+  // Sourced tier, Home: clinical guidelines only (medications live in their own tab)
+  const homeProtocols = [
     ...Object.entries(assessmentsContent),
     ...Object.entries(conditionsContent),
-    ...Object.entries(medicationsContent)
   ];
 
-  // Loading state
+  const patchStack = (id, patch) =>
+    setStacks((s) => ({ ...s, [id]: { ...s[id], ...patch } }));
+
   if (!loaded) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -36,82 +42,107 @@ function App() {
     );
   }
 
-  // Show level selection if no level chosen
   if (!userLevel) {
     return <LevelSelection onSelect={selectLevel} />;
   }
 
-  // Settings view
-  if (view === 'settings') {
-    return (
-      <Settings
-        userLevel={userLevel}
-        onChangeLevel={(newLevel) => {
-          selectLevel(newLevel);
-          setView('home');
-        }}
-        onClose={() => setView('home')}
-      />
-    );
-  }
+  // ── Section bodies ─────────────────────────────────────────────────────────
+  const home = stacks.home;
+  const meds = stacks.medications;
 
-  // Protocol detail view
-  if (view === 'protocol' && selectedProtocol) {
-    return (
-      <ProtocolView
-        proto={selectedProtocol}
-        userLevel={userLevel}
-        onBack={() => setView('category')}
-      />
-    );
-  }
+  // Drill-down views render WITHOUT TopBar (they have their own headers),
+  // but the BottomNav stays visible so tabs are always reachable.
+  let body = null;
+  let showTopBar = true;
 
-  // Category list view
-  if (view === 'category' && selectedCategory) {
-    return (
-      <CategoryView
-        category={selectedCategory}
-        performProtocols={performProtos}
-        referenceProtocols={refProtos}
-        onBack={() => setView('home')}
-        onProtocolSelect={(proto) => {
-          setSelectedProtocol(proto);
-          setView('protocol');
-        }}
-      />
-    );
-  }
+  const active = ['home', 'medications', 'alerts', 'info', 'halakha'].includes(section)
+    ? section
+    : 'home'; // unknown section falls back to Home
 
-  // Home view
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-        <div>
-          <h1 className="text-lg font-bold text-gray-900">Hatzolah CPG</h1>
-          <p className="text-xs text-gray-500">v6.2</p>
-        </div>
-        <button
-          onClick={() => setView('settings')}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <SettingsIcon className="w-5 h-5 text-gray-600" />
-        </button>
-      </div>
-
-      {/* Main content */}
-      <div className="flex-1 overflow-y-auto">
+  if (active === 'home') {
+    if (home.view === 'protocol' && home.protocol) {
+      showTopBar = false;
+      body = (
+        <ProtocolView
+          proto={home.protocol}
+          userLevel={userLevel}
+          onBack={() => patchStack('home', { view: 'category', protocol: null })}
+        />
+      );
+    } else if (home.view === 'category' && home.category) {
+      showTopBar = false;
+      body = (
+        <CategoryView
+          category={home.category}
+          performProtocols={home.perform}
+          referenceProtocols={home.reference}
+          onBack={() => patchStack('home', { view: 'grid', category: null })}
+          onProtocolSelect={(proto) => patchStack('home', { view: 'protocol', protocol: proto })}
+        />
+      );
+    } else {
+      body = (
         <HomeScreen
           userLevel={userLevel}
-          allProtocols={allProtocols}
-          onCategorySelect={(cat, perform, reference) => {
-            setSelectedCategory(cat);
-            setPerformProtos(perform);
-            setRefProtos(reference);
-            setView('category');
-          }}
+          allProtocols={homeProtocols}
+          onCategorySelect={(cat, perform, reference) =>
+            patchStack('home', { view: 'category', category: cat, perform, reference })
+          }
         />
-      </div>
+      );
+    }
+  } else if (active === 'medications') {
+    if (meds.view === 'protocol' && meds.protocol) {
+      showTopBar = false;
+      body = (
+        <ProtocolView
+          proto={meds.protocol}
+          userLevel={userLevel}
+          onBack={() => patchStack('medications', { view: 'list', protocol: null })}
+        />
+      );
+    } else {
+      body = (
+        <MedicationsSection
+          userLevel={userLevel}
+          onProtocolSelect={(proto) => patchStack('medications', { view: 'protocol', protocol: proto })}
+        />
+      );
+    }
+  } else if (active === 'alerts') {
+    body = <AlertsSection />;
+  } else if (active === 'info') {
+    body = <InfoSection />;
+  } else if (active === 'halakha') {
+    body = <HalakhaSection />;
+  }
+
+  return (
+    <div className="h-screen bg-gray-50 flex flex-col">
+      {showTopBar && (
+        <TopBar userLevel={userLevel} onLevelChipTap={() => setShowLevelSheet(true)} />
+      )}
+
+      <main className="flex-1 overflow-y-auto">{body}</main>
+
+      <BottomNav active={active} onSelect={setSection} />
+
+      {/* Level switcher — existing Settings rendered as a full-screen sheet */}
+      {showLevelSheet && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <Settings
+            userLevel={userLevel}
+            onChangeLevel={(newLevel) => {
+              selectLevel(newLevel);
+              setShowLevelSheet(false);
+              // Reset drill-downs: visible scope changed, stale stacks could
+              // point at protocols outside the new level's visibility.
+              setStacks(INITIAL_STACKS);
+            }}
+            onClose={() => setShowLevelSheet(false)}
+          />
+        </div>
+      )}
     </div>
   );
 }

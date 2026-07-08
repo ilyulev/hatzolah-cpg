@@ -3,12 +3,12 @@
  * Pure presentational: parent owns the active section state.
  */
 import React from 'react';
-import { Home, Pill, TriangleAlert, Info, Star } from 'lucide-react';
+import { Home, Pill, AlertTriangle, Info, Star } from 'lucide-react';
 
 export const SECTIONS = [
   { id: 'home', label: 'Home', Icon: Home },
   { id: 'medications', label: 'Meds', Icon: Pill },
-  { id: 'alerts', label: 'Alerts', Icon: TriangleAlert },
+  { id: 'alerts', label: 'Alerts', Icon: AlertTriangle },
   { id: 'info', label: 'Info', Icon: Info },
   { id: 'halakha', label: 'Halakha', Icon: Star },
 ];

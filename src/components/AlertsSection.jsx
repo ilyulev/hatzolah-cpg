@@ -4,7 +4,7 @@
  * Non-mandatory; banner links conceptually to Clinical Flags (Home).
  */
 import React, { useState } from 'react';
-import { ChevronDown, TriangleAlert } from 'lucide-react';
+import { ChevronDown, AlertTriangle } from 'lucide-react';
 import { alertsContent, ALERTS_BANNER } from '../data/extensions/alertsContent';
 
 function FindingCard({ entry }) {
@@ -49,7 +49,7 @@ export function AlertsSection() {
   return (
     <div className="p-3 space-y-2">
       <div className="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2.5 flex items-start gap-2">
-        <TriangleAlert className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+        <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
         <p className="text-amber-800 text-xs font-medium">{ALERTS_BANNER}</p>
       </div>
       {alertsContent.map((entry, i) => (
