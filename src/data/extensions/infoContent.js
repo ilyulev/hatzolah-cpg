@@ -1,0 +1,52 @@
+/**
+ * Info — reference material (APP EXTENSION, not part of Hatzolah CPG).
+ * Seeded with common Australian ambulance/CPG acronyms & abbreviations.
+ * Future: patient medication classes reference (anticoagulants, beta-blockers…).
+ */
+export const INFO_BANNER = 'Supplementary reference — not part of the Hatzolah CPG.';
+
+export const acronymsContent = [
+  { term: 'ACS', meaning: 'Acute Coronary Syndrome' },
+  { term: 'AED', meaning: 'Automated External Defibrillator' },
+  { term: 'APO', meaning: 'Acute Pulmonary Oedema' },
+  { term: 'AVPU', meaning: 'Alert / Voice / Pain / Unresponsive (conscious state scale)' },
+  { term: 'BGL', meaning: 'Blood Glucose Level' },
+  { term: 'BLS', meaning: 'Basic Life Support' },
+  { term: 'BVM', meaning: 'Bag-Valve-Mask (manual ventilation)' },
+  { term: 'CCF', meaning: 'Congestive Cardiac Failure' },
+  { term: 'COPD', meaning: 'Chronic Obstructive Pulmonary Disease' },
+  { term: 'CPR', meaning: 'Cardiopulmonary Resuscitation' },
+  { term: 'CVA', meaning: 'Cerebrovascular Accident (stroke)' },
+  { term: 'DKA', meaning: 'Diabetic Ketoacidosis' },
+  { term: 'FAST', meaning: 'Face / Arms / Speech / Time (stroke screen)' },
+  { term: 'GCS', meaning: 'Glasgow Coma Scale (3–15)' },
+  { term: 'GCSE', meaning: 'Generalised Convulsive Status Epilepticus' },
+  { term: 'GTN', meaning: 'Glyceryl Trinitrate' },
+  { term: 'IM', meaning: 'Intramuscular (injection route)' },
+  { term: 'IN', meaning: 'Intranasal (medication route)' },
+  { term: 'IV', meaning: 'Intravenous (route / access)' },
+  { term: 'LOC', meaning: 'Level of Consciousness (also: Loss of Consciousness)' },
+  { term: 'MDI', meaning: 'Metered Dose Inhaler (puffer)' },
+  { term: 'MI', meaning: 'Myocardial Infarction (heart attack)' },
+  { term: 'Mx', meaning: 'Management' },
+  { term: 'NRB', meaning: 'Non-Rebreather (oxygen mask)' },
+  { term: 'ODT', meaning: 'Orally Disintegrating Tablet' },
+  { term: 'PE', meaning: 'Pulmonary Embolism' },
+  { term: 'PEA', meaning: 'Pulseless Electrical Activity (cardiac arrest rhythm)' },
+  { term: 'PHx', meaning: 'Past History' },
+  { term: 'pMDI', meaning: 'Pressurised Metered Dose Inhaler' },
+  { term: 'PRN', meaning: 'Pro Re Nata — as needed' },
+  { term: 'PSA', meaning: 'Perfusion Status Assessment' },
+  { term: 'ROSC', meaning: 'Return of Spontaneous Circulation' },
+  { term: 'RR', meaning: 'Respiratory Rate' },
+  { term: 'sBP', meaning: 'Systolic Blood Pressure' },
+  { term: 'SOB', meaning: 'Shortness of Breath' },
+  { term: 'SpO2', meaning: 'Peripheral Oxygen Saturation' },
+  { term: 'SVT', meaning: 'Supraventricular Tachycardia' },
+  { term: 'TIA', meaning: 'Transient Ischaemic Attack (mini-stroke)' },
+  { term: 'URTI', meaning: 'Upper Respiratory Tract Infection' },
+  { term: 'UTI', meaning: 'Urinary Tract Infection' },
+  { term: 'VF', meaning: 'Ventricular Fibrillation' },
+  { term: 'VT', meaning: 'Ventricular Tachycardia' },
+  { term: 'VVED', meaning: 'Victorian Virtual Emergency Department' },
+];
