@@ -95,6 +95,11 @@ export const assessmentsContent = {
         paediatricsOnly: [
           'Any age <3 months with fever ≥38°C',
           'Non-blanching rash',
+          'Unexplained pain',
+          'Second presentation within 48 hours for related complaint',
+          'Testicular pain',
+          'Ingestion / inhalation of toxic substance',
+          'Inhalation of foreign body',
           'Bulging fontanelle',
           'Prolonged capillary refill >2 seconds',
           'Suspected non-accidental injury',
