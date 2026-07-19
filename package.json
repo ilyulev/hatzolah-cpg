@@ -25,7 +25,9 @@
     "preview": "vite preview",
     "predeploy": "pnpm run build",
     "deploy": "pnpx gh-pages -d dist",
-    "extract-pdf": "node scripts/extract_pdf.mjs"
+    "extract-pdf": "node scripts/extract_pdf.mjs",
+    "extract-tables": "node scripts/extract_tables.mjs",
+    "compare-tables": "node scripts/compare_tables.mjs"
   },
   "browserslist": {
     "production": [
