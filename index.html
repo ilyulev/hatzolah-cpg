@@ -17,7 +17,8 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/icon-180.png" />
   <link rel="apple-touch-icon" sizes="167x167" href="/icon-167.png" />
   
-  <!-- Manifest -->
+  <!-- Manifest — /hatzolah-cpg/ so it resolves under the GitHub Pages sub-path
+       (/hatzolah-cpg/) in production and at / in dev, instead of 404ing. -->
   <link rel="manifest" href="/hatzolah-cpg/manifest.json" />
   
   <!-- SEO -->
@@ -41,16 +42,20 @@
       }
     }
   </script>
-  <script type="module" crossorigin src="/hatzolah-cpg/assets/index-DPXaLf_2.js"></script>
+  <script type="module" crossorigin src="/hatzolah-cpg/assets/index-DkxbhjM9.js"></script>
+  <link rel="stylesheet" crossorigin href="/hatzolah-cpg/assets/index-CXQODGU8.css">
 </head>
 <body>
   <div id="root"></div>
   
   <!-- Service Worker Registration -->
   <script>
-    if ('serviceWorker' in navigator) {
+    // Skip the service worker on localhost — its cache otherwise serves stale
+    // assets during local dev/preview, masking code changes. PWA still active in prod.
+    var isLocalhost = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+    if ('serviceWorker' in navigator && !isLocalhost) {
       window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/service-worker.js')
+        navigator.serviceWorker.register('service-worker.js')
           .then(function(registration) {
             console.log('SW registered: ', registration);
           }).catch(function(registrationError) {
