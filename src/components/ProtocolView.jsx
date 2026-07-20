@@ -412,11 +412,19 @@ export function ProtocolView({ proto, userLevel, onBack }) {
 
 // ─── Detailed View Overlay ────────────────────────────────────────────────────
 
+// Caveat sections always render last, matching the quick view's order — the raw
+// data order varies (e.g. vital-signs stores notes before its table).
+const TRAILING_KEYS = new Set(['notes', 'note']);
+
 function DetailedViewOverlay({ proto, onClose }) {
   const c = proto.content || {};
+  const sections = Object.entries(c).sort(
+    (a, b) => (TRAILING_KEYS.has(a[0]) ? 1 : 0) - (TRAILING_KEYS.has(b[0]) ? 1 : 0)
+  );
 
+  // z-40 (below BottomNav's z-50) so the tab bar stays visible and usable here.
   return (
-    <div className="fixed inset-0 bg-white z-50 flex flex-col">
+    <div className="fixed inset-0 bg-white z-40 flex flex-col">
       {/* Detailed header */}
       <div className="flex-shrink-0 bg-gray-900 px-4 py-3 flex items-center space-x-3">
         <button onClick={onClose} className="text-white">
@@ -437,9 +445,9 @@ function DetailedViewOverlay({ proto, onClose }) {
         </button>
       </div>
 
-      {/* Detailed scrollable content */}
-      <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
-        {Object.entries(c).map(([section, value]) => (
+      {/* Detailed scrollable content — pb clears the BottomNav overlaying us */}
+      <div className="flex-1 overflow-y-auto p-4 pb-24 bg-gray-50 space-y-4">
+        {sections.map(([section, value]) => (
           <div key={section} className="bg-white rounded-xl shadow-sm p-4">
             <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wide mb-3 pb-2 border-b border-gray-100">
               {humanizeKey(section)}

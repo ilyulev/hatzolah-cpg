@@ -15,7 +15,9 @@ export const SECTIONS = [
 
 export function BottomNav({ active, onSelect }) {
   return (
-    <nav className="flex-shrink-0 bg-white border-t border-gray-200 flex pb-[env(safe-area-inset-bottom)]">
+    // relative+z-50 keeps the tab bar above the detailed-view overlay (z-40),
+    // while the level sheet (z-50, later in the DOM) still covers it as a modal.
+    <nav className="relative z-50 flex-shrink-0 bg-white border-t border-gray-200 flex pb-[env(safe-area-inset-bottom)]">
       {SECTIONS.map(({ id, label, Icon }) => {
         const isActive = id === active;
         return (
