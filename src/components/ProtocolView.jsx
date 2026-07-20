@@ -8,13 +8,15 @@ import { PRACTICE_LEVELS, CATEGORY_COLORS } from '../data/contentData';
 
 // ─── Quick View content renderers ─────────────────────────────────────────────
 
-function QuickSection({ title, color, children }) {
+// `bodyClassName` lets a section tint its body (e.g. Notes uses a light red
+// wash so safety caveats catch the eye rather than reading as filler).
+function QuickSection({ title, color, children, bodyClassName = 'bg-white border border-gray-100' }) {
   return (
     <div className="rounded-xl overflow-hidden mb-3">
       <div className="px-4 py-2 font-semibold text-sm" style={{ background: color + '33', color }}>
         {title}
       </div>
-      <div className="px-4 py-3 bg-white border border-gray-100">{children}</div>
+      <div className={`px-4 py-3 ${bodyClassName}`}>{children}</div>
     </div>
   );
 }
@@ -45,7 +47,7 @@ function SimpleTable({ headers, rows }) {
             {headers.map((h, i) => (
               <th
                 key={i}
-                className={`px-2 py-1.5 text-left font-semibold text-gray-700 border border-gray-200 whitespace-nowrap bg-gray-100 ${
+                className={`px-2 py-1.5 text-left font-semibold text-white border border-green-700 whitespace-nowrap bg-green-700 ${
                   i === 0 ? 'sticky left-0 z-10' : ''
                 }`}
               >
@@ -56,13 +58,14 @@ function SimpleTable({ headers, rows }) {
         </thead>
         <tbody>
           {rows.map((row, ri) => {
-            const stripe = ri % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+            // CPG-style green table: white / light-green alternating rows
+            const stripe = ri % 2 === 0 ? 'bg-white' : 'bg-green-50';
             return (
               <tr key={ri}>
                 {row.map((cell, ci) => (
                   <td
                     key={ci}
-                    className={`px-2 py-1.5 border border-gray-200 text-gray-700 whitespace-nowrap ${stripe} ${
+                    className={`px-2 py-1.5 border border-green-200 text-gray-800 whitespace-nowrap ${stripe} ${
                       ci === 0 ? 'sticky left-0 z-10 font-medium' : ''
                     }`}
                   >
@@ -239,7 +242,7 @@ function QuickProtocolContent({ proto }) {
           </QuickSection>
         )}
         {c.notes && (
-          <QuickSection title="Notes" color="#6b7280">
+          <QuickSection title="Notes" color="#dc2626" bodyClassName="bg-red-50 border border-red-200">
             <BulletList items={Array.isArray(c.notes) ? c.notes : [c.notes]} />
           </QuickSection>
         )}
@@ -295,7 +298,7 @@ function QuickProtocolContent({ proto }) {
           <SimpleTable headers={c.table.headers} rows={c.table.rows} />
         </QuickSection>
         {c.notes && (
-          <QuickSection title="Notes" color="#6b7280">
+          <QuickSection title="Notes" color="#dc2626" bodyClassName="bg-red-50 border border-red-200">
             <BulletList items={c.notes} />
           </QuickSection>
         )}
