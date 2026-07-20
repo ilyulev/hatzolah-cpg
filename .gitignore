@@ -12,5 +12,9 @@ source/*.pdf
 # ...but never track these:
 # npm artifact — pnpm-only project
 package-lock.json
-# machine-local Claude settings
+# machine-local Claude settings (settings.json holds this machine's gateway
+# diagnostic hook, not project config a teammate needs)
 .claude/settings.local.json
+.claude/settings.json
+# ...and the script that hook invokes
+scripts/check-gateway.sh
