@@ -10,9 +10,9 @@ import { PRACTICE_LEVELS, CATEGORY_COLORS } from '../data/contentData';
 
 // `bodyClassName` lets a section tint its body (e.g. Notes uses a light red
 // wash so safety caveats catch the eye rather than reading as filler).
-function QuickSection({ title, color, children, bodyClassName = 'bg-white border border-gray-100' }) {
+function QuickSection({ title, color, children, bodyClassName = 'bg-white border border-gray-100', id }) {
   return (
-    <div className="rounded-xl overflow-hidden mb-3">
+    <div id={id} className="rounded-xl overflow-hidden mb-3 scroll-mt-2">
       <div className="px-4 py-2 font-semibold text-sm" style={{ background: color + '33', color }}>
         {title}
       </div>
@@ -239,6 +239,55 @@ function ObjectTable({ rows }) {
   );
 }
 
+// Stable DOM id for a top-level content section, so workflow branch chips can
+// jump to it. Only one protocol renders at a time, so the key alone is unique.
+const sectionAnchor = (key) => `sec-${key}`;
+function scrollToSection(key, e) {
+  const id = sectionAnchor(key);
+  // The quick view and the detailed overlay both carry these anchors, so scope
+  // the lookup to the scroll container the click came from (not getElementById,
+  // which would grab the hidden quick view underneath the overlay).
+  const src = e && (e.target || e.currentTarget);
+  const scope = (src && src.closest && src.closest('.overflow-y-auto')) || document;
+  const el = scope.querySelector(`[id="${id}"]`) || document.getElementById(id);
+  if (!el) return;
+  // Prefer a native smooth scroll, but some containers/reduced-motion settings
+  // ignore it — so also nudge the container directly as a reliable fallback.
+  el.scrollIntoView({ block: 'start' });
+  const box = el.closest('.overflow-y-auto');
+  if (box) box.scrollTop = el.offsetTop - box.offsetTop - 8;
+  el.style.transition = 'box-shadow .3s';
+  el.style.boxShadow = `0 0 0 2px ${CPG.navy}`;
+  setTimeout(() => { el.style.boxShadow = ''; }, 1400);
+}
+
+// A decision point: { question, branches:[{condition, goTo, label}] } → tappable
+// chips that scroll to the target section (the "workflow arrows", as anchor links).
+function BranchChips({ node }) {
+  return (
+    <div>
+      {node.question && <p className="text-sm text-gray-700 mb-2">{node.question}</p>}
+      <div className="flex flex-wrap gap-2">
+        {node.branches.map((b, i) => {
+          const sameLabel = !b.condition || b.condition.toLowerCase() === b.label.toLowerCase();
+          return (
+            <button
+              key={i}
+              onClick={(e) => scrollToSection(b.goTo, e)}
+              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-white active:scale-95 transition-transform"
+              style={{ background: CPG.navy }}
+            >
+              {!sameLabel && <span className="uppercase tracking-wide">{b.condition}</span>}
+              <span aria-hidden>→</span>
+              <span>{b.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // Generic recursive renderer for arbitrary content values. Shared by the quick-view
 // fallback and the detailed-view overlay so every content shape renders real content
 // instead of an empty placeholder.
@@ -281,6 +330,10 @@ function renderValue(val, depth = 0) {
     );
   }
   if (typeof val === 'object') {
+    // Decision point with workflow branches → jump-link chips
+    if (Array.isArray(val.branches)) {
+      return <BranchChips node={val} />;
+    }
     // Render { headers, rows } shapes as a real table
     if (Array.isArray(val.headers) && Array.isArray(val.rows)) {
       return <SimpleTable headers={val.headers} rows={val.rows} />;
@@ -451,7 +504,8 @@ function QuickProtocolContent({ proto }) {
 
   // Fallback: render every content section generically so no protocol shows an
   // empty card. (Covers bespoke shapes like primarySurvey, flowchart, ageGroups, …)
-  const sections = Object.entries(c);
+  // '_'-prefixed keys are metadata (e.g. _flowchart), not visible sections.
+  const sections = Object.entries(c).filter(([k]) => !k.startsWith('_'));
   if (sections.length === 0) {
     return (
       <QuickSection title="Content" color="#6b7280">
@@ -462,7 +516,7 @@ function QuickProtocolContent({ proto }) {
   return (
     <>
       {sections.map(([section, value]) => (
-        <QuickSection key={section} title={humanizeKey(section)} color="#6b7280">
+        <QuickSection key={section} id={sectionAnchor(section)} title={humanizeKey(section)} color="#6b7280">
           {renderValue(value)}
         </QuickSection>
       ))}
@@ -536,15 +590,77 @@ export function ProtocolView({ proto, userLevel, onBack }) {
 
 // ─── Detailed View Overlay ────────────────────────────────────────────────────
 
+// ─── Workflow flowcharts (SVG) ────────────────────────────────────────────────
+// Clickable box with wrapped text (foreignObject handles wrapping cleanly).
+function FBox({ x, y, w, h, label, sub, fill, stroke, textColor = '#ffffff', onClick }) {
+  return (
+    <g onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
+      <rect x={x} y={y} width={w} height={h} rx="8" fill={fill} stroke={stroke || fill} strokeWidth="1.5" />
+      <foreignObject x={x} y={y} width={w} height={h}>
+        <div
+          xmlns="http://www.w3.org/1999/xhtml"
+          style={{ width: `${w}px`, height: `${h}px`, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: textColor, fontSize: '11px', fontWeight: 700, textAlign: 'center', lineHeight: 1.12, padding: '2px 5px', fontFamily: 'system-ui, sans-serif', boxSizing: 'border-box' }}
+        >
+          <span>{label}</span>
+          {sub && <span style={{ fontSize: '9px', fontWeight: 400, opacity: 0.85, marginTop: '1px' }}>{sub}</span>}
+        </div>
+      </foreignObject>
+    </g>
+  );
+}
+
+// The Clinical Approach workflow. Process/destination boxes are tappable and
+// scroll the detail view to that section via onNavigate.
+function ClinicalApproachFlowchart({ onNavigate }) {
+  const go = (k) => (e) => onNavigate && onNavigate(k, e);
+  const line = (x1, y1, x2, y2) => (
+    <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#64748b" strokeWidth="1.5" markerEnd="url(#ca-arrow)" />
+  );
+  return (
+    <svg viewBox="0 0 340 445" width="100%" style={{ maxWidth: 360, display: 'block', margin: '0 auto' }} role="img" aria-label="Clinical Approach workflow">
+      <defs>
+        <marker id="ca-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#64748b" />
+        </marker>
+      </defs>
+
+      {line(170, 46, 170, 63)}
+      {line(140, 110, 92, 148)}
+      {line(200, 110, 250, 148)}
+      {line(87, 192, 160, 228)}
+      {line(252, 192, 180, 228)}
+      {line(170, 270, 170, 287)}
+      {line(140, 328, 88, 366)}
+      {line(200, 328, 252, 366)}
+
+      <text x="112" y="132" fontSize="9" fontWeight="700" fill={CPG.red}>UNWELL</text>
+      <text x="214" y="132" fontSize="9" fontWeight="700" fill={CPG.navy}>WELL</text>
+
+      <FBox x={95} y={8} w={150} h={38} label="Dangers & Safety" sub="PPE · risk · PAT" fill={CPG.red} />
+      <FBox x={60} y={63} w={220} h={47} label="Rapid Assessment (PAT)" sub="WELL or UNWELL?" fill="#ffffff" stroke={CPG.navy} textColor={CPG.navy} />
+      <FBox x={15} y={150} w={145} h={42} label="Primary Survey" sub="R S A B C D E" fill={CPG.navy} onClick={go('primarySurvey')} />
+      <FBox x={180} y={150} w={145} h={42} label="Responder Action" fill={CPG.navy} onClick={go('responderAction')} />
+      <FBox x={95} y={230} w={150} h={40} label="Assess" sub="SAMPLE · tools · equip" fill={CPG.navy} onClick={go('assess')} />
+      <FBox x={95} y={287} w={150} h={40} label="Pause & Plan" fill={CPG.navy} onClick={go('pauseAndPlan')} />
+      <FBox x={10} y={367} w={152} h={50} label="Treatment & AV Attendance" fill="#0f766e" onClick={go('treatmentAndAvAttendance')} />
+      <FBox x={178} y={367} w={152} h={50} label="Treat & Refer" fill="#0f766e" onClick={go('treatAndRefer')} />
+    </svg>
+  );
+}
+
+const FLOWCHARTS = { clinicalApproach: ClinicalApproachFlowchart };
+
 // Caveat sections always render last, matching the quick view's order — the raw
 // data order varies (e.g. vital-signs stores notes before its table).
 const TRAILING_KEYS = new Set(['notes', 'note']);
 
 function DetailedViewOverlay({ proto, onClose }) {
+  const [showFlow, setShowFlow] = useState(false);
   const c = proto.content || {};
-  const sections = Object.entries(c).sort(
-    (a, b) => (TRAILING_KEYS.has(a[0]) ? 1 : 0) - (TRAILING_KEYS.has(b[0]) ? 1 : 0)
-  );
+  const Flowchart = c._flowchart ? FLOWCHARTS[c._flowchart] : null;
+  const sections = Object.entries(c)
+    .filter(([k]) => !k.startsWith('_')) // metadata keys (e.g. _flowchart) aren't sections
+    .sort((a, b) => (TRAILING_KEYS.has(a[0]) ? 1 : 0) - (TRAILING_KEYS.has(b[0]) ? 1 : 0));
 
   // z-40 (below BottomNav's z-50) so the tab bar stays visible and usable here.
   return (
@@ -571,8 +687,27 @@ function DetailedViewOverlay({ proto, onClose }) {
 
       {/* Detailed scrollable content — pb clears the BottomNav overlaying us */}
       <div className="flex-1 overflow-y-auto p-4 pb-24 bg-gray-50 space-y-4">
+        {Flowchart && (
+          <div className="bg-white rounded-xl shadow-sm p-4">
+            <button
+              onClick={() => setShowFlow((v) => !v)}
+              className="w-full flex items-center justify-between font-bold text-sm uppercase tracking-wide"
+              style={{ color: CPG.navy }}
+            >
+              <span>Workflow diagram</span>
+              <span className="text-xs font-medium normal-case" style={{ color: CPG.navy }}>
+                {showFlow ? 'Hide ▲' : 'Show ▼'}
+              </span>
+            </button>
+            {showFlow && (
+              <div className="mt-3 overflow-x-auto">
+                <Flowchart onNavigate={scrollToSection} />
+              </div>
+            )}
+          </div>
+        )}
         {sections.map(([section, value]) => (
-          <div key={section} className="bg-white rounded-xl shadow-sm p-4">
+          <div key={section} id={sectionAnchor(section)} className="bg-white rounded-xl shadow-sm p-4 scroll-mt-2">
             <h3
               className="font-bold text-sm uppercase tracking-wide mb-3 pb-2 border-b"
               style={{ color: CPG.navy, borderColor: CPG.navyBorder }}

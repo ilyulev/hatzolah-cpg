@@ -144,23 +144,68 @@ export const assessmentsContent = {
     category: 'primary',
     summary: 'Full structured clinical approach for First Responders',
     content: {
+      // '_'-prefixed keys are not rendered as sections — this selects the SVG
+      // workflow diagram shown via the "Workflow" toggle in the detailed view.
+      _flowchart: 'clinicalApproach',
+      definition: 'A framework that provides a structured and comprehensive assessment for every patient.',
+      dangersAndSafety: [
+        'PPE / Standard precautions',
+        'Dynamic risk assessment / awareness of personal safety',
+        'Rapid assessment / PAT — does the patient appear WELL or UNWELL? (e.g. major haemorrhage, altered conscious, obvious SOB, pale / sweaty)',
+      ],
+      rapidAssessment: {
+        question: 'Rapid assessment (PAT): does the patient appear WELL or UNWELL?',
+        branches: [
+          { condition: 'UNWELL', goTo: 'primarySurvey', label: 'Primary Survey' },
+          { condition: 'WELL', goTo: 'responderAction', label: 'Responder Action' },
+        ],
+      },
       primarySurvey: [
-        { step: 'D', label: 'Dangers', action: 'Scene safety — do NOT enter unsafe scene' },
-        { step: 'R', label: 'Response', action: 'Response to voice / pain?' },
-        { step: 'S', label: 'Send for help', action: 'Call for Ambulance / 000, request backup' },
-        { step: 'A', label: 'Airway', action: 'C-spine injury? Patency? Align in neutral position' },
-        { step: 'B', label: 'Breathing', action: 'Breathing effectively?' },
-        { step: 'C', label: 'Circulation', action: 'Pulse? Major bleeding? Apply direct pressure' },
+        { step: 'R', label: 'Response', action: 'Yes / No?' },
+        { step: 'S', label: 'Send for help', action: 'SitRep: Hatzolah — call ambulance + request backup' },
+        { step: 'A', label: 'Airway', action: 'C-spine concerns?' },
+        { step: 'B', label: 'Breathing', action: 'Adequate?' },
+        { step: 'C', label: 'Circulation', action: 'Major bleeding?' },
+        { step: 'D', label: 'Disability', action: 'AVPU' },
+        { step: 'E', label: 'Exposure', action: 'Environment?' },
       ],
-      sampleHistory: [
-        'S — Situation or Symptoms',
-        'A — Allergies',
-        'M — Medications',
-        'P — Past medical history',
-        'L — Last well (onset time)',
-        'E — Extra information',
+      responderAction: [
+        '⚠️ If the patient deteriorates at ANY stage → return to Primary Survey',
+        'Rapport, reassurance + rest',
+        'Position appropriately',
+        'Oxygen if required',
+        'Establish if refusal or limitation of treatment (e.g. Not For Resuscitation — NFR)',
       ],
-      assessmentTools: ['Perfusion Status Assessment', 'Respiratory Status Assessment', 'AVPU / GCS', 'Trauma 2° survey (head to toe)', 'Pain assessment (DOLORS)', 'BGL where indicated'],
+      assessGuidance: 'Use clinical judgement to determine which of the below are appropriate and their order of relevance for each patient.',
+      assess: {
+        headers: ['Ask About (SAMPLE)', 'Assessment Tools', 'Assessment Equipment'],
+        rows: [
+          ['Situation, signs + symptoms', 'PSA (Perfusion Status)', 'SpO2'],
+          ['Allergies', 'RSA (Respiratory Status)', 'Temperature'],
+          ['Medications', 'GCS', 'BGL'],
+          ['Past medical history', 'Medical time critical', 'Other VSS'],
+          ['Last well (onset time)', 'Trauma time critical', ''],
+          ['Extra information', 'Trauma 2° survey', ''],
+          ['Other assessments', 'DOLOR / AEIOUTIPS', ''],
+        ],
+      },
+      pauseAndPlan: [
+        'Call 000 for ALL patients outside Hatzolah’s clinical scope, requiring hospital care, or as directed by Hatzolah CPG',
+        'If further clinical advice required → call the clinical operations manager via mobile',
+        'Identify clinical problems (verbally)',
+        'Consider risk factors & frailty status',
+        'Confirm treatment plan with patient + team',
+        'Consider support options — e.g. AV, GP, VVED',
+      ],
+      disposition: {
+        question: 'Determine disposition:',
+        branches: [
+          { condition: 'Treatment & AV attendance', goTo: 'treatmentAndAvAttendance', label: 'Treatment & AV Attendance' },
+          { condition: 'Treat & Refer', goTo: 'treatAndRefer', label: 'Treat & Refer' },
+        ],
+      },
+      treatmentAndAvAttendance: 'Manage as per the appropriate CPG. Transport. If appropriate, consider alternate treatment. Reassess 15-minutely while in Hatzolah care (unless clinical rationale provided).',
+      treatAndRefer: 'Ensure low acuity AND isolated simple problem AND covered by a Treat & Refer care plan. Ensure the patient consents to the plan (including VED, NEPT, private transport, with Clinician consult).',
     },
   },
 
