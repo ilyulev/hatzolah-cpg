@@ -10,13 +10,13 @@ import { PRACTICE_LEVELS, CATEGORY_COLORS } from '../data/contentData';
 
 // `bodyClassName` lets a section tint its body (e.g. Notes uses a light red
 // wash so safety caveats catch the eye rather than reading as filler).
-function QuickSection({ title, color, children, bodyClassName = 'bg-white border border-gray-100', id }) {
+function QuickSection({ title, color, children, bodyClassName = 'bg-white border border-gray-100', bodyStyle, id }) {
   return (
     <div id={id} className="rounded-xl overflow-hidden mb-3 scroll-mt-2">
       <div className="px-4 py-2 font-semibold text-sm" style={{ background: color + '33', color }}>
         {title}
       </div>
-      <div className={`px-4 py-3 ${bodyClassName}`}>{children}</div>
+      <div className={`px-4 py-3 ${bodyClassName}`} style={bodyStyle}>{children}</div>
     </div>
   );
 }
@@ -141,9 +141,23 @@ function humanizeKey(k) {
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-// Palette sampled from the v6.2 CPG PDF (fill colours on the Clinical Approach
-// pages): navy for structure, lavender wash for rows, red for danger accents.
-const CPG = { navy: '#2d368f', navyBorder: '#2d368f2b', rowTint: '#e6e8f4', red: '#eb1f27' };
+// Palette sampled from the v6.2 CPG PDF (fill colours + tints on the Clinical
+// Approach pages): navy for structure, red for the urgent assessment phase,
+// green for the framework intro. Tints are the file's own light fills.
+const CPG = {
+  navy: '#2d368f', navyBorder: '#2d368f2b', navyTint: '#eef0f9', rowTint: '#e6e8f4',
+  red: '#eb1f27', redTint: '#fdece6', green: '#00a64f', greenTint: '#e9f4ea',
+};
+
+// Per-section colours matching the CPG's own colour-coding. Keys are content
+// section names; anything not listed uses the navy default.
+const SECTION_COLORS = {
+  definition: { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' },
+  dangersAndSafety: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+  rapidAssessment: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+  primarySurvey: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+};
+const sectionColor = (key) => SECTION_COLORS[key] || { title: CPG.navy, bg: '#ffffff', border: CPG.navyBorder };
 
 // An array of same-shaped objects with scalar values (e.g. the DRSABC primary
 // survey: {step, label, action}) reads as a table, not a repeated key/value dump.
@@ -515,11 +529,20 @@ function QuickProtocolContent({ proto }) {
   }
   return (
     <>
-      {sections.map(([section, value]) => (
-        <QuickSection key={section} id={sectionAnchor(section)} title={humanizeKey(section)} color="#6b7280">
-          {renderValue(value)}
-        </QuickSection>
-      ))}
+      {sections.map(([section, value]) => {
+        const col = sectionColor(section);
+        return (
+          <QuickSection
+            key={section}
+            id={sectionAnchor(section)}
+            title={humanizeKey(section)}
+            color={col.title}
+            bodyStyle={{ background: col.bg }}
+          >
+            {renderValue(value)}
+          </QuickSection>
+        );
+      })}
     </>
   );
 }
@@ -706,17 +729,25 @@ function DetailedViewOverlay({ proto, onClose }) {
             )}
           </div>
         )}
-        {sections.map(([section, value]) => (
-          <div key={section} id={sectionAnchor(section)} className="bg-white rounded-xl shadow-sm p-4 scroll-mt-2">
-            <h3
-              className="font-bold text-sm uppercase tracking-wide mb-3 pb-2 border-b"
-              style={{ color: CPG.navy, borderColor: CPG.navyBorder }}
+        {sections.map(([section, value]) => {
+          const col = sectionColor(section);
+          return (
+            <div
+              key={section}
+              id={sectionAnchor(section)}
+              className="rounded-xl shadow-sm p-4 scroll-mt-2"
+              style={{ background: col.bg, border: `1px solid ${col.border}` }}
             >
-              {humanizeKey(section)}
-            </h3>
-            {renderValue(value)}
-          </div>
-        ))}
+              <h3
+                className="font-bold text-sm uppercase tracking-wide mb-3 pb-2 border-b"
+                style={{ color: col.title, borderColor: col.border }}
+              >
+                {humanizeKey(section)}
+              </h3>
+              {renderValue(value)}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
