@@ -257,6 +257,28 @@ function ObjectTable({ rows }) {
   );
 }
 
+// Wong-Baker FACES pain scale: a horizontal 0→10 row of faces, colour-graded
+// no-hurt (green) → hurts-worst (red), so it reads as a scale rather than a table.
+const WB_COLORS = ['#16a34a', '#84cc16', '#eab308', '#f97316', '#ef4444', '#b91c1c'];
+function WongBakerScale({ items }) {
+  return (
+    <div className="overflow-x-auto -mx-1 pb-1">
+      <div className="flex gap-1.5 min-w-max px-1">
+        {items.map((it, i) => {
+          const c = WB_COLORS[Math.min(i, WB_COLORS.length - 1)];
+          return (
+            <div key={i} className="flex flex-col items-center rounded-lg px-2 py-2" style={{ background: `${c}1f`, width: 78 }}>
+              <span className="text-3xl leading-none" aria-hidden>{it.face}</span>
+              <span className="font-extrabold text-base mt-1" style={{ color: c }}>{it.score}</span>
+              <span className="text-[10px] text-gray-600 text-center leading-tight mt-0.5">{it.label}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 // Stable DOM id for a top-level content section, so workflow branch chips can
 // jump to it. Only one protocol renders at a time, so the key alone is unique.
 const sectionAnchor = (key) => `sec-${key}`;
@@ -319,6 +341,10 @@ function renderValue(val, depth = 0) {
     // than a cramped 6-column generic table.
     if (val.length && val.every((o) => o && typeof o === 'object' && !Array.isArray(o) && 'route' in o && ('initial' in o || 'dose' in o))) {
       return <DosingCards dosingArray={val} />;
+    }
+    // Faces pain scale (Wong-Baker): objects with score + face → visual scale
+    if (val.length && val.every((o) => o && typeof o === 'object' && 'score' in o && 'face' in o)) {
+      return <WongBakerScale items={val} />;
     }
     if (isUniformObjectArray(val)) return <ObjectTable rows={val} />;
     const mnemonic = asMnemonicPairs(val);

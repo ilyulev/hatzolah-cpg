@@ -370,8 +370,16 @@ export const assessmentsContent = {
         { letter: 'S', meaning: 'Severity / pain score (0–10)' },
       ],
       wongBaker: {
-        description: 'For patients aged 3–7 years or any patient who cannot communicate verbally.',
-        warning: 'Do NOT use in adults with intact verbal communication — DOLORS preferred.',
+        description: 'For patients who cannot use the 0–10 verbal scale (e.g. small children). Intended for patients aged 3 years or older who can understand the tool and choose the face that best matches their pain.',
+        scale: [
+          { score: '0', face: '😀', label: 'No hurt' },
+          { score: '2', face: '🙂', label: 'Hurts a little bit' },
+          { score: '4', face: '😐', label: 'Hurts a little more' },
+          { score: '6', face: '😧', label: 'Hurts even more' },
+          { score: '8', face: '😩', label: 'Hurts a whole lot' },
+          { score: '10', face: '😭', label: 'Hurts worst' },
+        ],
+        warning: 'NOT intended to be used by a third person to assess a patient’s pain on their behalf.',
       },
     },
   },
