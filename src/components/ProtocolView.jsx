@@ -136,6 +136,63 @@ function humanizeKey(k) {
   return k.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase()).trim();
 }
 
+// Palette sampled from the v6.2 CPG PDF (fill colours on the Clinical Approach
+// pages): navy for structure, lavender wash for rows, red for danger accents.
+const CPG = { navy: '#2d368f', navyBorder: '#2d368f2b', rowTint: '#e6e8f4', red: '#eb1f27' };
+
+// An array of same-shaped objects with scalar values (e.g. the DRSABC primary
+// survey: {step, label, action}) reads as a table, not a repeated key/value dump.
+function isUniformObjectArray(arr) {
+  if (!Array.isArray(arr) || arr.length < 2) return false;
+  const first = arr[0];
+  if (!first || typeof first !== 'object' || Array.isArray(first)) return false;
+  const keys = Object.keys(first);
+  if (keys.length < 2 || keys.length > 6) return false;
+  const sig = keys.join('|');
+  return arr.every(
+    (o) =>
+      o && typeof o === 'object' && !Array.isArray(o) &&
+      Object.keys(o).join('|') === sig &&
+      keys.every((k) => o[k] == null || typeof o[k] !== 'object')
+  );
+}
+
+// CPG-styled table for a uniform object array: navy header, striped rows,
+// bordered container with a background so it reads as a table on any screen.
+function ObjectTable({ rows }) {
+  const cols = Object.keys(rows[0]);
+  return (
+    <div className="overflow-x-auto rounded-lg my-1" style={{ border: `1px solid ${CPG.navyBorder}` }}>
+      <table className="min-w-full text-xs border-collapse">
+        <thead>
+          <tr>
+            {cols.map((c) => (
+              <th
+                key={c}
+                className="text-left font-semibold text-white px-2.5 py-1.5 whitespace-nowrap"
+                style={{ background: CPG.navy }}
+              >
+                {humanizeKey(c)}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, ri) => (
+            <tr key={ri} style={{ background: ri % 2 ? CPG.rowTint : '#ffffff' }}>
+              {cols.map((c) => (
+                <td key={c} className="px-2.5 py-1.5 align-top text-gray-800" style={{ borderTop: `1px solid ${CPG.navyBorder}` }}>
+                  {r[c] == null ? '' : String(r[c])}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 // Generic recursive renderer for arbitrary content values. Shared by the quick-view
 // fallback and the detailed-view overlay so every content shape renders real content
 // instead of an empty placeholder.
@@ -145,6 +202,7 @@ function renderValue(val, depth = 0) {
     return <span className="text-sm text-gray-700">{String(val)}</span>;
   }
   if (Array.isArray(val)) {
+    if (isUniformObjectArray(val)) return <ObjectTable rows={val} />;
     return (
       <ul className="space-y-1 ml-2">
         {val.map((item, i) => (
@@ -449,7 +507,10 @@ function DetailedViewOverlay({ proto, onClose }) {
       <div className="flex-1 overflow-y-auto p-4 pb-24 bg-gray-50 space-y-4">
         {sections.map(([section, value]) => (
           <div key={section} className="bg-white rounded-xl shadow-sm p-4">
-            <h3 className="font-bold text-gray-800 text-sm uppercase tracking-wide mb-3 pb-2 border-b border-gray-100">
+            <h3
+              className="font-bold text-sm uppercase tracking-wide mb-3 pb-2 border-b"
+              style={{ color: CPG.navy, borderColor: CPG.navyBorder }}
+            >
               {humanizeKey(section)}
             </h3>
             {renderValue(value)}
