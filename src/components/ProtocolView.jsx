@@ -133,7 +133,12 @@ function DosingCards({ dosingArray }) {
 const KEY_ACRONYMS = new Set(['cpr', 'rosc', 'aed', 'gcs', 'avpu', 'dolors', 'copd', 'bgl', 'gtn', 'ed']);
 function humanizeKey(k) {
   if (KEY_ACRONYMS.has(k.toLowerCase())) return k.toUpperCase();
-  return k.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase()).trim();
+  return k
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 // Palette sampled from the v6.2 CPG PDF (fill colours on the Clinical Approach
@@ -149,11 +154,52 @@ function isUniformObjectArray(arr) {
   const keys = Object.keys(first);
   if (keys.length < 2 || keys.length > 6) return false;
   const sig = keys.join('|');
-  return arr.every(
+  const uniformScalar = arr.every(
     (o) =>
       o && typeof o === 'object' && !Array.isArray(o) &&
       Object.keys(o).join('|') === sig &&
       keys.every((k) => o[k] == null || typeof o[k] !== 'object')
+  );
+  if (!uniformScalar) return false;
+  // A table only fits if at most ONE column holds long text (which wraps).
+  // Two+ long columns (e.g. asthma ageGroups: mild/severe/ipratropium plans)
+  // overflow badly on mobile — caller renders those as stacked record cards.
+  const longCols = keys.filter((k) => arr.some((o) => String(o[k] ?? '').length > 22)).length;
+  return longCols <= 1;
+}
+
+// A string array of short-key mnemonics ("S — Situation…", "A — Allergies") is a
+// two-column table, same as the object-backed mnemonics (avpu/dolors/fast). The
+// key must be short (≤5 non-space chars) so prose with em-dashes isn't captured.
+const MNEMONIC_RE = /^(\S{1,5})\s*[—–:]\s+(.+)$/;
+function asMnemonicPairs(arr) {
+  if (!Array.isArray(arr) || arr.length < 2 || !arr.every((s) => typeof s === 'string')) return null;
+  const pairs = arr.map((s) => s.match(MNEMONIC_RE));
+  if (pairs.some((p) => !p)) return null;
+  return pairs.map((p) => [p[1], p[2]]);
+}
+
+function MnemonicTable({ pairs }) {
+  return (
+    <div className="overflow-x-auto rounded-lg my-1" style={{ border: `1px solid ${CPG.navyBorder}` }}>
+      <table className="min-w-full text-xs border-collapse">
+        <tbody>
+          {pairs.map(([k, v], i) => (
+            <tr key={i} style={{ background: i % 2 ? CPG.rowTint : '#ffffff' }}>
+              <td
+                className="px-2.5 py-1.5 font-bold whitespace-nowrap align-top"
+                style={{ color: CPG.navy, borderTop: `1px solid ${CPG.navyBorder}` }}
+              >
+                {k}
+              </td>
+              <td className="px-2.5 py-1.5 text-gray-800 align-top" style={{ borderTop: `1px solid ${CPG.navyBorder}` }}>
+                {v}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -202,7 +248,27 @@ function renderValue(val, depth = 0) {
     return <span className="text-sm text-gray-700">{String(val)}</span>;
   }
   if (Array.isArray(val)) {
+    // Dosing arrays get the readable DosingCards (as in the quick view) rather
+    // than a cramped 6-column generic table.
+    if (val.length && val.every((o) => o && typeof o === 'object' && !Array.isArray(o) && 'route' in o && ('initial' in o || 'dose' in o))) {
+      return <DosingCards dosingArray={val} />;
+    }
     if (isUniformObjectArray(val)) return <ObjectTable rows={val} />;
+    const mnemonic = asMnemonicPairs(val);
+    if (mnemonic) return <MnemonicTable pairs={mnemonic} />;
+    // Array of objects that isn't a clean table (long text, nested, or mixed
+    // shapes) → one tinted record card each, so age-band plans etc. stay legible.
+    if (val.length && val.every((o) => o && typeof o === 'object' && !Array.isArray(o))) {
+      return (
+        <div className="space-y-2">
+          {val.map((o, i) => (
+            <div key={i} className="rounded-lg px-3 py-2" style={{ background: CPG.rowTint }}>
+              {renderValue(o, depth + 1)}
+            </div>
+          ))}
+        </div>
+      );
+    }
     return (
       <ul className="space-y-1 ml-2">
         {val.map((item, i) => (
