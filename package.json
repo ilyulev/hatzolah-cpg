@@ -28,7 +28,8 @@
     "extract-pdf": "node scripts/extract_pdf.mjs",
     "extract-tables": "node scripts/extract_tables.mjs",
     "compare-tables": "node scripts/compare_tables.mjs",
-    "prose-diff": "node scripts/prose_diff.mjs"
+    "prose-diff": "node scripts/prose_diff.mjs",
+    "audit-coverage": "node scripts/audit_coverage.mjs"
   },
   "browserslist": {
     "production": [
