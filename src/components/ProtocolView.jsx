@@ -147,6 +147,8 @@ function humanizeKey(k) {
 const CPG = {
   navy: '#2d368f', navyBorder: '#2d368f2b', navyTint: '#eef0f9', rowTint: '#e6e8f4',
   red: '#eb1f27', redTint: '#fdece6', green: '#00a64f', greenTint: '#e9f4ea',
+  // CPG yellow flags are #ffc000; use a darker amber for readable title text.
+  amber: '#b45309', amberTint: '#fdf3d9', amberBorder: '#ffc00055',
 };
 
 // Per-section colours matching the CPG's own colour-coding. Keys are content
@@ -156,6 +158,8 @@ const SECTION_COLORS = {
   dangersAndSafety: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
   rapidAssessment: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
   primarySurvey: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+  redFlags: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+  yellowFlags: { title: CPG.amber, bg: CPG.amberTint, border: CPG.amberBorder },
 };
 const sectionColor = (key) => SECTION_COLORS[key] || { title: CPG.navy, bg: '#ffffff', border: CPG.navyBorder };
 
@@ -461,13 +465,13 @@ function QuickProtocolContent({ proto }) {
     return (
       <>
         {c.redFlags && (
-          <QuickSection title="🔴 Red Flags" color="#dc2626">
+          <QuickSection title="🔴 Red Flags" color={CPG.red} bodyStyle={{ background: CPG.redTint }}>
             {c.definition?.red && <p className="text-sm text-gray-700 mb-2">{c.definition.red}</p>}
             {renderFlagGroup(c.redFlags)}
           </QuickSection>
         )}
         {c.yellowFlags && (
-          <QuickSection title="🟡 Yellow Flags" color="#d97706">
+          <QuickSection title="🟡 Yellow Flags" color={CPG.amber} bodyStyle={{ background: CPG.amberTint }}>
             {c.definition?.yellow && <p className="text-sm text-gray-700 mb-2">{c.definition.yellow}</p>}
             {renderFlagGroup(c.yellowFlags)}
           </QuickSection>
