@@ -426,11 +426,24 @@ export const assessmentsContent = {
     category: 'paediatric',
     summary: 'Rapid paediatric assessment tool',
     content: {
-      components: [
-        { name: 'Appearance', details: 'Tone, Interactiveness, Consolability, Look/Gaze, Speech/Cry' },
-        { name: 'Work of Breathing', details: 'Abnormal sounds, abnormal positioning, retractions, flaring' },
-        { name: 'Circulation to Skin', details: 'Pallor, mottling, cyanosis' },
+      definition: [
+        'The PAT (Paediatric Assessment Triangle) consists of three headings / components — Appearance, Work of Breathing and Circulation.',
+        'These collectively form a rapid first impression as to whether a child is well or unwell.',
       ],
+      // Sides and signs transcribed from the triangle graphic on p12.
+      assessmentTriangle: [
+        { side: 'Appearance', signs: ['Tone', 'Interactivity', 'Consolability', 'Look (Gaze)', 'Speech (Cry)'] },
+        { side: 'Work of Breathing', signs: ['Grunting', 'Nasal flaring', 'Stridor', 'Accessory muscle use'] },
+        { side: 'Circulation', signs: ['Pallor', 'Mottling', 'Cyanosis', 'Bleeding'] },
+      ],
+      furtherNotes: [
+        'Visually evaluate level of alertness, muscle tone, body position, chest movement, work of breathing and skin colour while also looking for obvious injuries',
+        'This assessment should not take more than a few seconds',
+        'If the child appears well with no signs of serious trauma, approach with a calm demeanour whilst explaining your actions to the parents and the child',
+        'If a well-appearing patient has experienced a high-risk mechanism of injury, consider the patient potentially unstable due to the risk of serious internal injuries',
+      ],
+      immediateAction:
+        'For children with a poor appearance OR evidence of significant injury, proceed immediately to the primary survey including any lifesaving interventions as appropriate.',
     },
   },
 };

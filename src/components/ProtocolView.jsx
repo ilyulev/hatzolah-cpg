@@ -160,6 +160,10 @@ const SECTION_COLORS = {
   primarySurvey: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
   redFlags: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
   yellowFlags: { title: CPG.amber, bg: CPG.amberTint, border: CPG.amberBorder },
+  // p12 draws the triangle inside the green Definition block; its closing
+  // "proceed immediately to the primary survey" note is highlighted red.
+  assessmentTriangle: { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' },
+  immediateAction: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
 };
 const sectionColor = (key) => SECTION_COLORS[key] || { title: CPG.navy, bg: '#ffffff', border: CPG.navyBorder };
 
@@ -279,6 +283,64 @@ function WongBakerScale({ items }) {
   );
 }
 
+// Paediatric Assessment Triangle (CPG p12). The CPG draws the three components
+// as labels along the sides of a red triangle, with each side's signs listed
+// beside it. Rotated edge labels stay, but the sign lists move to cards below —
+// on a phone the CPG's around-the-triangle layout is unreadable.
+function PaediatricTriangle({ sides }) {
+  // Edge midpoints, nudged outward along each edge normal so the labels clear
+  // the 9px stroke. Angles are atan2 of the edge vectors.
+  const edgeLabel = (text, x, y, rot) => (
+    <text
+      x={x} y={y}
+      transform={rot ? `rotate(${rot} ${x} ${y})` : undefined}
+      textAnchor="middle" fontSize="13" fontWeight="800" letterSpacing="0.6" fill={CPG.red}
+    >
+      {text}
+    </text>
+  );
+  return (
+    <div>
+      <svg
+        viewBox="0 0 320 232" className="w-full max-w-[20rem] mx-auto block" role="img"
+        aria-label="Paediatric Assessment Triangle: Appearance, Work of Breathing, Circulation"
+      >
+        <polygon
+          points="160,20 278,196 42,196"
+          fill="none" stroke={CPG.red} strokeWidth="9" strokeLinejoin="round"
+        />
+        {edgeLabel('APPEARANCE', 91, 101, -56.2)}
+        {edgeLabel('WORK OF BREATHING', 229, 101, 56.2)}
+        {edgeLabel('CIRCULATION', 160, 217, 0)}
+      </svg>
+      <div className="mt-3 space-y-2">
+        {sides.map((s) => (
+          <div
+            key={s.side}
+            className="rounded-lg border px-3 py-2 bg-white"
+            style={{ borderColor: '#eb1f2733' }}
+          >
+            <p className="text-xs font-extrabold uppercase tracking-wide" style={{ color: CPG.red }}>
+              {s.side}
+            </p>
+            <div className="flex flex-wrap gap-1 mt-1.5">
+              {s.signs.map((sign) => (
+                <span
+                  key={sign}
+                  className="text-xs px-2 py-0.5 rounded-full font-medium"
+                  style={{ color: CPG.navy, background: CPG.navyTint }}
+                >
+                  {sign}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Stable DOM id for a top-level content section, so workflow branch chips can
 // jump to it. Only one protocol renders at a time, so the key alone is unique.
 const sectionAnchor = (key) => `sec-${key}`;
@@ -345,6 +407,10 @@ function renderValue(val, depth = 0) {
     // Faces pain scale (Wong-Baker): objects with score + face → visual scale
     if (val.length && val.every((o) => o && typeof o === 'object' && 'score' in o && 'face' in o)) {
       return <WongBakerScale items={val} />;
+    }
+    // Paediatric Assessment Triangle: objects with side + signs → triangle diagram
+    if (val.length && val.every((o) => o && typeof o === 'object' && 'side' in o && Array.isArray(o.signs))) {
+      return <PaediatricTriangle sides={val} />;
     }
     if (isUniformObjectArray(val)) return <ObjectTable rows={val} />;
     const mnemonic = asMnemonicPairs(val);
