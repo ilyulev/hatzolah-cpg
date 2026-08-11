@@ -1795,6 +1795,8 @@ export const CATEGORY_COLORS = {
   trauma:      { bg: '#ffedd5', icon: '#ea580c', label: 'Trauma' },
   medical:     { bg: '#dcfce7', icon: '#16a34a', label: 'Medical' },
   paediatric:  { bg: '#fce7f3', icon: '#db2777', label: 'Paediatric' },
+  // Birth & Newborn Resuscitation (CPG p60-65) has no other home.
+  obstetric:   { bg: '#ffe4e6', icon: '#be123c', label: 'Obstetric' },
   endocrine:   { bg: '#fef9c3', icon: '#ca8a04', label: 'Endocrine' },
   analgesia:   { bg: '#f0fdf4', icon: '#059669', label: 'Analgesia' },
   fluids:      { bg: '#e0f2fe', icon: '#0284c7', label: 'Fluids' },
