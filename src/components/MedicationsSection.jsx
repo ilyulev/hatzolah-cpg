@@ -5,7 +5,7 @@
  */
 import React from 'react';
 import { Info } from 'lucide-react';
-import { medicationsContent, CAN_PERFORM, REFERENCE_ONLY, CATEGORY_COLORS } from '../data/contentData';
+import { medicationsContent, CAN_PERFORM, REFERENCE_ONLY, CATEGORY_COLORS, PRACTICE_LEVELS } from '../data/contentData';
 
 function MedRow({ proto, greyed, onSelect }) {
   const colors = CATEGORY_COLORS[proto.category] || CATEGORY_COLORS.medical;
@@ -26,9 +26,15 @@ function MedRow({ proto, greyed, onSelect }) {
           )}
         </div>
         <div className="flex flex-col items-end gap-1 flex-shrink-0">
+          {/* Level badge, coloured by PRACTICE LEVEL (CB blue / FR green / SR amber).
+              It used to take the category's colour, which made the same SR badge
+              gold on Glucagon and blue on Ipratropium - unreadable as a scope cue. */}
           <span
-            className={`text-xs font-bold px-2 py-0.5 rounded-full ${greyed ? 'bg-gray-300 text-gray-600' : 'text-white'}`}
-            style={greyed ? undefined : { background: colors.icon }}
+            className={`text-xs font-bold px-2 py-0.5 rounded-full ${greyed ? 'bg-gray-300 text-gray-600' : ''}`}
+            style={greyed ? undefined : {
+              background: (PRACTICE_LEVELS[proto.level] || PRACTICE_LEVELS.ALL).bg,
+              color: (PRACTICE_LEVELS[proto.level] || PRACTICE_LEVELS.ALL).color,
+            }}
           >
             {proto.level}
           </span>

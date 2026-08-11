@@ -4,28 +4,10 @@
  */
 import React from 'react';
 import { ArrowLeft, Info } from 'lucide-react';
-import { CATEGORY_COLORS } from '../data/contentData';
-
-const CATEGORY_META = {
-  primary:     { emoji: '🔍', label: 'Primary Assessment' },
-  cardiac:     { emoji: '🫀', label: 'Cardiac' },
-  respiratory: { emoji: '🫁', label: 'Respiratory' },
-  neuro:       { emoji: '🧠', label: 'Neurological' },
-  trauma:      { emoji: '🩸', label: 'Trauma' },
-  medical:     { emoji: '💊', label: 'Medical' },
-  paediatric:  { emoji: '👶', label: 'Paediatric' },
-  obstetric:   { emoji: '🤰', label: 'Obstetric' },
-  endocrine:   { emoji: '🌡️', label: 'Endocrine' },
-  analgesia:   { emoji: '💉', label: 'Analgesia' },
-  fluids:      { emoji: '💧', label: 'Fluids' },
-  gastro:      { emoji: '🫄', label: 'Gastro' },
-  allergy:     { emoji: '🌿', label: 'Allergy' },
-  emergency:   { emoji: '🚨', label: 'Emergency' },
-};
+import { CATEGORY_META, PRACTICE_LEVELS } from '../data/contentData';
 
 export function CategoryView({ category, performProtocols, referenceProtocols, onBack, onProtocolSelect }) {
-  const meta   = CATEGORY_META[category] || { emoji: '📋', label: category };
-  const colors = CATEGORY_COLORS[category] || CATEGORY_COLORS.medical;
+  const meta = CATEGORY_META[category] || { emoji: '📋', label: category };
 
   return (
     <div>
@@ -56,9 +38,13 @@ export function CategoryView({ category, performProtocols, referenceProtocols, o
                       <p className="text-sm text-gray-500 mt-0.5">{proto.summary}</p>
                     )}
                   </div>
+                  {/* Coloured by PRACTICE LEVEL, not by category - see MedicationsSection. */}
                   <span
-                    className="text-xs font-bold px-2 py-0.5 rounded-full text-white flex-shrink-0 mt-0.5"
-                    style={{ background: colors.icon }}
+                    className="text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 mt-0.5"
+                    style={{
+                      background: (PRACTICE_LEVELS[proto.level] || PRACTICE_LEVELS.ALL).bg,
+                      color: (PRACTICE_LEVELS[proto.level] || PRACTICE_LEVELS.ALL).color,
+                    }}
                   >
                     {proto.level}
                   </span>

@@ -4556,6 +4556,27 @@ export const REFERENCE_ONLY = {
 };
 
 // Category tile colours for Assessment home screen
+// Tile emoji + display name per category. Single source of truth: this used to be
+// duplicated in HomeScreen and CategoryView, so adding a category to one and not
+// the other silently fell back to a generic icon and a lowercase label.
+// Every key in CATEGORY_COLORS below must have an entry here.
+export const CATEGORY_META = {
+  primary:     { emoji: '🔍', label: 'Primary Assessment' },
+  cardiac:     { emoji: '🫀', label: 'Cardiac' },
+  respiratory: { emoji: '🫁', label: 'Respiratory' },
+  neuro:       { emoji: '🧠', label: 'Neurological' },
+  trauma:      { emoji: '🩸', label: 'Trauma' },
+  medical:     { emoji: '💊', label: 'Medical' },
+  paediatric:  { emoji: '👶', label: 'Paediatric' },
+  obstetric:   { emoji: '🤰', label: 'Obstetric' },
+  endocrine:   { emoji: '🌡️', label: 'Endocrine' },
+  analgesia:   { emoji: '💉', label: 'Analgesia' },
+  fluids:      { emoji: '💧', label: 'Fluids' },
+  gastro:      { emoji: '🫄', label: 'Gastro' },
+  allergy:     { emoji: '🌿', label: 'Allergy' },
+  emergency:   { emoji: '🚨', label: 'Emergency' },
+};
+
 export const CATEGORY_COLORS = {
   primary:     { bg: '#e0e7ff', icon: '#4338ca', label: 'Primary' },
   cardiac:     { bg: '#fee2e2', icon: '#dc2626', label: 'Cardiac' },

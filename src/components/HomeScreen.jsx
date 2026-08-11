@@ -3,25 +3,7 @@
  * Shows protocols grouped by category with level badge
  */
 import React from 'react';
-import { PRACTICE_LEVELS, CAN_PERFORM, REFERENCE_ONLY, CATEGORY_COLORS } from '../data/contentData';
-
-// Map of category → display info
-const CATEGORY_META = {
-  primary:     { emoji: '🔍', label: 'Primary Assessment' },
-  cardiac:     { emoji: '🫀', label: 'Cardiac' },
-  respiratory: { emoji: '🫁', label: 'Respiratory' },
-  neuro:       { emoji: '🧠', label: 'Neurological' },
-  trauma:      { emoji: '🩸', label: 'Trauma' },
-  medical:     { emoji: '💊', label: 'Medical' },
-  paediatric:  { emoji: '👶', label: 'Paediatric' },
-  obstetric:   { emoji: '🤰', label: 'Obstetric' },
-  endocrine:   { emoji: '🌡️', label: 'Endocrine' },
-  analgesia:   { emoji: '💉', label: 'Analgesia' },
-  fluids:      { emoji: '💧', label: 'Fluids' },
-  gastro:      { emoji: '🫄', label: 'Gastro' },
-  allergy:     { emoji: '🌿', label: 'Allergy' },
-  emergency:   { emoji: '🚨', label: 'Emergency' },
-};
+import { PRACTICE_LEVELS, CAN_PERFORM, REFERENCE_ONLY, CATEGORY_COLORS, CATEGORY_META } from '../data/contentData';
 
 export function HomeScreen({ userLevel, allProtocols, onProtocolSelect, onCategorySelect }) {
   const canPerformLevels = CAN_PERFORM[userLevel] || [];
