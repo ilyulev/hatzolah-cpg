@@ -3,7 +3,8 @@
  * The header does NOT scroll; the 📖 button is always accessible.
  */
 import React, { useState } from 'react';
-import { ArrowLeft, BookOpen, X } from 'lucide-react';
+// NB: lucide-react 0.263 uses the older icon names (AlertOctagon, not OctagonAlert).
+import { ArrowLeft, BookOpen, X, AlertOctagon, ArrowRight } from 'lucide-react';
 import { PRACTICE_LEVELS, CATEGORY_COLORS } from '../data/contentData';
 
 // ─── Quick View content renderers ─────────────────────────────────────────────
@@ -164,6 +165,10 @@ const SECTION_COLORS = {
   // "proceed immediately to the primary survey" note is highlighted red.
   assessmentTriangle: { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' },
   immediateAction: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+  // The CPG's recurring red deterioration block; StopBlock already draws its own
+  // red frame, so the section wrapper stays white to avoid a red-on-red muddle.
+  stop: { title: CPG.red, bg: '#ffffff', border: '#eb1f2733' },
+  recognition: { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' },
 };
 const sectionColor = (key) => SECTION_COLORS[key] || { title: CPG.navy, bg: '#ffffff', border: CPG.navyBorder };
 
@@ -341,6 +346,126 @@ function PaediatricTriangle({ sides }) {
   );
 }
 
+// ─── Recurring CPG structures ────────────────────────────────────────────────
+// The CPG repeats four shapes across dozens of protocols. Rendering them as
+// plain bullet lists loses the thing that makes them work in the field: a STOP
+// block reads as urgent, a rule reads as IF→THEN, a disposition reads as a
+// choice between outcomes.
+
+// Red STOP block — the CPG's deterioration safety-net.
+// { trigger, actions[] }, or an array of them.
+function StopBlock({ blocks }) {
+  const list = Array.isArray(blocks) ? blocks : [blocks];
+  return (
+    <div className="space-y-2">
+      {list.map((b, i) => (
+        <div key={i} className="rounded-lg border-2 px-3 py-2.5" style={{ borderColor: CPG.red, background: CPG.redTint }}>
+          <div className="flex items-center gap-1.5 mb-1">
+            <AlertOctagon className="w-4 h-4 flex-shrink-0" style={{ color: CPG.red }} />
+            <span className="text-xs font-extrabold uppercase tracking-wider" style={{ color: CPG.red }}>Stop</span>
+          </div>
+          {b.trigger && <p className="text-sm font-bold text-gray-900 mb-1.5">{b.trigger}</p>}
+          {Array.isArray(b.actions) && (
+            <ul className="space-y-1">
+              {b.actions.map((a, j) => (
+                <li key={j} className="flex items-start text-sm text-gray-800">
+                  <span className="mr-2 flex-shrink-0 font-bold" style={{ color: CPG.red }}>›</span>
+                  <span>{a}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// IF → THEN rule rows. The CPG uses these for conditional actions; a flat
+// bullet loses which half is the condition.
+function RuleRows({ rules }) {
+  return (
+    <div className="space-y-1.5">
+      {rules.map((r, i) => (
+        <div key={i} className="rounded-lg px-3 py-2" style={{ background: CPG.navyTint }}>
+          <div className="flex items-start gap-1.5">
+            <span className="text-[10px] font-extrabold uppercase mt-0.5 flex-shrink-0" style={{ color: CPG.navy }}>If</span>
+            <span className="text-sm font-semibold text-gray-900">{r.if}</span>
+          </div>
+          <div className="flex items-start gap-1.5 mt-1">
+            <ArrowRight className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style={{ color: CPG.green }} />
+            <span className="text-sm text-gray-800">{r.then}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Disposition — a choice between mutually exclusive outcomes (e.g. Falls:
+// hospital transport / Virtual ED / home care). Each outcome is its own card so
+// the responder can see which arm they are in.
+function DispositionCards({ node }) {
+  return (
+    <div className="space-y-2">
+      {node.question && <p className="text-sm font-semibold text-gray-900">{node.question}</p>}
+      {(node.options || []).map((o, i) => (
+        <div key={i} className="rounded-lg border px-3 py-2 bg-white" style={{ borderColor: CPG.navyBorder }}>
+          <p className="text-sm font-extrabold" style={{ color: CPG.navy }}>{o.label}</p>
+          {Array.isArray(o.criteria) && o.criteria.length > 0 && (
+            <ul className="mt-1 space-y-0.5">
+              {o.criteria.map((c, j) => (
+                <li key={j} className="flex items-start text-sm text-gray-700">
+                  <span className="text-gray-400 mr-2 flex-shrink-0">•</span>{c}
+                </li>
+              ))}
+            </ul>
+          )}
+          {o.action && (
+            <p className="mt-1.5 text-sm font-semibold rounded px-2 py-1" style={{ background: CPG.greenTint, color: '#065f46' }}>
+              {o.action}
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Age-band protocols (Asthma has four). Showing every band at once buries the
+// one in use, so bands become tabs and only the selected band renders.
+function AgeBandTabs({ bands }) {
+  const [active, setActive] = useState(0);
+  const band = bands[active] || {};
+  const { label, ...rest } = band;
+  return (
+    <div>
+      <div className="flex gap-1 overflow-x-auto pb-1 -mx-1 px-1">
+        {bands.map((b, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            className={`text-xs font-bold px-2.5 py-1.5 rounded-full whitespace-nowrap transition-colors ${
+              i === active ? 'text-white' : 'text-gray-600 bg-gray-100 hover:bg-gray-200'
+            }`}
+            style={i === active ? { background: CPG.navy } : undefined}
+          >
+            {b.label || `Band ${i + 1}`}
+          </button>
+        ))}
+      </div>
+      <div className="mt-2 space-y-2">
+        {Object.entries(rest).map(([k, v]) => (
+          <div key={k}>
+            <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{humanizeKey(k)}</p>
+            {renderValue(v, 1)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Stable DOM id for a top-level content section, so workflow branch chips can
 // jump to it. Only one protocol renders at a time, so the key alone is unique.
 const sectionAnchor = (key) => `sec-${key}`;
@@ -412,6 +537,19 @@ function renderValue(val, depth = 0) {
     if (val.length && val.every((o) => o && typeof o === 'object' && 'side' in o && Array.isArray(o.signs))) {
       return <PaediatricTriangle sides={val} />;
     }
+    // IF → THEN rule rows
+    if (val.length && val.every((o) => o && typeof o === 'object' && 'if' in o && 'then' in o)) {
+      return <RuleRows rules={val} />;
+    }
+    // Several STOP blocks in one section
+    if (val.length && val.every((o) => o && typeof o === 'object' && 'trigger' in o && Array.isArray(o.actions))) {
+      return <StopBlock blocks={val} />;
+    }
+    // Age bands / sub-protocols: every entry labelled, with its own sections
+    if (val.length > 1 && val.every((o) => o && typeof o === 'object' && !Array.isArray(o)
+        && typeof o.label === 'string' && Object.keys(o).length > 1)) {
+      return <AgeBandTabs bands={val} />;
+    }
     if (isUniformObjectArray(val)) return <ObjectTable rows={val} />;
     const mnemonic = asMnemonicPairs(val);
     if (mnemonic) return <MnemonicTable pairs={mnemonic} />;
@@ -443,6 +581,14 @@ function renderValue(val, depth = 0) {
     // Decision point with workflow branches → jump-link chips
     if (Array.isArray(val.branches)) {
       return <BranchChips node={val} />;
+    }
+    // Single red STOP block
+    if ('trigger' in val && Array.isArray(val.actions)) {
+      return <StopBlock blocks={val} />;
+    }
+    // Disposition: a choice between mutually exclusive outcomes
+    if (Array.isArray(val.options) && val.options.some((o) => o && typeof o === 'object' && 'label' in o)) {
+      return <DispositionCards node={val} />;
     }
     // Render { headers, rows } shapes as a real table
     if (Array.isArray(val.headers) && Array.isArray(val.rows)) {

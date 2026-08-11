@@ -7,6 +7,7 @@ dist/
 scripts/output/pages/
 scripts/output/content/
 scripts/output/audit/
+scripts/output/regen/
 
 # Local CPG source PDF (do not commit binary)
 source/*.pdf
