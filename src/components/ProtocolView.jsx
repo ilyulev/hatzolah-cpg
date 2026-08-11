@@ -88,6 +88,11 @@ function DosingCards({ dosingArray }) {
     <div className="space-y-2">
       {dosingArray.map((d, i) => (
         <div key={i} className="bg-white border border-green-200 rounded-lg p-3">
+          {/* The drug name. A condition protocol can dose several drugs (Asthma
+              gives Salbutamol, Ipratropium and Adrenaline), and this field was
+              in the data but never rendered - a card showed a dose with no
+              indication of which drug it was for. */}
+          {d.drug && <p className="text-sm font-extrabold text-gray-900 mb-0.5">{d.drug}</p>}
           {d.indication && <p className="text-xs font-bold text-green-800 uppercase mb-1">{d.indication}</p>}
           {d.demographic && <p className="text-xs text-gray-500 mb-2">👥 {d.demographic}</p>}
           <div className="grid grid-cols-2 gap-1 text-sm">
@@ -96,9 +101,22 @@ function DosingCards({ dosingArray }) {
             {d.repeat && <div><span className="text-gray-500 text-xs">Repeat: </span><span className="font-medium">{d.repeat}</span></div>}
             {d.max && <div><span className="text-gray-500 text-xs">Max: </span><span className="font-medium">{d.max}</span></div>}
           </div>
+          {/* Safety caveat carried on the dosing entry (e.g. Paracetamol's
+              "confirm the doses against the bottle label"). Also previously
+              stored but never shown. */}
+          {d.confirm && (
+            <p className="mt-2 text-xs font-semibold rounded px-2 py-1" style={{ color: CPG.red, background: CPG.redTint }}>
+              ⚠ {d.confirm}
+            </p>
+          )}
           {d.weightTable && (
             <div className="mt-2">
-              <p className="text-xs font-semibold text-gray-600 mb-1">Paediatric Doses (15 mg/kg):</p>
+              {/* Label the ratio from the entry rather than hardcoding it - the
+                  literal "15 mg/kg" here was Paracetamol's dose baked into a
+                  renderer shared by every drug. */}
+              <p className="text-xs font-semibold text-gray-600 mb-1">
+                Paediatric doses{d.initial ? ` (${d.initial})` : ''}:
+              </p>
               <div className="overflow-x-auto">
                 <table className="text-xs border-collapse min-w-full">
                   <thead>
@@ -186,7 +204,13 @@ const NAVY_SECTION = { title: CPG.navy, bg: '#ffffff', border: CPG.navyBorder };
 const sectionColor = (key) => {
   if (SECTION_COLORS[key]) return SECTION_COLORS[key];
   const k = key.toLowerCase();
-  if (/stop|immediate|redflag|danger|donot|critical|contraindication|adverse|primarysurvey|rapidassessment|haemorrhage/.test(k)) return RED_SECTION;
+  // Time Critical grades its tiers by colour - ACTUAL red, EMERGENT amber,
+  // POTENTIALLY green - which is how a responder reads severity at a glance.
+  // These must be tested BEFORE the generic /critical/ rule below, which would
+  // otherwise flatten all three tiers to red and lose the gradient entirely.
+  if (/^potentially/.test(k)) return GREEN_SECTION;
+  if (/^emergent/.test(k)) return AMBER_SECTION;
+  if (/stop|immediate|redflag|danger|donot|critical|contraindication|adverse|primarysurvey|rapidassessment|haemorrhage|escalation|rosc|ineffectivebreathing|unresponsive|agescope/.test(k)) return RED_SECTION;
   if (/yellowflag|precaution|caution/.test(k)) return AMBER_SECTION;
   if (/definition|recognition|principle|overview|indication|furthernote/.test(k)) return GREEN_SECTION;
   return NAVY_SECTION;
