@@ -8,37 +8,39 @@ authorised to perform, while making higher-level protocols visible as read-only 
 
 **Project path:** `/Users/ilyulev/Projects/hatzolah-cpg`
 **Package manager:** pnpm exclusively. Never use npm or npx.
-**Stack:** React 18 + Vite + Tailwind CSS (v4) + lucide-react
+**Stack:** React 18 + Vite 7 + Tailwind CSS v4 + lucide-react
 **Deploy target:** GitHub Pages at `https://ilyulev.github.io/hatzolah-cpg/`
 
-> ⚠️ **Content version:** the protocol data currently in `src/data/contentData.js` is the
-> **v4.9 edition** (14.08.2024), extracted into `pdf-structure.json`. The **target is v6.2** —
-> the content needs re-extraction once the v6.2 PDF is supplied locally. See *PDF Re-Extraction*.
+**Content version: v6.2.** `src/data/contentData.js` was rebuilt page-by-page from the v6.2 PDF
+(all 163 pages). Do not treat it as v4.9 — that edition is gone. See *Content Pipeline* before
+changing protocol content.
 
 ---
 
 ## Project Status (verified on disk)
-The project is **already scaffolded and runs**. This is a status snapshot, not a to-do list.
 
 ```
-✅ package.json            (pnpm, correct scripts + deps)
-✅ pnpm-lock.yaml
-✅ vite.config.js          (Tailwind v4 plugin, base /hatzolah-cpg/)
-✅ index.html
-✅ src/index.css           (@import "tailwindcss";)
-✅ src/App.jsx             (view-state machine)
-✅ src/main.jsx
-✅ src/data/contentData.js (55 protocols @ v4.9 — 15 CB / 36 FR / 4 SR)
-✅ src/data/workflowDiagrams.js
-✅ src/hooks/useUserLevel.js
-✅ src/components/{LevelSelection,HomeScreen,CategoryView,ProtocolView,Settings}.jsx
-✅ pdf-structure.json      (raw extracted PDF structure, v4.9)
-
-⏳ Re-extract content to v6.2 (needs the v6.2 PDF on disk — see below)
+src/App.jsx                     five-section shell + per-section drill-down stacks
+src/data/contentData.js         60 protocols @ v6.2
+src/data/extensions/            app-authored content (alerts, info, halakha)
+src/components/                 12 components (see UI Architecture)
+src/hooks/useUserLevel.js       localStorage-backed level
+scripts/                        content pipeline + audit tooling
+source/Compiled_v6_2.pdf        source CPG (gitignored — keep a local copy)
 ```
 
 There is **no** `tailwind.config.js` or `postcss.config.js`, and there should not be — this project
 uses Tailwind v4 (see *Tailwind v4 Setup*).
+
+### Content inventory
+| Group | Count | Export |
+|---|---|---|
+| Assessments | 16 | `assessmentsContent` |
+| Conditions (incl. Trauma + Level 1) | 29 | `conditionsContent` |
+| Medications | 15 | `medicationsContent` |
+| **Total** | **60** | |
+
+By level: `ALL` 6 · `CB` 11 · `FR` 39 · `SR` 4.
 
 ---
 
@@ -75,116 +77,34 @@ export const REFERENCE_ONLY = {
 };
 ```
 
+### `ALL` and `universal: true`
+`PRACTICE_LEVELS.ALL` is a **display-only pseudo-level** for foundational content every responder
+needs. It is never a `userLevel`. A protocol with level `ALL` **must also carry `universal: true`**,
+or the scope filters treat it as out-of-scope and it disappears from every level:
+
+```javascript
+'vital-signs': { title: '…', level: 'ALL', universal: true, … }
+```
+Currently universal: `vital-signs`, `clinical-flags`, `time-critical`, `safety-netting`,
+`adrenaline`, `glucose-paste`.
+
+`SELECTABLE_LEVELS = ['CB', 'FR', 'SR']` is what LevelSelection and Settings iterate — never
+iterate `PRACTICE_LEVELS` for a level picker, or `ALL` leaks into the UI.
+
 ### Protocol Versioning — Critical Rule
 Several protocols exist at **multiple levels** as distinct entries. The CB version is a
 simplified subset; the FR/SR version has full clinical depth. They are stored as **separate
-objects with separate keys** (confirmed present in `contentData.js`):
+objects with separate keys**:
 ```javascript
-// Two separate entries — NOT one entry with conditional content
-'anaphylaxis-cb': { title: 'Anaphylaxis', level: 'CB', ... }   // simplified L1 version
-'anaphylaxis-fr': { title: 'Anaphylaxis', level: 'FR', ... }   // full FR version
+'anaphylaxis-cb': { title: 'Anaphylaxis (L1)', level: 'CB', … }   // simplified L1 version
+'anaphylaxis-fr': { title: 'Anaphylaxis',      level: 'FR', … }   // full FR version
 ```
 
-**Protocols with dual CB + FR versions:**
-- Clinical Approach
-- Conscious Status Assessments
-- Respiratory Status Assessment
-- Perfusion Status Assessment
-- Altered/Acute Altered Consciousness
-- Airway Obstruction
-- Anaphylaxis
-- Asthma / Wheeze
-- Cardiac Arrest
-- General Trauma Approach
+**The 11 dual-level protocols:** clinical-approach, conscious-status, respiratory-assessment,
+perfusion-assessment, altered-consciousness, airway-obstruction, anaphylaxis, asthma,
+cardiac-arrest, general-trauma, salbutamol.
 
-For these protocols:
-- A CB user sees only the CB version in "My Scope"
-- An FR user performs the FR version and sees the CB version as reference
-- The CB version key always ends in `-cb`; the FR version in `-fr`
-
-**Do not merge** CB and FR versions of dual-level protocols into a single entry.
-
----
-
-## PDF Source (v6.2 — to be supplied)
-The v6.2 PDF is **not in the repo** and is not on this machine (it lived in the original web-chat
-sandbox). To re-extract, place it locally, e.g.:
-```
-./source/Compiled_v6_2.pdf    (163 pages, ~2.4 MB)
-```
-
-### Confirmed PDF Structure (from TOC extraction)
-```
-Pages 1–3    Cover + Contents
-Pages 4–31   ASSESSMENTS
-  p5    Vital Sign Values
-  p7    Clinical Flags
-  p10   Clinical Approach
-  p12   Paediatric Assessment Triangle
-  p13   Conscious Status Assessments
-  p16   Respiratory Status Assessment
-  p18   Perfusion Status Assessment
-  p19   Pain Assessments
-  p20   Weight Calculations
-  p21   Time Critical Guidelines
-  p27   Safety Netting
-  p31   Ventilation Rates
-Pages 32–100 CONDITIONS (FR/SR)
-  p33   Altered Consciousness (Acute)
-  p37   Airway Obstruction
-  p39   Alcohol Intoxication
-  p41   Allergy (Mild)
-  p43   Anaphylaxis
-  p48   Asthma / Wheeze
-    p49   Adult / 16+ years
-    p51   12 to 15 years
-    p53   6 to 11 years
-    p55   2 to 5 years
-  p60   Birth & Newborn Resuscitation
-  p66   Cardiac Arrest
-  p72   Cardiac Chest Pain / Discomfort
-  p75   Dehydration
-  p77   Falls
-  p83   Hypoglycaemia
-  p86   Infection / Sepsis
-  p90   Nausea / Vomiting
-  p92   Pain Relief (Non-Cardiac)
-  p96   Seizure
-  p99   Stroke (Acute)
-Pages 101–117  TRAUMA (FR/SR)
-  p102  General Trauma Approach
-  p104  Head Trauma
-  p105  Spinal Trauma
-  p108  Chest Trauma
-  p109  Burns
-  p112  Wound Care
-Pages 118–136  LEVEL 1 (CB) GUIDELINES
-  p119  Clinical Approach (L1)
-  p121  Conscious Status Assessments (L1)
-  p122  Respiratory Status Assessment (L1)
-  p124  Perfusion Status Assessment (L1)
-  p125  Acute Altered Consciousness (L1)
-  p126  Airway Obstruction (L1)
-  p127  Anaphylaxis (L1)
-  p130  Asthma / Wheeze (L1)
-  p134  Cardiac Arrest (L1)
-  p136  General Trauma Approach (L1)
-Pages 137–163  PHARMACOLOGY (all levels)
-  p138  Adrenaline
-  p140  Aspirin
-  p142  Cetirizine
-  p143  Glucagon
-  p144  Glucose Paste
-  p145  Glyceryl Trinitrate (GTN)
-  p147  Ipratropium Bromide
-  p149  Methoxyflurane
-  p151  Midazolam
-  p153  Normal Saline
-  p155  Ondansetron
-  p157  Oxygen
-  p159  Paracetamol
-  p162  Salbutamol
-```
+**Do not merge** CB and FR versions into a single entry.
 
 ---
 
@@ -193,182 +113,96 @@ Pages 137–163  PHARMACOLOGY (all levels)
 ### Protocol object shape
 ```javascript
 'protocol-key': {
-  title:    'Human-readable title',          // string
-  level:    'CB' | 'FR' | 'SR',             // practice level
-  category: 'cardiac' | 'respiratory' | …,  // see Category System below
-  summary:  'One sentence shown on tile',    // ≤ 120 chars
-  content:  { … },                          // structure depends on protocol type
+  title:      'Human-readable title',
+  level:      'CB' | 'FR' | 'SR' | 'ALL',
+  universal:  true,               // REQUIRED when level is 'ALL', omit otherwise
+  category:   'primary' | 'cardiac' | …,   // must be a key of CATEGORY_COLORS
+  summary:    'One sentence shown on the tile',
+  content:    { … },              // see Content Vocabulary
 }
 ```
 
-### Content structure by protocol type
-**Assessments** (vital signs tables, clinical flags, mnemonics):
-```javascript
-content: {
-  notes: ['string', …],
-  table: {
-    headers: ['col1', 'col2', …],
-    rows: [['cell', 'cell', …], …],     // rows as arrays of strings
-  },
-  definition: { red: 'string', yellow: 'string' },   // for clinical flags
-  redFlags: { adultsAndPaediatrics: […], paediatric: […] },
-  yellowFlags: […],
-  mnemonic: [{ letter: 'A', meaning: 'Airway' }, …],
-}
-```
+### Content Vocabulary
+`content` is an object whose keys are **section names taken from the CPG's own headings**,
+camelCased (`FURTHER NOTES` → `furtherNotes`). Sections render top-to-bottom in insertion order.
+There are ~120 distinct section keys across the app — that is expected, not a smell.
 
-**Conditions / Protocols** (e.g. Anaphylaxis, Cardiac Arrest):
-```javascript
-content: {
-  recognition: ['sign/symptom string', …],
-  management: ['step string', …],          // ordered steps
-  notes: ['clinical note', …],
-  escalation: 'escalation criteria string',
-  // for age-banded protocols (e.g. Asthma):
-  ageBands: [
-    {
-      label: 'Adult / 16+ years',
-      management: ['step', …],
-      dosing: [{ drug: 'Salbutamol', dose: '…', route: '…', repeat: '…' }],
-    },
-    …
-  ],
-}
-```
+`ProtocolView.renderValue` dispatches on **shape**, so only these shapes render properly:
 
-**Medications** (pharmacology section):
-```javascript
-content: {
-  adverseEffects: ['string', …],
-  indications: ['string', …],
-  contraindications: ['string', …],
-  dosing: [
-    {
-      indication: 'Anaphylaxis',
-      route: 'IM',
-      concentration: '1 mg/mL',
-      adult: { dose: '0.5 mg', volume: '0.5 mL', max: '…', repeat: '…' },
-      paediatric: {
-        weightBased: true,
-        dose: '0.01 mg/kg',
-        max: '0.5 mg',
-        table: {
-          headers: ['Weight', 'Dose', 'Volume'],
-          rows: [['10 kg', '0.1 mg', '0.1 mL'], …],
-        },
-      },
-    },
-  ],
-  precautions: ['string', …],
-  presentation: 'e.g. 1 mg/mL ampoule',
-}
-```
+| Shape | Renders as |
+|---|---|
+| `string` | paragraph |
+| `string[]` | bullet list |
+| `{ headers, rows }` | table (green header, sticky first column, scrolls internally) |
+| `{ if, then }[]` | IF → THEN rule rows |
+| `{ trigger, actions[] }` (key `stop`) | red STOP block, rendered unwrapped |
+| `{ options: [{ label, criteria[], action }] }` | disposition / outcome cards |
+| `{ label, … }[]` (key `ageBands`) | age-band tabs, one band visible at a time |
+| `dosing: [{ route, dose, … }]` | dosing cards |
+| `{ letter, meaning }[]` or `"D — meaning"[]` | mnemonic table |
+| `{ score, face, label }[]` | Wong-Baker faces scale |
+| `{ side, signs[] }[]` | Paediatric Assessment Triangle diagram |
+| `{ branches: [...] }` | tappable jump-link chips |
+| nested object | nested subsection |
+| key starting `_` | hidden (metadata, e.g. `_flowchart`) |
 
-### Key naming convention
-```
-assessments:  'vital-signs', 'clinical-flags', 'clinical-approach', …
-conditions:   'anaphylaxis-fr', 'anaphylaxis-cb', 'cardiac-arrest-fr', …
-medications:  'adrenaline', 'salbutamol', 'glucagon', …
-```
-Dual-level protocols append `-cb` or `-fr` to the key. Single-level protocols use a plain slug.
+Keep tables to **≤5 columns**; split a wider CPG table into several sharing a key column.
 
-Exports in `contentData.js`: `assessmentsContent`, `conditionsContent`, `medicationsContent`,
-`PRACTICE_LEVELS`, `CAN_PERFORM`, `REFERENCE_ONLY`, `CATEGORY_COLORS`.
-
----
-
-## Level Assignment Rules (for PDF extraction)
-
-### Conditions
-| Source page range | Assigned level |
-|-------------------|---------------|
-| 4–117 (main CPG) | `FR` (default); `SR` only if protocol explicitly requires IV/accredited procedure |
-| 118–136 (Level 1 section) | `CB` |
-
-SR indicators in text: "IV access", "intravenous", "accredited", "IM injection" (for Glucagon/Midazolam only), "IV fluid".
-
-### Medications
-| Medication | Level | Reason |
-|------------|-------|--------|
-| Adrenaline (Epi-Pen) | CB | Available to all levels via auto-injector |
-| Adrenaline (nebulised / IM draw-up) | FR | Requires clinical skill |
-| Glucose Paste | CB | No clinical skill required |
-| Aspirin | FR | Oral medication |
-| Cetirizine | FR | Oral medication |
-| GTN (Glyceryl Trinitrate) | FR | Sublingual spray |
-| Methoxyflurane | FR | Inhaled analgesia |
-| Ondansetron | FR | Oral/sublingual |
-| Oxygen | FR | Requires assessment skill |
-| Paracetamol | FR | Oral medication |
-| Salbutamol (puffer) | FR | MDI with spacer |
-| Salbutamol (nebulised) | FR | Nebuliser |
-| Glucagon | SR | IM injection — accredited only |
-| Ipratropium Bromide | SR | Nebulised — accredited only |
-| Midazolam | SR | IM injection — accredited only |
-| Normal Saline | SR | IV fluid — IV access required |
+### Section colours
+`sectionColor()` matches `SECTION_COLORS` exactly first, then falls back to the heading's sense:
+red for `stop|immediate|redflag|danger|donot|critical|contraindication|adverse|primarysurvey|
+rapidassessment|haemorrhage`, amber for `yellowflag|precaution|caution`, green for
+`definition|recognition|principle|overview|indication|furthernote`, navy otherwise.
+Add an exact `SECTION_COLORS` entry only when the fallback gets it wrong.
 
 ---
 
 ## Category System
-All protocols must be assigned one of these categories. The category drives the tile colour on
-the home screen.
+Every protocol's `category` must be a key of **both** `CATEGORY_COLORS` and `CATEGORY_META`
+(both live in `contentData.js`; the keys must stay in sync).
+
+```
+primary  cardiac  respiratory  neuro  trauma  medical  paediatric
+obstetric  endocrine  analgesia  fluids  gastro  allergy  emergency
+```
 
 ```javascript
-export const CATEGORY_COLORS = {
-  primary:      { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-900', badge: 'bg-indigo-100 text-indigo-800', emoji: '🏥' },
-  cardiac:      { bg: 'bg-red-50',    border: 'border-red-200',    text: 'text-red-900',    badge: 'bg-red-100 text-red-800',    emoji: '❤️' },
-  respiratory:  { bg: 'bg-blue-50',   border: 'border-blue-200',   text: 'text-blue-900',   badge: 'bg-blue-100 text-blue-800',  emoji: '🫁' },
-  neurological: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-900', badge: 'bg-purple-100 text-purple-800', emoji: '🧠' },
-  trauma:       { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-900', badge: 'bg-orange-100 text-orange-800', emoji: '🩹' },
-  medical:      { bg: 'bg-green-50',  border: 'border-green-200',  text: 'text-green-900',  badge: 'bg-green-100 text-green-800', emoji: '💊' },
-  paediatric:   { bg: 'bg-pink-50',   border: 'border-pink-200',   text: 'text-pink-900',   badge: 'bg-pink-100 text-pink-800',  emoji: '👶' },
-  obstetric:    { bg: 'bg-rose-50',   border: 'border-rose-200',   text: 'text-rose-900',   badge: 'bg-rose-100 text-rose-800',  emoji: '🤰' },
-  endocrine:    { bg: 'bg-yellow-50', border: 'border-yellow-200', text: 'text-yellow-900', badge: 'bg-yellow-100 text-yellow-800', emoji: '🩸' },
-  toxicology:   { bg: 'bg-violet-50', border: 'border-violet-200', text: 'text-violet-900', badge: 'bg-violet-100 text-violet-800', emoji: '☠️' },
-  environmental:{ bg: 'bg-teal-50',   border: 'border-teal-200',   text: 'text-teal-900',   badge: 'bg-teal-100 text-teal-800',  emoji: '🌡️' },
-  medication:   { bg: 'bg-cyan-50',   border: 'border-cyan-200',   text: 'text-cyan-900',   badge: 'bg-cyan-100 text-cyan-800',  emoji: '💉' },
-};
+export const CATEGORY_META   = { primary: { emoji: '🔍', label: 'Primary Assessment' }, … };
+export const CATEGORY_COLORS = { primary: { bg: '#e0e7ff', icon: '#4338ca', label: 'Primary' }, … };
 ```
 
-### Protocol → Category mapping
-```
-primary:       Vital Signs, Clinical Flags, Clinical Approach, Paediatric Assessment Triangle,
-               Conscious Status, Respiratory Assessment, Perfusion Assessment, Pain Assessment,
-               Weight Calculations, Time Critical, Safety Netting, Ventilation Rates
-cardiac:       Cardiac Arrest (all ages), Cardiac Chest Pain
-respiratory:   Asthma/Wheeze (all ages), Airway Obstruction, COPD (if present)
-neurological:  Altered/Acute Altered Consciousness, Seizure, Stroke
-trauma:        General Trauma, Head Trauma, Spinal Trauma, Chest Trauma, Burns, Wound Care, Falls
-medical:       Anaphylaxis, Allergy (Mild), Infection/Sepsis, Nausea/Vomiting,
-               Dehydration, Pain Relief (Non-Cardiac), Alcohol Intoxication
-paediatric:    Paediatric-specific sub-protocols (age-banded entries listed under paediatric)
-obstetric:     Birth & Newborn Resuscitation
-endocrine:     Hypoglycaemia
-medication:    All pharmacology entries (14 medications)
-```
+`CATEGORY_META` was previously duplicated inside HomeScreen and CategoryView; adding a category to
+one and not the other silently produced a 📋 tile with a lowercase label. It is now imported from
+`contentData.js` by both. **Adding a category means adding it to both maps in that one file.**
+
+Level badges are coloured by `PRACTICE_LEVELS[level]`, never by category.
 
 ---
 
 ## UI Architecture
 
-### View state machine (App.jsx)
+### Five-section shell (App.jsx)
+```
+BottomNav: Home │ Meds │ Alerts │ Info │ Halakha
+```
+Each section keeps its **own drill-down stack**, so switching tabs preserves where you were.
+Tapping the already-active tab does not reset its stack.
+
+- **Home / Meds** — content sourced from the CPG.
+- **Alerts / Info / Halakha** — app-authored extensions in `src/data/extensions/`.
+
+Content that is not in the CPG must not sit silently inside a Home/Meds protocol. If it belongs
+there (e.g. the DOLORS / OPQRST pain mnemonics), label it: those render under a section whose
+`note` states plainly that they are not CPG content.
+
+### View state (Home section)
 ```
 no level set → LevelSelection
-               ↓ select level
 'home'       → HomeScreen (category tile grid)
-               ↓ tap tile
 'category'   → CategoryView (protocol list)
-               ↓ tap protocol
-'protocol'   → ProtocolView (quick view + 📖 detail)
-               ↓ tap ← back
-               returns to 'category'
+'protocol'   → ProtocolView (quick view + 📖 detail modal)
 'settings'   → Settings (level change with confirmation)
-               ↓ tap ← close
-               returns to 'home'
 ```
-
-State held in `App.jsx`: `userLevel` (via `useUserLevel()`), `view`, `selectedCategory`,
-`performProtos`, `refProtos`, `selectedProtocol`.
 
 ### Persistence
 ```
@@ -378,27 +212,16 @@ value:             'CB' | 'FR' | 'SR'
 
 ### ProtocolView — fixed header rule (NON-NEGOTIABLE)
 The header containing the 📖 (detailed view) button **must never scroll**. Use flex layout —
-**do not remove `flex-shrink-0`** from the header:
-```jsx
-<div className="flex flex-col h-screen">
-  {/* FIXED — flex-shrink-0 prevents this from shrinking or scrolling */}
-  <div className="flex-shrink-0 bg-gradient-... px-4 py-3 flex items-center">
-    <button onClick={onBack}><ArrowLeft /></button>
-    <span className="flex-1 font-bold truncate">{proto.title}</span>
-    <span className="level-badge">{proto.level}</span>
-    <button onClick={() => setShowDetail(true)}><BookOpen /></button>  {/* 📖 */}
-  </div>
-  {/* SCROLLABLE */}
-  <div className="flex-1 overflow-y-auto p-4">
-    {/* quick-view content */}
-  </div>
-</div>
-```
-The detailed view opens as a **full-screen modal overlay** (`fixed inset-0`, `z-50`) with its own
-scroll area, also using the same flex pattern for its own close button.
+**do not remove `flex-shrink-0`** from the header. The detailed view opens as a full-screen modal
+overlay (`fixed inset-0`, `z-50`) with its own scroll area and the same flex pattern.
+
+### QuickProtocolContent — do not re-add early returns
+It used to special-case five protocol shapes (medication, management, flags, table, steps), each
+returning early after rendering a hand-picked set of keys — which **silently hid every other
+section**. Every section now flows through the generic renderer. If a protocol needs bespoke
+presentation, add a shape to `renderValue`, never an early return keyed on a content field.
 
 ### Reference Only banner
-When an FR or SR user taps a CB protocol (reference only):
 ```jsx
 <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-4">
   <p className="text-amber-800 text-sm font-medium">
@@ -407,92 +230,95 @@ When an FR or SR user taps a CB protocol (reference only):
 </div>
 ```
 
-### Level badge colours
-```javascript
-const LEVEL_BADGE = {
-  CB: 'bg-blue-100 text-blue-800',
-  FR: 'bg-green-100 text-green-800',
-  SR: 'bg-amber-100 text-amber-800',
-};
+### lucide-react icons
+Pinned at 0.263, which uses the **older icon names**: `AlertTriangle` (not `TriangleAlert`),
+`AlertOctagon` (not `OctagonAlert`). Check an icon exists before importing:
+```bash
+node -e "console.log('AlertOctagon' in require('lucide-react'))"
 ```
+
+---
+
+## Content Pipeline (v6.2)
+
+The CPG draws flowcharts, diagrams, scales and coloured algorithm blocks as **graphics**. pdf.js
+text extraction drops them silently, leaving a blank gap. That is how earlier editions of this app
+ended up with a Paediatric Assessment Triangle carrying invented signs and a Wong-Baker scale with
+no faces. **Never rebuild protocol content from the text layer alone — read the rendered page.**
+
+```bash
+pnpm render-pages     # all 163 pages → scripts/output/pages/pNNN.png (macOS PDFKit, no poppler)
+pnpm pagemap          # page → protocol map from the page footers + graphic-gap detection
+```
+
+To change protocol content:
+1. Read the rendered page image for that protocol.
+2. Edit `scripts/output/regen/<key>.json` (the per-protocol source of truth for assembly).
+3. `node scripts/assemble_content.mjs <assessments|conditions|medications>` — splices one export
+   block into `contentData.js` and leaves the rest byte-identical. It preserves each protocol's
+   curated `title`/`level`/`category` (level is an authorisation decision) and lets `summary`
+   follow the content.
+4. `pnpm build`, then verify in the browser at 375px.
+
+Derived artifacts under `scripts/output/{pages,content,audit,regen}/` are gitignored and
+regenerable. The audit report `scripts/output/v6.2-page-audit.md` is tracked.
+
+### Rules learned the hard way
+- The CPG is the only authority. Do not fill gaps from general medical knowledge, and do not
+  "correct" the CPG toward standard practice. Invented content caused real defects here.
+- Transcribe CPG typos' **meaning** correctly for clinical terms (`Cyanoisis` → Cyanosis,
+  `lighting strikes` → lightning) and record the deviation.
+- Comparison operators: the CPG prints ↑ for above and ↓ for below. Render as `≥` and `<`
+  (the glyphs, not `>=`), consistently, so ranges partition with no ambiguous boundary.
+- Watch for age-boundary collisions: an explicit `15 years` row plus `≥ 15 years` makes a
+  15-year-old match two rows with different thresholds. Use `> 15 years` there.
 
 ---
 
 ## Tailwind v4 Setup
-This project uses **Tailwind CSS v4** — there is **no** `tailwind.config.js` / `postcss.config.js`.
+No `tailwind.config.js` / `postcss.config.js`. Plugin `@tailwindcss/vite` in `vite.config.js`;
+`src/index.css` starts with `@import "tailwindcss";`.
 
-- Plugin: `@tailwindcss/vite`, registered in `vite.config.js`.
-- Entry: `src/index.css` starts with a single import:
-  ```css
-  @import "tailwindcss";
-  ```
-
-`vite.config.js` (actual):
-```javascript
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-
-export default defineConfig({
-  plugins: [tailwindcss(), react()],
-  base: '/hatzolah-cpg/',
-  build: { outDir: 'dist', sourcemap: false, minify: 'terser' },
-  server: { port: 3000, open: true },
-})
-```
-
----
-
-## PDF Re-Extraction (v6.2)
-The repo currently ships **v4.9** content. To regenerate `src/data/contentData.js` from the
-**v6.2** PDF once it is placed on disk (e.g. `./source/Compiled_v6_2.pdf`):
-
-1. Add an extraction script (`scripts/extract_pdf.mjs`) that:
-   - Reads the PDF page by page and parses protocols by their section headings.
-   - Applies the **level assignment** rules above (pages 118–136 → `CB`; pages 4–117 → `FR`,
-     `SR` only on IV/accredited markers; medications use the fixed level table — do not auto-detect).
-   - Applies the **category mapping** above.
-   - For dual-level protocols, emits **two separate entries** (`…-cb` and `…-fr`).
-   - Preserves and re-exports `PRACTICE_LEVELS`, `CAN_PERFORM`, `REFERENCE_ONLY`, `CATEGORY_COLORS`,
-     `assessmentsContent`, `conditionsContent`, `medicationsContent`.
-   - Writes to `src/data/contentData.js`.
-2. Add `"extract-pdf": "node scripts/extract_pdf.mjs"` to `package.json`.
-3. **Diff** the regenerated file against the current one before committing — confirm the existing
-   keys survive (or change intentionally) and no level/category regressions.
-
-**Tooling note:** the repo ships `pdf-parse-fork` (Node). Try it first to keep a single toolchain.
-The CPG contains Unicode glyphs (✚ ⚠ ➤) and flowchart symbols; if Node extraction yields poor
-glyph/table fidelity, fall back to a Python `pdfplumber` script (a build-time dev script does not
-violate the pnpm-only/no-backend app constraints).
+`vite.config.js` serves dev from `/` and builds to `/hatzolah-cpg/` (GitHub Pages), and honours
+`process.env.PORT`. The service worker is registered only off localhost, so dev never serves stale
+cached assets.
 
 ---
 
 ## pnpm Commands
 ```bash
 pnpm install                 # install dependencies
-pnpm add <pkg>               # production dependency
-pnpm add -D <pkg>            # dev dependency
-pnpm dev                     # start Vite dev server (port 3000)
+pnpm dev                     # Vite dev server (port 3000)
 pnpm build                   # production build → dist/
-pnpm preview                 # serve production build locally
+pnpm preview                 # serve production build
 pnpm deploy                  # build + push to gh-pages
-pnpx <cmd>                   # run binary (replaces npx)
 ```
+
+Content pipeline: `render-pages`, `pagemap`, `extract-pdf`, `extract-tables`, `compare-tables`,
+`prose-diff`, `audit-coverage`.
+
+### pnpm 11 note
+`pnpm-workspace.yaml` carries `allowBuilds: { esbuild: true }`. Without it, pnpm 11 treats
+`ERR_PNPM_IGNORED_BUILDS` as fatal and `pnpm dev` / `pnpm build` exit 1. pnpm 11 **no longer reads
+the `pnpm` field in package.json** — settings live in `pnpm-workspace.yaml`. Use
+`pnpm approve-builds --all` (non-interactive) rather than editing package.json.
 
 ---
 
 ## Constraints
-- **pnpm only** — never npm, never npx (a build-time Python extraction script is the only exception).
+- **pnpm only** — never npm, never npx.
 - **No react-router** — routing is a view state machine in App.jsx.
 - **No Redux / Zustand** — React state + localStorage only.
 - **No backend** — pure static PWA, all data in contentData.js.
-- **Tailwind v4 only** — no inline styles except where Tailwind cannot express the value; no v3 config files.
-- **Do not modify** `CAN_PERFORM` / `REFERENCE_ONLY` — these are medical authorisation rules.
-- **Do not remove** `flex-shrink-0` from ProtocolView header — the 📖 button must always be reachable.
-- **Do not merge** CB and FR versions of dual-level protocols into a single entry.
+- **Tailwind v4 only** — no v3 config files.
+- **Do not modify** `CAN_PERFORM` / `REFERENCE_ONLY` — medical authorisation rules.
+- **Do not remove** `flex-shrink-0` from the ProtocolView header.
+- **Do not merge** CB and FR versions of dual-level protocols.
+- **Do not add early returns** to `QuickProtocolContent`.
+- Protocol content changes go through the content pipeline, verified against the rendered page.
 
 ## Deployment
-GitHub Pages at `https://ilyulev.github.io/hatzolah-cpg/`. Vite base path: `/hatzolah-cpg/`.
+GitHub Pages at `https://ilyulev.github.io/hatzolah-cpg/`.
 ```bash
 pnpm build && pnpm deploy
 ```
