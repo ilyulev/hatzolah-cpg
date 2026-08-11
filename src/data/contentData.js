@@ -600,7 +600,7 @@ export const assessmentsContent = {
     title: 'Pain Assessments',
     level: 'FR',
     category: 'primary',
-    summary: 'Wong-Baker FACES scale for patients who cannot use the 0-10 point pain rating system',
+    summary: 'Pain history mnemonics, and the Wong-Baker FACES scale for patients who cannot use the 0–10 score',
     content: {
       overview: [
         'Certain patient groups (E.G. small children) may be unable to understand the 0-10 point pain rating system. In such circumstances consider using the Wong-Baker FACES Pain Rating Scale.',
@@ -614,6 +614,25 @@ export const assessmentsContent = {
         { score: '8', face: '😣', label: 'Hurts Whole Lot' },
         { score: '10', face: '😭', label: 'Hurts Worst' },
       ],
+      painHistoryMnemonics: {
+        note: 'Not from the Hatzolah CPG. Included as a field aide-memoire for taking a pain history.',
+        dolors: [
+          'D — Description of the pain',
+          'O — Onset time of the pain',
+          'L — Location of the pain',
+          'O — Other symptoms associated with the pain',
+          'R — Relief from the pain (E.G. positional relief, home medications)',
+          'S — Severity / pain score (0–10)',
+        ],
+        opqrst: [
+          'O — Onset: what the patient was doing when it began, and whether it started suddenly or gradually',
+          'P — Provocation / Palliation: what makes it worse, and what makes it better',
+          'Q — Quality: how the patient describes it (E.G. sharp, dull, crushing, burning)',
+          'R — Region / Radiation: where the pain is, and whether it travels anywhere',
+          'S — Severity: pain score out of 10, now and at its worst',
+          'T — Time: how long it has lasted, and whether it is constant or comes and goes',
+        ],
+      },
       notes: [
         'The Wong-Baker FACES Pain Rating Scale is NOT intended to be used by a third person to assess a patient\'s pain on their behalf.',
       ],

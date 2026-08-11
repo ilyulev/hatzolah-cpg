@@ -131,7 +131,7 @@ function DosingCards({ dosingArray }) {
 
 // Humanise a camelCase content key, e.g. "primarySurvey" → "Primary Survey".
 // Whole-key clinical acronyms are upper-cased ("cpr" → "CPR", "rosc" → "ROSC").
-const KEY_ACRONYMS = new Set(['cpr', 'rosc', 'aed', 'gcs', 'avpu', 'dolors', 'copd', 'bgl', 'gtn', 'ed']);
+const KEY_ACRONYMS = new Set(['cpr', 'rosc', 'aed', 'gcs', 'avpu', 'dolors', 'opqrst', 'copd', 'bgl', 'gtn', 'ed']);
 function humanizeKey(k) {
   if (KEY_ACRONYMS.has(k.toLowerCase())) return k.toUpperCase();
   return k
