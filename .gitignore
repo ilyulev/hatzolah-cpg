@@ -2,6 +2,11 @@
 # (the dir form means the !*.json re-include below cannot resurrect files here).
 node_modules/
 dist/
+# Derived CPG audit artifacts: rendered page images (~29 MB), per-protocol
+# content dumps and audit results. All regenerable from the source PDF.
+scripts/output/pages/
+scripts/output/content/
+scripts/output/audit/
 
 # Local CPG source PDF (do not commit binary)
 source/*.pdf

@@ -29,7 +29,9 @@
     "extract-tables": "node scripts/extract_tables.mjs",
     "compare-tables": "node scripts/compare_tables.mjs",
     "prose-diff": "node scripts/prose_diff.mjs",
-    "audit-coverage": "node scripts/audit_coverage.mjs"
+    "audit-coverage": "node scripts/audit_coverage.mjs",
+    "pagemap": "node scripts/pagemap.mjs",
+    "render-pages": "osascript -l JavaScript scripts/render_cpg_pages.jxa.js \"$PWD/source/Compiled_v6_2.pdf\" \"$PWD/scripts/output/pages\" 2"
   },
   "browserslist": {
     "production": [
