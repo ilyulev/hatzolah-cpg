@@ -8,6 +8,7 @@ scripts/output/pages/
 scripts/output/content/
 scripts/output/audit/
 scripts/output/regen/
+scripts/output/content-v62/
 
 # Local CPG source PDF (do not commit binary)
 source/*.pdf

@@ -656,7 +656,7 @@ export const assessmentsContent = {
           ['6 months', '8 kg'],
           ['1 - 9 years', 'Age x 2 + 8 kg'],
           ['10 - 11 years', 'Age x 3.3 kg'],
-          ['≥ 11 years', 'Estimate based on Pt size'],
+          ['> 11 years', 'Estimate based on Pt size'],
         ],
       },
     },
@@ -670,7 +670,7 @@ export const assessmentsContent = {
       ineffectiveBreathing: {
         headers: ['Age', 'Ventilate once every', 'OR'],
         rows: [
-          ['≥ 15 years', '5 seconds', '12x per minute'],
+          ['> 15 years', '5 seconds', '12x per minute'],
           ['12 - 15 years', '3 - 4 seconds', '14 - 26x per minute'],
           ['5 - 11 years', '2 - 3 seconds', '16 - 34x per minute'],
           ['1 - 4 years', '2 - 3 seconds', '20 - 40x per minute'],
@@ -680,7 +680,7 @@ export const assessmentsContent = {
       asthmaUnresponsiveWithPulse: {
         headers: ['Age', 'Ventilate once every', 'OR'],
         rows: [
-          ['≥ 11 years', '8 - 12 seconds', '5 - 8x per minute'],
+          ['> 11 years', '8 - 12 seconds', '5 - 8x per minute'],
           ['5 - 11 years', '5 - 6 seconds', '10 - 14x per minute'],
           ['2 - 4 years', '4 - 5 seconds', '12 - 15x per minute'],
         ],
@@ -1054,7 +1054,7 @@ export const conditionsContent = {
           ventilationRates: {
             headers: ['Age', 'Ventilate every', 'OR'],
             rows: [
-              ['≥ 15 years', '5 seconds', '12x per minute'],
+              ['> 15 years', '5 seconds', '12x per minute'],
               ['12 - 15 years', '3 - 4 seconds', '14 - 26x per minute'],
               ['5 - 11 years', '2 - 3 seconds', '16 - 34x per minute'],
               ['1 - 4 years', '2 - 3 seconds', '20 - 40x per minute'],
@@ -1350,7 +1350,7 @@ export const conditionsContent = {
       ventilationRates: {
         headers: ['Age', 'Ventilate every', 'OR'],
         rows: [
-          ['≥ 15 years', '5 seconds', '12x per minute'],
+          ['> 15 years', '5 seconds', '12x per minute'],
           ['12 - 15 years', '3 - 4 seconds', '14 - 26x per minute'],
           ['5 - 11 years', '2 - 3 seconds', '16 - 34x per minute'],
           ['1 - 4 years', '2 - 3 seconds', '20 - 40x per minute'],
@@ -1957,7 +1957,7 @@ export const conditionsContent = {
           ventilateEvery: {
             headers: ['Age', 'Ventilate every', 'OR'],
             rows: [
-              ['≥ 15 years', '5 seconds', '12x per minute'],
+              ['> 15 years', '5 seconds', '12x per minute'],
               ['12 - 15 years', '3 - 4 seconds', '14 - 26x per minute'],
               ['5 - 11 years', '2 - 3 seconds', '16 - 34x per minute'],
               ['1 - 4 years', '2 - 3 seconds', '20 - 40x per minute'],
@@ -2204,7 +2204,7 @@ export const conditionsContent = {
           ventilationRates: {
             headers: ['Age', 'Ventilate once every', 'OR'],
             rows: [
-              ['≥ 15 years old', '5 seconds', '12x p/min'],
+              ['> 15 years old', '5 seconds', '12x p/min'],
               ['12 - 15 years old', '3 - 4 seconds', '14 - 26x p/min'],
               ['5 - 11 years old', '2 - 3 seconds', '16 - 34x p/min'],
               ['1 - 4 years old', '2 - 3 seconds', '20 - 40x p/min'],
@@ -3115,7 +3115,7 @@ export const conditionsContent = {
           ventilationRates: {
             headers: ['Age', 'Ventilate once every', 'OR'],
             rows: [
-              ['≥ 15 years old', '5 seconds', '12x p/min'],
+              ['> 15 years old', '5 seconds', '12x p/min'],
               ['12 - 15 years old', '3 - 4 seconds', '14 - 26x p/min'],
               ['5 - 11 years old', '2 - 3 seconds', '16 - 34x p/min'],
               ['1 - 4 years old', '2 - 3 seconds', '20 - 40x p/min'],

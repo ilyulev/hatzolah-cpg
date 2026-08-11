@@ -35,6 +35,13 @@ const PAGE_MAP = {
   'altered-consciousness-cb': [125, 125], 'airway-obstruction-cb': [126, 126],
   'anaphylaxis-cb': [127, 129], 'asthma-cb': [130, 133], 'cardiac-arrest-cb': [134, 135],
   'general-trauma-cb': [136, 136],
+  'time-critical': [21, 26], 'safety-netting': [27, 30],
+  'birth-newborn': [60, 65], 'chest-trauma': [108, 108],
+  'adrenaline': [138, 139], 'aspirin': [140, 141], 'cetirizine': [142, 142],
+  'glucagon': [143, 143], 'glucose-paste': [144, 144], 'gtn': [145, 146],
+  'ipratropium': [147, 148], 'methoxyflurane': [149, 150], 'midazolam': [151, 152],
+  'normal-saline': [153, 154], 'ondansetron': [155, 156], 'oxygen': [157, 158],
+  'paracetamol': [159, 161], 'salbutamol-fr': [162, 163], 'salbutamol-cb': [162, 163],
 };
 
 const GLYPHS = { '': '↑', '': '↓' };
@@ -102,7 +109,7 @@ async function loadContent() {
   fs.writeFileSync(tmp, src);
   const m = await import('file://' + tmp);
   fs.unlinkSync(tmp);
-  return { ...m.assessmentsContent, ...m.conditionsContent };
+  return { ...m.assessmentsContent, ...m.conditionsContent, ...m.medicationsContent };
 }
 
 const content = await loadContent();
