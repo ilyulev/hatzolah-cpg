@@ -14,6 +14,7 @@ const CATEGORY_META = {
   trauma:      { emoji: '🩸', label: 'Trauma' },
   medical:     { emoji: '💊', label: 'Medical' },
   paediatric:  { emoji: '👶', label: 'Paediatric' },
+  obstetric:   { emoji: '🤰', label: 'Obstetric' },
   endocrine:   { emoji: '🌡️', label: 'Endocrine' },
   analgesia:   { emoji: '💉', label: 'Analgesia' },
   fluids:      { emoji: '💧', label: 'Fluids' },

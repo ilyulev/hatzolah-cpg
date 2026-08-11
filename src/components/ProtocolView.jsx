@@ -486,6 +486,13 @@ function AgeBandTabs({ bands }) {
   );
 }
 
+// A STOP block draws its own red frame and "STOP" badge, so wrapping it in a
+// section card titled "Stop" prints the word twice. These render unwrapped.
+const isStopShape = (v) => {
+  const one = (o) => o && typeof o === 'object' && !Array.isArray(o) && 'trigger' in o && Array.isArray(o.actions);
+  return one(v) || (Array.isArray(v) && v.length > 0 && v.every(one));
+};
+
 // Stable DOM id for a top-level content section, so workflow branch chips can
 // jump to it. Only one protocol renders at a time, so the key alone is unique.
 const sectionAnchor = (key) => `sec-${key}`;
@@ -653,6 +660,13 @@ function QuickProtocolContent({ proto }) {
   return (
     <>
       {sections.map(([section, value]) => {
+        if (isStopShape(value)) {
+          return (
+            <div key={section} id={sectionAnchor(section)} className="mb-3">
+              {renderValue(value)}
+            </div>
+          );
+        }
         const col = sectionColor(section);
         return (
           <QuickSection
@@ -853,6 +867,13 @@ function DetailedViewOverlay({ proto, onClose }) {
           </div>
         )}
         {sections.map(([section, value]) => {
+          if (isStopShape(value)) {
+            return (
+              <div key={section} id={sectionAnchor(section)} className="scroll-mt-2">
+                {renderValue(value)}
+              </div>
+            );
+          }
           const col = sectionColor(section);
           return (
             <div
