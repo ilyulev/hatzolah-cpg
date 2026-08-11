@@ -32,7 +32,8 @@
     "audit-coverage": "node scripts/audit_coverage.mjs",
     "pagemap": "node scripts/pagemap.mjs",
     "check-age-bands": "node scripts/check_age_bands.mjs",
-    "render-pages": "osascript -l JavaScript scripts/render_cpg_pages.jxa.js \"$PWD/source/Compiled_v6_2.pdf\" \"$PWD/scripts/output/pages\" 2"
+    "render-pages": "osascript -l JavaScript scripts/render_cpg_pages.jxa.js \"$PWD/source/Compiled_v6_2.pdf\" \"$PWD/scripts/output/pages\" 2",
+    "explain-coverage": "node scripts/explain_coverage.mjs"
   },
   "browserslist": {
     "production": [
