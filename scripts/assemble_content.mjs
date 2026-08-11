@@ -90,10 +90,12 @@ for (const k of order) {
     entry = JSON.parse(fs.readFileSync(regenPath, 'utf8'));
     source = k in current ? 'regenerated' : 'NEW';
     if (k in current) {
-      // registry fields are curated / medically authoritative - never let the
-      // regeneration change them for an existing protocol
+      // title/level/category are curated and medically authoritative (level is an
+      // authorisation decision) - never let regeneration move them. `summary` is
+      // only descriptive, so it MUST follow the content: pain-assessment's old
+      // summary advertised the DOLORS mnemonic that the audit proved was invented.
       const cur = current[k];
-      for (const f of ['title', 'level', 'category', 'summary']) {
+      for (const f of ['title', 'level', 'category']) {
         if (entry[f] !== cur[f]) {
           report.push(`  ${k}: kept existing ${f} (${JSON.stringify(cur[f])}), regen proposed ${JSON.stringify(entry[f])}`);
           entry[f] = cur[f];

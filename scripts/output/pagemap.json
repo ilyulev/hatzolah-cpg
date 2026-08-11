@@ -1,0 +1,1946 @@
+{
+  "1": {
+    "page": 1,
+    "footerTitle": null,
+    "footerPageNum": null,
+    "title": "",
+    "words": 9,
+    "maxTextGap": 39,
+    "gapAt": [
+      114,
+      153
+    ]
+  },
+  "2": {
+    "page": 2,
+    "footerTitle": "ASSESSMENTS",
+    "footerPageNum": 2,
+    "title": "CONTENTS",
+    "words": 296,
+    "maxTextGap": 36,
+    "gapAt": [
+      711,
+      747
+    ]
+  },
+  "3": {
+    "page": 3,
+    "footerTitle": "ASSESSMENTS",
+    "footerPageNum": 3,
+    "title": "",
+    "words": 270,
+    "maxTextGap": 21,
+    "gapAt": [
+      450,
+      471
+    ]
+  },
+  "4": {
+    "page": 4,
+    "footerTitle": "ASSESSMENTS",
+    "footerPageNum": 4,
+    "title": "ASSESSMENTS",
+    "words": 1,
+    "maxTextGap": 0,
+    "gapAt": null
+  },
+  "5": {
+    "page": 5,
+    "footerTitle": "ACCEPTABLE VITAL SIGN VALUES",
+    "footerPageNum": 5,
+    "title": "VITAL SIGN VALUES",
+    "words": 409,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "6": {
+    "page": 6,
+    "footerTitle": "ACCEPTABLE VITAL SIGN VALUES",
+    "footerPageNum": 6,
+    "title": "",
+    "words": 64,
+    "maxTextGap": 27,
+    "gapAt": [
+      678,
+      705
+    ]
+  },
+  "7": {
+    "page": 7,
+    "footerTitle": "CLINICAL FLAGS",
+    "footerPageNum": 7,
+    "title": "CLINICAL FLAGS",
+    "words": 469,
+    "maxTextGap": 45,
+    "gapAt": [
+      555,
+      600
+    ]
+  },
+  "8": {
+    "page": 8,
+    "footerTitle": "CLINICAL FLAGS",
+    "footerPageNum": 8,
+    "title": "",
+    "words": 130,
+    "maxTextGap": 48,
+    "gapAt": [
+      681,
+      729
+    ]
+  },
+  "9": {
+    "page": 9,
+    "footerTitle": "CLINICAL FLAGS",
+    "footerPageNum": 9,
+    "title": "",
+    "words": 199,
+    "maxTextGap": 36,
+    "gapAt": [
+      492,
+      528
+    ]
+  },
+  "10": {
+    "page": 10,
+    "footerTitle": "CLINICAL APPROACH",
+    "footerPageNum": 10,
+    "title": "CLINICAL APPROACH",
+    "words": 207,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "11": {
+    "page": 11,
+    "footerTitle": "CLINICAL APPROACH",
+    "footerPageNum": 11,
+    "title": "",
+    "words": 250,
+    "maxTextGap": 51,
+    "gapAt": [
+      216,
+      267
+    ]
+  },
+  "12": {
+    "page": 12,
+    "footerTitle": "PAEDIATRIC ASSESSMENT TRIANGLE",
+    "footerPageNum": 12,
+    "title": "PAEDIATRIC ASSESSMENT TRIANGLE",
+    "words": 164,
+    "maxTextGap": 264,
+    "gapAt": [
+      318,
+      582
+    ]
+  },
+  "13": {
+    "page": 13,
+    "footerTitle": "CONSCIOUS STATUS ASSESSMENT S",
+    "footerPageNum": 13,
+    "title": "CONSCIOUS STATUS ASSESSMENT S",
+    "words": 215,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "14": {
+    "page": 14,
+    "footerTitle": "CONSCIOUS STATUS ASSESSMENT S",
+    "footerPageNum": 14,
+    "title": "",
+    "words": 186,
+    "maxTextGap": 39,
+    "gapAt": [
+      591,
+      630
+    ]
+  },
+  "15": {
+    "page": 15,
+    "footerTitle": "CONSCIOUS STATUS ASSESSMENT S",
+    "footerPageNum": 15,
+    "title": "",
+    "words": 37,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "16": {
+    "page": 16,
+    "footerTitle": "RESPIRATORY STATUS ASSESSMENT",
+    "footerPageNum": 16,
+    "title": "RESPIRATORY STATUS ASSESSMENT",
+    "words": 225,
+    "maxTextGap": 48,
+    "gapAt": [
+      507,
+      555
+    ]
+  },
+  "17": {
+    "page": 17,
+    "footerTitle": "RESPIRATORY STATUS ASSESSMENT",
+    "footerPageNum": 17,
+    "title": "",
+    "words": 58,
+    "maxTextGap": 36,
+    "gapAt": [
+      570,
+      606
+    ]
+  },
+  "18": {
+    "page": 18,
+    "footerTitle": "PERFUSION STATUS ASSESSMENT",
+    "footerPageNum": 18,
+    "title": "PERFUSION STATUS ASSESSMENT",
+    "words": 279,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "19": {
+    "page": 19,
+    "footerTitle": "PAIN ASSESSMENT S",
+    "footerPageNum": 19,
+    "title": "PAIN ASSESSMENT S",
+    "words": 128,
+    "maxTextGap": 150,
+    "gapAt": [
+      381,
+      531
+    ]
+  },
+  "20": {
+    "page": 20,
+    "footerTitle": "WEIGHT CALCULATIONS",
+    "footerPageNum": 20,
+    "title": "WEIGHT CALCULATIONS",
+    "words": 93,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "21": {
+    "page": 21,
+    "footerTitle": "TIME CRITICAL GUIDELINES",
+    "footerPageNum": 21,
+    "title": "TIME CRITICAL GUIDELINES",
+    "words": 254,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "22": {
+    "page": 22,
+    "footerTitle": "TIME CRITICAL GUIDELINES",
+    "footerPageNum": 22,
+    "title": "",
+    "words": 108,
+    "maxTextGap": 27,
+    "gapAt": [
+      678,
+      705
+    ]
+  },
+  "23": {
+    "page": 23,
+    "footerTitle": "TIME CRITICAL GUIDELINES",
+    "footerPageNum": 23,
+    "title": "",
+    "words": 181,
+    "maxTextGap": 27,
+    "gapAt": [
+      552,
+      579
+    ]
+  },
+  "24": {
+    "page": 24,
+    "footerTitle": "TIME CRITICAL GUIDELINES",
+    "footerPageNum": 24,
+    "title": "",
+    "words": 167,
+    "maxTextGap": 27,
+    "gapAt": [
+      603,
+      630
+    ]
+  },
+  "25": {
+    "page": 25,
+    "footerTitle": "TIME CRITICAL GUIDELINES",
+    "footerPageNum": 25,
+    "title": "",
+    "words": 86,
+    "maxTextGap": 27,
+    "gapAt": [
+      378,
+      405
+    ]
+  },
+  "26": {
+    "page": 26,
+    "footerTitle": "TIME CRITICAL GUIDELINES",
+    "footerPageNum": 26,
+    "title": "",
+    "words": 160,
+    "maxTextGap": 27,
+    "gapAt": [
+      702,
+      729
+    ]
+  },
+  "27": {
+    "page": 27,
+    "footerTitle": "SAFETY NETTING",
+    "footerPageNum": 27,
+    "title": "SAFETY NETTING",
+    "words": 77,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "28": {
+    "page": 28,
+    "footerTitle": "SAFETY NETTING",
+    "footerPageNum": 28,
+    "title": "",
+    "words": 268,
+    "maxTextGap": 36,
+    "gapAt": [
+      267,
+      303
+    ]
+  },
+  "29": {
+    "page": 29,
+    "footerTitle": "SAFETY NETTING",
+    "footerPageNum": 29,
+    "title": "",
+    "words": 91,
+    "maxTextGap": 24,
+    "gapAt": [
+      705,
+      729
+    ]
+  },
+  "30": {
+    "page": 30,
+    "footerTitle": "SAFETY NETTING",
+    "footerPageNum": 30,
+    "title": "",
+    "words": 282,
+    "maxTextGap": 45,
+    "gapAt": [
+      393,
+      438
+    ]
+  },
+  "31": {
+    "page": 31,
+    "footerTitle": "VENTILATION RATES",
+    "footerPageNum": 31,
+    "title": "VENTILATION RATES",
+    "words": 171,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "32": {
+    "page": 32,
+    "footerTitle": "GENERAL MANAGEMENT",
+    "footerPageNum": 32,
+    "title": "",
+    "words": 2,
+    "maxTextGap": 51,
+    "gapAt": [
+      513,
+      564
+    ]
+  },
+  "33": {
+    "page": 33,
+    "footerTitle": "ALTERED CONSCIOUS STATE (ACUTE)",
+    "footerPageNum": 33,
+    "title": "ALTERED CONSCIOUSNESS (ACUTE)",
+    "words": 177,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "34": {
+    "page": 34,
+    "footerTitle": "ALTERED CONSCIOUS STATE (ACUTE)",
+    "footerPageNum": 34,
+    "title": "",
+    "words": 296,
+    "maxTextGap": 36,
+    "gapAt": [
+      642,
+      678
+    ]
+  },
+  "35": {
+    "page": 35,
+    "footerTitle": "ALTERED CONSCIOUS STATE (ACUTE)",
+    "footerPageNum": 35,
+    "title": "",
+    "words": 198,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "36": {
+    "page": 36,
+    "footerTitle": "ALTERED CONSCIOUS STATE (ACUTE)",
+    "footerPageNum": 36,
+    "title": "",
+    "words": 66,
+    "maxTextGap": 27,
+    "gapAt": [
+      678,
+      705
+    ]
+  },
+  "37": {
+    "page": 37,
+    "footerTitle": "AIRWAY OBSTRUCTION",
+    "footerPageNum": 37,
+    "title": "AIRWAY OBSTRUCTION",
+    "words": 241,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "38": {
+    "page": 38,
+    "footerTitle": "AIRWAY OBSTRUCTION",
+    "footerPageNum": 38,
+    "title": "",
+    "words": 94,
+    "maxTextGap": 36,
+    "gapAt": [
+      654,
+      690
+    ]
+  },
+  "39": {
+    "page": 39,
+    "footerTitle": "ALCOHOL INTOXICATION",
+    "footerPageNum": 39,
+    "title": "ALCOHOL INTOXICATION",
+    "words": 109,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "40": {
+    "page": 40,
+    "footerTitle": "ALCOHOL INTOXICATION",
+    "footerPageNum": 40,
+    "title": "",
+    "words": 154,
+    "maxTextGap": 36,
+    "gapAt": [
+      393,
+      429
+    ]
+  },
+  "41": {
+    "page": 41,
+    "footerTitle": "ALLERGY ( MILD )",
+    "footerPageNum": 41,
+    "title": "ALLERGY ( MILD )",
+    "words": 134,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "42": {
+    "page": 42,
+    "footerTitle": "ALLERGY ( MILD )",
+    "footerPageNum": 42,
+    "title": "",
+    "words": 31,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "43": {
+    "page": 43,
+    "footerTitle": "ANAPHYLAXIS",
+    "footerPageNum": 43,
+    "title": "ANAPHYLAXIS",
+    "words": 222,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "44": {
+    "page": 44,
+    "footerTitle": "ANAPHYLAXIS",
+    "footerPageNum": 44,
+    "title": "",
+    "words": 257,
+    "maxTextGap": 36,
+    "gapAt": [
+      492,
+      528
+    ]
+  },
+  "45": {
+    "page": 45,
+    "footerTitle": "ANAPHYLAXIS",
+    "footerPageNum": 45,
+    "title": "",
+    "words": 86,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "46": {
+    "page": 46,
+    "footerTitle": "ANAPHYLAXIS",
+    "footerPageNum": 46,
+    "title": "",
+    "words": 118,
+    "maxTextGap": 36,
+    "gapAt": [
+      567,
+      603
+    ]
+  },
+  "47": {
+    "page": 47,
+    "footerTitle": "ANAPHYLAXIS",
+    "footerPageNum": 47,
+    "title": "",
+    "words": 156,
+    "maxTextGap": 39,
+    "gapAt": [
+      378,
+      417
+    ]
+  },
+  "48": {
+    "page": 48,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 48,
+    "title": "ASTHMA HISTORY / WHEEZE",
+    "words": 107,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "49": {
+    "page": 49,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 49,
+    "title": "",
+    "words": 223,
+    "maxTextGap": 36,
+    "gapAt": [
+      717,
+      753
+    ]
+  },
+  "50": {
+    "page": 50,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 50,
+    "title": "",
+    "words": 74,
+    "maxTextGap": 39,
+    "gapAt": [
+      528,
+      567
+    ]
+  },
+  "51": {
+    "page": 51,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 51,
+    "title": "",
+    "words": 215,
+    "maxTextGap": 36,
+    "gapAt": [
+      717,
+      753
+    ]
+  },
+  "52": {
+    "page": 52,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 52,
+    "title": "",
+    "words": 76,
+    "maxTextGap": 39,
+    "gapAt": [
+      528,
+      567
+    ]
+  },
+  "53": {
+    "page": 53,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 53,
+    "title": "",
+    "words": 217,
+    "maxTextGap": 36,
+    "gapAt": [
+      717,
+      753
+    ]
+  },
+  "54": {
+    "page": 54,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 54,
+    "title": "",
+    "words": 76,
+    "maxTextGap": 39,
+    "gapAt": [
+      528,
+      567
+    ]
+  },
+  "55": {
+    "page": 55,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 55,
+    "title": "",
+    "words": 240,
+    "maxTextGap": 36,
+    "gapAt": [
+      717,
+      753
+    ]
+  },
+  "56": {
+    "page": 56,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 56,
+    "title": "",
+    "words": 76,
+    "maxTextGap": 39,
+    "gapAt": [
+      528,
+      567
+    ]
+  },
+  "57": {
+    "page": 57,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 57,
+    "title": "",
+    "words": 201,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "58": {
+    "page": 58,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 58,
+    "title": "",
+    "words": 165,
+    "maxTextGap": 36,
+    "gapAt": [
+      579,
+      615
+    ]
+  },
+  "59": {
+    "page": 59,
+    "footerTitle": "ASTHMA HISTORY / WHEEZE",
+    "footerPageNum": 59,
+    "title": "",
+    "words": 182,
+    "maxTextGap": 72,
+    "gapAt": [
+      543,
+      615
+    ]
+  },
+  "60": {
+    "page": 60,
+    "footerTitle": "BIRTH & NEWBORN RESUSCITATION",
+    "footerPageNum": 60,
+    "title": "BIRTH & NEWBORN RESUSCITATION",
+    "words": 230,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "61": {
+    "page": 61,
+    "footerTitle": "BIRTH & NEWBORN RESUSCITATION",
+    "footerPageNum": 61,
+    "title": "",
+    "words": 153,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "62": {
+    "page": 62,
+    "footerTitle": "BIRTH & NEWBORN RESUSCITATION",
+    "footerPageNum": 62,
+    "title": "",
+    "words": 249,
+    "maxTextGap": 36,
+    "gapAt": [
+      543,
+      579
+    ]
+  },
+  "63": {
+    "page": 63,
+    "footerTitle": "BIRTH & NEWBORN RESUSCITATION",
+    "footerPageNum": 63,
+    "title": "",
+    "words": 222,
+    "maxTextGap": 48,
+    "gapAt": [
+      318,
+      366
+    ]
+  },
+  "64": {
+    "page": 64,
+    "footerTitle": "BIRTH & NEWBORN RESUSCITATION",
+    "footerPageNum": 64,
+    "title": "",
+    "words": 223,
+    "maxTextGap": 36,
+    "gapAt": [
+      666,
+      702
+    ]
+  },
+  "65": {
+    "page": 65,
+    "footerTitle": "BIRTH & NEWBORN RESUSCITATION",
+    "footerPageNum": 65,
+    "title": "",
+    "words": 106,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "66": {
+    "page": 66,
+    "footerTitle": "CARDIAC ARREST",
+    "footerPageNum": 66,
+    "title": "CARDIAC ARREST",
+    "words": 100,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "67": {
+    "page": 67,
+    "footerTitle": "CARDIAC ARREST",
+    "footerPageNum": 67,
+    "title": "",
+    "words": 258,
+    "maxTextGap": 48,
+    "gapAt": [
+      381,
+      429
+    ]
+  },
+  "68": {
+    "page": 68,
+    "footerTitle": "CARDIAC ARREST",
+    "footerPageNum": 68,
+    "title": "",
+    "words": 285,
+    "maxTextGap": 36,
+    "gapAt": [
+      585,
+      621
+    ]
+  },
+  "69": {
+    "page": 69,
+    "footerTitle": "CARDIAC ARREST",
+    "footerPageNum": 69,
+    "title": "",
+    "words": 348,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "70": {
+    "page": 70,
+    "footerTitle": "CARDIAC ARREST",
+    "footerPageNum": 70,
+    "title": "",
+    "words": 171,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "71": {
+    "page": 71,
+    "footerTitle": "CARDIAC ARREST",
+    "footerPageNum": 71,
+    "title": "",
+    "words": 171,
+    "maxTextGap": 27,
+    "gapAt": [
+      690,
+      717
+    ]
+  },
+  "72": {
+    "page": 72,
+    "footerTitle": "CARDIAC CHEST PAIN / DISCOMFORT",
+    "footerPageNum": 72,
+    "title": "CARDIAC CHEST PAIN / DISCOMFORT",
+    "words": 241,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "73": {
+    "page": 73,
+    "footerTitle": "CARDIAC CHEST PAIN / DISCOMFORT",
+    "footerPageNum": 73,
+    "title": "",
+    "words": 168,
+    "maxTextGap": 27,
+    "gapAt": [
+      453,
+      480
+    ]
+  },
+  "74": {
+    "page": 74,
+    "footerTitle": "CARDIAC CHEST PAIN / DISCOMFORT",
+    "footerPageNum": 74,
+    "title": "",
+    "words": 115,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "75": {
+    "page": 75,
+    "footerTitle": "DEHYDRATION",
+    "footerPageNum": 75,
+    "title": "DEHYDRATION",
+    "words": 204,
+    "maxTextGap": 39,
+    "gapAt": [
+      684,
+      723
+    ]
+  },
+  "76": {
+    "page": 76,
+    "footerTitle": "DEHYDRATION",
+    "footerPageNum": 76,
+    "title": "",
+    "words": 181,
+    "maxTextGap": 39,
+    "gapAt": [
+      543,
+      582
+    ]
+  },
+  "77": {
+    "page": 77,
+    "footerTitle": "FALLS",
+    "footerPageNum": 77,
+    "title": "FALLS",
+    "words": 215,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "78": {
+    "page": 78,
+    "footerTitle": "FALLS",
+    "footerPageNum": 78,
+    "title": "",
+    "words": 218,
+    "maxTextGap": 27,
+    "gapAt": [
+      627,
+      654
+    ]
+  },
+  "79": {
+    "page": 79,
+    "footerTitle": "FALLS",
+    "footerPageNum": 79,
+    "title": "",
+    "words": 156,
+    "maxTextGap": 27,
+    "gapAt": [
+      378,
+      405
+    ]
+  },
+  "80": {
+    "page": 80,
+    "footerTitle": "FALLS",
+    "footerPageNum": 80,
+    "title": "",
+    "words": 232,
+    "maxTextGap": 27,
+    "gapAt": [
+      702,
+      729
+    ]
+  },
+  "81": {
+    "page": 81,
+    "footerTitle": "FALLS",
+    "footerPageNum": 81,
+    "title": "",
+    "words": 196,
+    "maxTextGap": 27,
+    "gapAt": [
+      702,
+      729
+    ]
+  },
+  "82": {
+    "page": 82,
+    "footerTitle": "FALLS",
+    "footerPageNum": 82,
+    "title": "",
+    "words": 276,
+    "maxTextGap": 36,
+    "gapAt": [
+      441,
+      477
+    ]
+  },
+  "83": {
+    "page": 83,
+    "footerTitle": "HYPOGLYCAEMIA",
+    "footerPageNum": 83,
+    "title": "HYPOGLYCAEMIA",
+    "words": 206,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "84": {
+    "page": 84,
+    "footerTitle": "HYPOGLYCAEMIA",
+    "footerPageNum": 84,
+    "title": "",
+    "words": 164,
+    "maxTextGap": 39,
+    "gapAt": [
+      690,
+      729
+    ]
+  },
+  "85": {
+    "page": 85,
+    "footerTitle": "HYPOGLYCAEMIA",
+    "footerPageNum": 85,
+    "title": "",
+    "words": 182,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "86": {
+    "page": 86,
+    "footerTitle": "INFECTION / SEPSIS",
+    "footerPageNum": 86,
+    "title": "INFECTION / SEPSIS",
+    "words": 217,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "87": {
+    "page": 87,
+    "footerTitle": "INFECTION / SEPSIS",
+    "footerPageNum": 87,
+    "title": "",
+    "words": 116,
+    "maxTextGap": 36,
+    "gapAt": [
+      543,
+      579
+    ]
+  },
+  "88": {
+    "page": 88,
+    "footerTitle": "INFECTION / SEPSIS",
+    "footerPageNum": 88,
+    "title": "",
+    "words": 169,
+    "maxTextGap": 27,
+    "gapAt": [
+      678,
+      705
+    ]
+  },
+  "89": {
+    "page": 89,
+    "footerTitle": "INFECTION / SEPSIS",
+    "footerPageNum": 89,
+    "title": "",
+    "words": 133,
+    "maxTextGap": 27,
+    "gapAt": [
+      678,
+      705
+    ]
+  },
+  "90": {
+    "page": 90,
+    "footerTitle": "NAUSEA / VOMITING",
+    "footerPageNum": 90,
+    "title": "NAUSEA / VOMITING",
+    "words": 103,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "91": {
+    "page": 91,
+    "footerTitle": "NAUSEA / VOMITING",
+    "footerPageNum": 91,
+    "title": "",
+    "words": 114,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "92": {
+    "page": 92,
+    "footerTitle": "PAIN RELIEF (NON - CARDIAC)",
+    "footerPageNum": 92,
+    "title": "PAIN RELIEF ( NON - CARDIAC )",
+    "words": 109,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "93": {
+    "page": 93,
+    "footerTitle": "PAIN RELIEF (NON - CARDIAC)",
+    "footerPageNum": 93,
+    "title": "",
+    "words": 170,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "94": {
+    "page": 94,
+    "footerTitle": "PAIN RELIEF (NON - CARDIAC)",
+    "footerPageNum": 94,
+    "title": "",
+    "words": 247,
+    "maxTextGap": 27,
+    "gapAt": [
+      378,
+      405
+    ]
+  },
+  "95": {
+    "page": 95,
+    "footerTitle": "PAIN RELIEF (NON - CARDIAC)",
+    "footerPageNum": 95,
+    "title": "",
+    "words": 44,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "96": {
+    "page": 96,
+    "footerTitle": "SEIZURE",
+    "footerPageNum": 96,
+    "title": "SEIZURE",
+    "words": 149,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "97": {
+    "page": 97,
+    "footerTitle": "SEIZURE",
+    "footerPageNum": 97,
+    "title": "",
+    "words": 200,
+    "maxTextGap": 36,
+    "gapAt": [
+      492,
+      528
+    ]
+  },
+  "98": {
+    "page": 98,
+    "footerTitle": "SEIZURE",
+    "footerPageNum": 98,
+    "title": "",
+    "words": 138,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "99": {
+    "page": 99,
+    "footerTitle": "STROKE",
+    "footerPageNum": 99,
+    "title": "STROKE (ACUTE)",
+    "words": 253,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "100": {
+    "page": 100,
+    "footerTitle": "STROKE",
+    "footerPageNum": 100,
+    "title": "",
+    "words": 213,
+    "maxTextGap": 39,
+    "gapAt": [
+      690,
+      729
+    ]
+  },
+  "101": {
+    "page": 101,
+    "footerTitle": "TRAUMA MANAGEMENT",
+    "footerPageNum": 101,
+    "title": "TRAUMA",
+    "words": 2,
+    "maxTextGap": 51,
+    "gapAt": [
+      585,
+      636
+    ]
+  },
+  "102": {
+    "page": 102,
+    "footerTitle": "GENERAL TRAUMA APPROACH",
+    "footerPageNum": 102,
+    "title": "GENERAL TRAUMA APPROACH",
+    "words": 270,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "103": {
+    "page": 103,
+    "footerTitle": "GENERAL TRAUMA APPROACH",
+    "footerPageNum": 103,
+    "title": "",
+    "words": 248,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "104": {
+    "page": 104,
+    "footerTitle": "HEAD TRAUMA",
+    "footerPageNum": 104,
+    "title": "HEAD TRAUMA",
+    "words": 166,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "105": {
+    "page": 105,
+    "footerTitle": "SPINAL TRAUMA",
+    "footerPageNum": 105,
+    "title": "SPINAL TRAUMA",
+    "words": 229,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "106": {
+    "page": 106,
+    "footerTitle": "SPINAL TRAUMA",
+    "footerPageNum": 106,
+    "title": "",
+    "words": 113,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "107": {
+    "page": 107,
+    "footerTitle": "SPINAL TRAUMA",
+    "footerPageNum": 107,
+    "title": "",
+    "words": 114,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "108": {
+    "page": 108,
+    "footerTitle": "CHEST TRAUMA",
+    "footerPageNum": 108,
+    "title": "CHEST TRAUMA",
+    "words": 80,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "109": {
+    "page": 109,
+    "footerTitle": "BURNS",
+    "footerPageNum": 109,
+    "title": "BURNS",
+    "words": 167,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "110": {
+    "page": 110,
+    "footerTitle": "BURNS",
+    "footerPageNum": 110,
+    "title": "",
+    "words": 198,
+    "maxTextGap": 27,
+    "gapAt": [
+      378,
+      405
+    ]
+  },
+  "111": {
+    "page": 111,
+    "footerTitle": "BURNS",
+    "footerPageNum": 111,
+    "title": "",
+    "words": 79,
+    "maxTextGap": 27,
+    "gapAt": [
+      678,
+      705
+    ]
+  },
+  "112": {
+    "page": 112,
+    "footerTitle": "WOUND CARE",
+    "footerPageNum": 112,
+    "title": "WOUND CARE",
+    "words": 133,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "113": {
+    "page": 113,
+    "footerTitle": "WOUND CARE",
+    "footerPageNum": 113,
+    "title": "",
+    "words": 183,
+    "maxTextGap": 36,
+    "gapAt": [
+      618,
+      654
+    ]
+  },
+  "114": {
+    "page": 114,
+    "footerTitle": "WOUND CARE",
+    "footerPageNum": 114,
+    "title": "",
+    "words": 136,
+    "maxTextGap": 39,
+    "gapAt": [
+      453,
+      492
+    ]
+  },
+  "115": {
+    "page": 115,
+    "footerTitle": "WOUND CARE",
+    "footerPageNum": 115,
+    "title": "",
+    "words": 94,
+    "maxTextGap": 27,
+    "gapAt": [
+      702,
+      729
+    ]
+  },
+  "116": {
+    "page": 116,
+    "footerTitle": "WOUND CARE",
+    "footerPageNum": 116,
+    "title": "",
+    "words": 207,
+    "maxTextGap": 27,
+    "gapAt": [
+      678,
+      705
+    ]
+  },
+  "117": {
+    "page": 117,
+    "footerTitle": "WOUND CARE",
+    "footerPageNum": 117,
+    "title": "",
+    "words": 0,
+    "maxTextGap": 0,
+    "gapAt": null
+  },
+  "118": {
+    "page": 118,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 118,
+    "title": "",
+    "words": 3,
+    "maxTextGap": 0,
+    "gapAt": null
+  },
+  "119": {
+    "page": 119,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 119,
+    "title": "CLINICAL APPROACH (L1)",
+    "words": 172,
+    "maxTextGap": 48,
+    "gapAt": [
+      609,
+      657
+    ]
+  },
+  "120": {
+    "page": 120,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 120,
+    "title": "",
+    "words": 35,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "121": {
+    "page": 121,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 121,
+    "title": "CONSCIOUS STATUS ASSESSMENTS (L1)",
+    "words": 137,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "122": {
+    "page": 122,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 122,
+    "title": "RESPIRATORY STATUS ASSESSMENT (L1)",
+    "words": 84,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "123": {
+    "page": 123,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 123,
+    "title": "",
+    "words": 59,
+    "maxTextGap": 36,
+    "gapAt": [
+      618,
+      654
+    ]
+  },
+  "124": {
+    "page": 124,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 124,
+    "title": "PERFUSION STATUS ASSESSMENT (L1)",
+    "words": 159,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "125": {
+    "page": 125,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 125,
+    "title": "ACUTE ALTERED CONSCIOUSNESS (L1)",
+    "words": 189,
+    "maxTextGap": 45,
+    "gapAt": [
+      573,
+      618
+    ]
+  },
+  "126": {
+    "page": 126,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 126,
+    "title": "AIRWAY OBSTRUCTION (L1)",
+    "words": 203,
+    "maxTextGap": 39,
+    "gapAt": [
+      684,
+      723
+    ]
+  },
+  "127": {
+    "page": 127,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 127,
+    "title": "ANAPHYLAXIS (L1)",
+    "words": 237,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "128": {
+    "page": 128,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 128,
+    "title": "",
+    "words": 248,
+    "maxTextGap": 36,
+    "gapAt": [
+      642,
+      678
+    ]
+  },
+  "129": {
+    "page": 129,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 129,
+    "title": "",
+    "words": 107,
+    "maxTextGap": 39,
+    "gapAt": [
+      555,
+      594
+    ]
+  },
+  "130": {
+    "page": 130,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 130,
+    "title": "ASTHMA HISTORY / WHEEZE (L1)",
+    "words": 108,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "131": {
+    "page": 131,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 131,
+    "title": "",
+    "words": 171,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "132": {
+    "page": 132,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 132,
+    "title": "",
+    "words": 145,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "133": {
+    "page": 133,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 133,
+    "title": "",
+    "words": 65,
+    "maxTextGap": 27,
+    "gapAt": [
+      678,
+      705
+    ]
+  },
+  "134": {
+    "page": 134,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 134,
+    "title": "CARDIAC ARREST (L1)",
+    "words": 194,
+    "maxTextGap": 54,
+    "gapAt": [
+      183,
+      237
+    ]
+  },
+  "135": {
+    "page": 135,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 135,
+    "title": "",
+    "words": 226,
+    "maxTextGap": 45,
+    "gapAt": [
+      411,
+      456
+    ]
+  },
+  "136": {
+    "page": 136,
+    "footerTitle": "LEVEL 1 GUIDELINES",
+    "footerPageNum": 136,
+    "title": "GENERAL TRAUMA APPROACH (L1)",
+    "words": 236,
+    "maxTextGap": 48,
+    "gapAt": [
+      174,
+      222
+    ]
+  },
+  "137": {
+    "page": 137,
+    "footerTitle": "PHARMACOLOGY",
+    "footerPageNum": 137,
+    "title": "",
+    "words": 1,
+    "maxTextGap": 0,
+    "gapAt": null
+  },
+  "138": {
+    "page": 138,
+    "footerTitle": "ADRENALINE",
+    "footerPageNum": 138,
+    "title": "ADRENALINE",
+    "words": 102,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "139": {
+    "page": 139,
+    "footerTitle": "ADRENALINE",
+    "footerPageNum": 139,
+    "title": "",
+    "words": 105,
+    "maxTextGap": 36,
+    "gapAt": [
+      582,
+      618
+    ]
+  },
+  "140": {
+    "page": 140,
+    "footerTitle": "ASPIRIN",
+    "footerPageNum": 140,
+    "title": "ASPIRIN",
+    "words": 79,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "141": {
+    "page": 141,
+    "footerTitle": "ASPIRIN",
+    "footerPageNum": 141,
+    "title": "",
+    "words": 34,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "142": {
+    "page": 142,
+    "footerTitle": "CETIRIZINE",
+    "footerPageNum": 142,
+    "title": "CETIRIZINE",
+    "words": 93,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "143": {
+    "page": 143,
+    "footerTitle": "GLUCAGON",
+    "footerPageNum": 143,
+    "title": "GLUCAGON",
+    "words": 126,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "144": {
+    "page": 144,
+    "footerTitle": "GLUCOSE PASTE",
+    "footerPageNum": 144,
+    "title": "GLUCOSE PASTE",
+    "words": 90,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "145": {
+    "page": 145,
+    "footerTitle": "GLYCERYL TRINITRATE",
+    "footerPageNum": 145,
+    "title": "GLYCERYL TRINITRATE",
+    "words": 141,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "146": {
+    "page": 146,
+    "footerTitle": "GLYCERYL TRINITRATE",
+    "footerPageNum": 146,
+    "title": "",
+    "words": 91,
+    "maxTextGap": 36,
+    "gapAt": [
+      543,
+      579
+    ]
+  },
+  "147": {
+    "page": 147,
+    "footerTitle": "IPRATROPOUM BROMIDE",
+    "footerPageNum": 147,
+    "title": "IPRATROPIUM BROMIDE",
+    "words": 66,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "148": {
+    "page": 148,
+    "footerTitle": "IPRATROPOUM BROMIDE",
+    "footerPageNum": 148,
+    "title": "",
+    "words": 76,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "149": {
+    "page": 149,
+    "footerTitle": "METHOXYFLURANE",
+    "footerPageNum": 149,
+    "title": "METHOXYFLURANE",
+    "words": 115,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "150": {
+    "page": 150,
+    "footerTitle": "METHOXYFLURANE",
+    "footerPageNum": 150,
+    "title": "",
+    "words": 44,
+    "maxTextGap": 24,
+    "gapAt": [
+      729,
+      753
+    ]
+  },
+  "151": {
+    "page": 151,
+    "footerTitle": "MIDAZOLAM",
+    "footerPageNum": 151,
+    "title": "MIDAZOLAM",
+    "words": 130,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "152": {
+    "page": 152,
+    "footerTitle": "MIDAZOLAM",
+    "footerPageNum": 152,
+    "title": "",
+    "words": 138,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "153": {
+    "page": 153,
+    "footerTitle": "NORMAL SALINE",
+    "footerPageNum": 153,
+    "title": "NORMAL SALINE",
+    "words": 75,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "154": {
+    "page": 154,
+    "footerTitle": "NORMAL SALINE",
+    "footerPageNum": 154,
+    "title": "",
+    "words": 96,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "155": {
+    "page": 155,
+    "footerTitle": "ONDANSETRON",
+    "footerPageNum": 155,
+    "title": "ONDANSETRON",
+    "words": 128,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "156": {
+    "page": 156,
+    "footerTitle": "ONDANSETRON",
+    "footerPageNum": 156,
+    "title": "",
+    "words": 114,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "157": {
+    "page": 157,
+    "footerTitle": "OXYGEN",
+    "footerPageNum": 157,
+    "title": "OXYGEN",
+    "words": 99,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "158": {
+    "page": 158,
+    "footerTitle": "OXYGEN",
+    "footerPageNum": 158,
+    "title": "",
+    "words": 139,
+    "maxTextGap": 27,
+    "gapAt": [
+      378,
+      405
+    ]
+  },
+  "159": {
+    "page": 159,
+    "footerTitle": "PARACETAMOL",
+    "footerPageNum": 159,
+    "title": "PARACETAMOL",
+    "words": 157,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "160": {
+    "page": 160,
+    "footerTitle": "PARACETAMOL",
+    "footerPageNum": 160,
+    "title": "",
+    "words": 170,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  },
+  "161": {
+    "page": 161,
+    "footerTitle": "PARACETAMOL",
+    "footerPageNum": 161,
+    "title": "",
+    "words": 247,
+    "maxTextGap": 27,
+    "gapAt": [
+      378,
+      405
+    ]
+  },
+  "162": {
+    "page": 162,
+    "footerTitle": "SALBUTAMOL",
+    "footerPageNum": 162,
+    "title": "SALBUTAMOL",
+    "words": 144,
+    "maxTextGap": 39,
+    "gapAt": [
+      708,
+      747
+    ]
+  },
+  "163": {
+    "page": 163,
+    "footerTitle": "SALBUTAMOL",
+    "footerPageNum": 163,
+    "title": "",
+    "words": 143,
+    "maxTextGap": 36,
+    "gapAt": [
+      591,
+      627
+    ]
+  }
+}

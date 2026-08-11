@@ -169,8 +169,28 @@ const SECTION_COLORS = {
   // red frame, so the section wrapper stays white to avoid a red-on-red muddle.
   stop: { title: CPG.red, bg: '#ffffff', border: '#eb1f2733' },
   recognition: { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' },
+  // Pharmacology sections. These used to be styled by a bespoke medication
+  // branch; now they earn their colours the same way every other section does.
+  contraindications: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+  adverseEffects: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+  precautions: { title: CPG.amber, bg: CPG.amberTint, border: CPG.amberBorder },
+  indications: { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' },
 };
-const sectionColor = (key) => SECTION_COLORS[key] || { title: CPG.navy, bg: '#ffffff', border: CPG.navyBorder };
+// The v6.2 rebuild uses ~120 distinct section keys, because sections are named
+// after the CPG's own headings. Enumerating every one is unmaintainable, so an
+// exact match wins first and the long tail falls back to the heading's sense.
+const RED_SECTION = { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' };
+const AMBER_SECTION = { title: CPG.amber, bg: CPG.amberTint, border: CPG.amberBorder };
+const GREEN_SECTION = { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' };
+const NAVY_SECTION = { title: CPG.navy, bg: '#ffffff', border: CPG.navyBorder };
+const sectionColor = (key) => {
+  if (SECTION_COLORS[key]) return SECTION_COLORS[key];
+  const k = key.toLowerCase();
+  if (/stop|immediate|redflag|danger|donot|critical|contraindication|adverse|primarysurvey|rapidassessment|haemorrhage/.test(k)) return RED_SECTION;
+  if (/yellowflag|precaution|caution/.test(k)) return AMBER_SECTION;
+  if (/definition|recognition|principle|overview|indication|furthernote/.test(k)) return GREEN_SECTION;
+  return NAVY_SECTION;
+};
 
 // An array of same-shaped objects with scalar values (e.g. the DRSABC primary
 // survey: {step, label, action}) reads as a table, not a repeated key/value dump.
@@ -612,151 +632,12 @@ function renderValue(val, depth = 0) {
 function QuickProtocolContent({ proto }) {
   const c = proto.content || {};
 
-  // Medication protocol
-  if (c.indications && c.dosing) {
-    return (
-      <>
-        {c.adverseEffects?.length > 0 && (
-          <QuickSection title="⚠️ Adverse Effects / Warnings" color="#dc2626">
-            <BulletList items={c.adverseEffects} />
-          </QuickSection>
-        )}
-        <QuickSection title="Indications" color="#2563eb">
-          <BulletList items={c.indications} />
-        </QuickSection>
-        {c.contraindications?.length > 0 && (
-          <QuickSection title="Contraindications" color="#dc2626">
-            <BulletList items={c.contraindications} />
-          </QuickSection>
-        )}
-        <QuickSection title="Dosing" color="#16a34a">
-          <DosingCards dosingArray={c.dosing} />
-        </QuickSection>
-        {c.precautions?.length > 0 && (
-          <QuickSection title="Precautions" color="#d97706">
-            <BulletList items={c.precautions} />
-          </QuickSection>
-        )}
-        {c.pregnancy && (
-          <QuickSection title="Pregnancy / Postpartum" color="#db2777">
-            <p className="text-sm text-gray-700">{c.pregnancy}</p>
-          </QuickSection>
-        )}
-      </>
-    );
-  }
-
-  // Condition with management steps
-  if (c.management) {
-    const mgmtItems = Array.isArray(c.management) ? c.management : Object.values(c.management).flat();
-    return (
-      <>
-        {c.recognition && (
-          <QuickSection title="Recognition" color="#7c3aed">
-            {c.rash ? (
-              <div className="space-y-1">
-                {Object.entries(c.rash).map(([k, v]) => (
-                  <p key={k} className="text-sm"><span className="font-bold">{k}:</span> {v}</p>
-                ))}
-              </div>
-            ) : Array.isArray(c.recognition) ? (
-              <BulletList items={c.recognition} />
-            ) : (
-              <p className="text-sm text-gray-700">{c.recognition}</p>
-            )}
-          </QuickSection>
-        )}
-        <QuickSection title="Management" color="#16a34a">
-          <BulletList items={mgmtItems} />
-        </QuickSection>
-        {c.dosing && (
-          <QuickSection title="Dosing" color="#2563eb">
-            <DosingCards dosingArray={c.dosing} />
-          </QuickSection>
-        )}
-        {c.notes && (
-          <QuickSection title="Notes" color="#dc2626" bodyClassName="bg-red-50 border border-red-200">
-            <BulletList items={Array.isArray(c.notes) ? c.notes : [c.notes]} />
-          </QuickSection>
-        )}
-      </>
-    );
-  }
-
-  // Clinical flags (red / yellow escalation criteria)
-  if (c.redFlags || c.yellowFlags) {
-    const renderFlagGroup = (flags) =>
-      Array.isArray(flags) ? (
-        <BulletList items={flags} />
-      ) : (
-        <div className="space-y-2">
-          {Object.entries(flags).map(([k, v]) => (
-            <div key={k}>
-              <p className="text-xs font-semibold text-gray-500 uppercase mb-1">
-                {k.replace(/([A-Z])/g, ' $1').trim()}
-              </p>
-              <BulletList items={v} />
-            </div>
-          ))}
-        </div>
-      );
-    return (
-      <>
-        {c.redFlags && (
-          <QuickSection title="🔴 Red Flags" color={CPG.red} bodyStyle={{ background: CPG.redTint }}>
-            {c.definition?.red && <p className="text-sm text-gray-700 mb-2">{c.definition.red}</p>}
-            {renderFlagGroup(c.redFlags)}
-          </QuickSection>
-        )}
-        {c.yellowFlags && (
-          <QuickSection title="🟡 Yellow Flags" color={CPG.amber} bodyStyle={{ background: CPG.amberTint }}>
-            {c.definition?.yellow && <p className="text-sm text-gray-700 mb-2">{c.definition.yellow}</p>}
-            {renderFlagGroup(c.yellowFlags)}
-          </QuickSection>
-        )}
-      </>
-    );
-  }
-
-  // Assessment with table
-  if (c.table) {
-    return (
-      <>
-        {c.definition && (
-          <QuickSection title="Definition" color="#7c3aed">
-            <p className="text-sm text-gray-700">{c.definition}</p>
-          </QuickSection>
-        )}
-        <QuickSection title="Reference Values" color="#2563eb">
-          <SimpleTable headers={c.table.headers} rows={c.table.rows} />
-        </QuickSection>
-        {c.notes && (
-          <QuickSection title="Notes" color="#dc2626" bodyClassName="bg-red-50 border border-red-200">
-            <BulletList items={c.notes} />
-          </QuickSection>
-        )}
-      </>
-    );
-  }
-
-  // Steps-based (clinical approach)
-  if (c.steps) {
-    return (
-      <QuickSection title="Steps" color="#2563eb">
-        <div className="space-y-2">
-          {c.steps.map((step, i) => (
-            <div key={i} className="flex items-start">
-              <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 text-xs font-bold flex items-center justify-center flex-shrink-0 mr-3 mt-0.5">{i + 1}</span>
-              <div>
-                <p className="text-sm font-semibold text-gray-800">{step.label}</p>
-                {step.detail && <p className="text-xs text-gray-500">{step.detail}</p>}
-              </div>
-            </div>
-          ))}
-        </div>
-      </QuickSection>
-    );
-  }
+  // NOTE: this used to special-case five protocol shapes (medication, management,
+  // flags, table, steps), each returning early after rendering a hand-picked set
+  // of keys. With the full v6.2 content that silently HID every other section -
+  // a protocol could carry a red STOP block or a dosing table and the quick view
+  // would never show it. Every section now goes through the generic renderer
+  // below, which colours it per the CPG and dispatches on shape.
 
   // Fallback: render every content section generically so no protocol shows an
   // empty card. (Covers bespoke shapes like primarySurvey, flowchart, ageGroups, …)
