@@ -541,23 +541,44 @@ function scrollToSection(key, e) {
 
 // A decision point: { question, branches:[{condition, goTo, label}] } → tappable
 // chips that scroll to the target section (the "workflow arrows", as anchor links).
+// Colour a decision branch the way the CPG does: the UNWELL arm is red (go to
+// the Primary Survey now), the WELL arm green (safe to proceed to assessment).
+// Test "unwell" first - it contains "well".
+function branchColor(condition) {
+  const c = (condition || '').toLowerCase();
+  if (/unwell|abnormal|deteriorat/.test(c)) return CPG.red;
+  if (/^well\b|normal|stable/.test(c)) return CPG.green;
+  return CPG.navy;
+}
+
 function BranchChips({ node }) {
+  // A binary decision is the whole point of this control, so the two arms sit
+  // side by side as equal-width targets rather than wrapping pills - they are
+  // tapped one-handed, at speed, on a phone.
+  const twoUp = node.branches.length === 2;
   return (
     <div>
       {node.question && <p className="text-sm text-gray-700 mb-2">{node.question}</p>}
-      <div className="flex flex-wrap gap-2">
+      <div className={twoUp ? 'grid grid-cols-2 gap-2' : 'flex flex-wrap gap-2'}>
         {node.branches.map((b, i) => {
           const sameLabel = !b.condition || b.condition.toLowerCase() === b.label.toLowerCase();
+          const bg = branchColor(b.condition);
           return (
             <button
               key={i}
               onClick={(e) => scrollToSection(b.goTo, e)}
-              className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold text-white active:scale-95 transition-transform"
-              style={{ background: CPG.navy }}
+              className="flex flex-col items-center justify-center text-center rounded-xl px-3 py-3 text-white active:scale-95 transition-transform shadow-sm min-h-[4rem]"
+              style={{ background: bg }}
             >
-              {!sameLabel && <span className="uppercase tracking-wide">{b.condition}</span>}
-              <span aria-hidden>→</span>
-              <span>{b.label}</span>
+              {!sameLabel && (
+                <span className="text-base font-extrabold uppercase tracking-wide leading-tight">
+                  {b.condition}
+                </span>
+              )}
+              <span className={`flex items-center gap-1 leading-tight ${sameLabel ? 'text-sm font-bold' : 'text-xs font-semibold opacity-95 mt-0.5'}`}>
+                <span aria-hidden>→</span>
+                <span>{b.label}</span>
+              </span>
             </button>
           );
         })}
