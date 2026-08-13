@@ -700,9 +700,7 @@ export const assessmentsContent = {
     content: {
       definition: [
         'The PAT (Paediatric Assessment Triangle) consists of three headings / components…',
-        'Appearance',
-        'Work of breathing',
-        'Circulation',
+        ['Appearance', 'Work of breathing', 'Circulation'],
         '…which collectively form a rapid first impression as to whether a child is well or unwell',
       ],
       assessmentTriangle: [
@@ -1092,7 +1090,7 @@ export const conditionsContent = {
         'Maintain neutral spine alignment',
         'IF Life threatening bleeding — Control bleeding + dress wound',
         'IF Necessary — Suction airway',
-        'Avoid: Stimulating gag reflex',
+        ['Avoid: Stimulating gag reflex'],
         'ONLY IF Necessary for ventilation — Airway adjunct',
       ],
       overdoseDrugsMedicationsAdditionalManagement: {
@@ -1117,8 +1115,10 @@ export const conditionsContent = {
       },
       seizureAdditionalManagement: [
         'Protect patient from injury',
-        'IF Necessary — Pillow / pad head',
-        'Do NOT forcibly restrict the patient’s body from convulsing',
+        [
+          'IF Necessary — Pillow / pad head',
+          'Do NOT forcibly restrict the patient’s body from convulsing',
+        ],
         'IF Available (E.G. prescribed medications) — Assist carer(s) to administer seizure plan',
         'Carefully monitor respiratory status',
       ],
@@ -1938,8 +1938,7 @@ export const conditionsContent = {
         },
         cprCompressions: [
           '100-120 per minute',
-          'IF ≥ 4 years old — 2 hands technique',
-          'IF < 5 years old — 1 hand technique',
+          ['IF ≥ 4 years old — 2 hands technique', 'IF < 5 years old — 1 hand technique'],
         ],
         ventilation: [
           {
@@ -1953,8 +1952,10 @@ export const conditionsContent = {
         ],
         repeat: [
           'EVERY 2 minutes — From top of this box (I.E. DEFIBRILLATOR + CPR)',
-          'IF Multiple officers — Alternate: CPR responder 2 minutely',
-          'IF No shock advised — Check for pulse (in < 10 seconds)',
+          [
+            'IF Multiple officers — Alternate: CPR responder 2 minutely',
+            'IF No shock advised — Check for pulse (in < 10 seconds)',
+          ],
         ],
       },
       rosc: {
@@ -2321,28 +2322,39 @@ export const conditionsContent = {
         criteria: [
           'Major trauma following blunt trauma to the head or trunk',
           'ANY new motor deficits / weakness when asked to…',
-          { arms: 'Grasp / pull / push', legs: 'Push / plantar flex, pull / dorsiflex, leg raise' },
+          [
+            {
+              arms: 'Grasp / pull / push',
+              legs: 'Push / plantar flex, pull / dorsiflex, leg raise',
+            },
+          ],
           'ANY new sensory deficits / reduced sensation when applying light touch to the following',
-          {
-            arms: 'Light touch across the palm and back of hand',
-            legs: 'Light touch to lateral side of calcaneus',
-            questioning: 'The patient should be questioned regarding numbness, tingling, burning or any other altered sensation, anywhere in the body',
-          },
+          [
+            {
+              arms: 'Light touch across the palm and back of hand',
+              legs: 'Light touch to lateral side of calcaneus',
+              questioning: 'The patient should be questioned regarding numbness, tingling, burning or any other altered sensation, anywhere in the body',
+            },
+          ],
           'NOTE: The left and right sides should be tested simultaneously to compare strength between each side of the body',
           'Midline pain / tenderness on palpation',
           'Inability to rotate neck 45° left and right',
-          {
-            doNot: ['Do NOT turn the patient\'s head for them'],
-            instructions: [
-              'Ask the patient to turn their head slowly left and right, approximately 45 degrees each direction, advised them to stop if they feel ANY pain OR resistance',
-            ],
-          },
+          [
+            {
+              doNot: ['Do NOT turn the patient\'s head for them'],
+              instructions: [
+                'Ask the patient to turn their head slowly left and right, approximately 45 degrees each direction, advised them to stop if they feel ANY pain OR resistance',
+              ],
+            },
+          ],
           'Altered conscious state',
           'Intoxication',
           'Significant distracting injury',
           'History of vertebral disease / abnormalities',
           'Age ≥ 65 years old',
-          { consider: 'Virtual ED IF age is the ONLY concerning feature post injury (E.G. fall)' },
+          [
+            { consider: 'Virtual ED IF age is the ONLY concerning feature post injury (E.G. fall)' },
+          ],
         ],
       },
       cervicalCollar: [
@@ -2408,10 +2420,12 @@ export const conditionsContent = {
     content: {
       definition: [
         'A burn refers to damage to skin or other tissue primarily due to',
-        'Thermal injury — E.G. heat / fire',
-        'Electrical injury — E.G. lightning strikes, electrical grid injury',
-        'Chemical injury — E.G. acids, industrial chemicals',
-        'Radiation injury — E.G. industrial accidents',
+        [
+          'Thermal injury — E.G. heat / fire',
+          'Electrical injury — E.G. lightning strikes, electrical grid injury',
+          'Chemical injury — E.G. acids, industrial chemicals',
+          'Radiation injury — E.G. industrial accidents',
+        ],
       ],
       stop: {
         trigger: 'Safety',
@@ -2544,7 +2558,7 @@ export const conditionsContent = {
             'Gently clean with 0.9% sodium chloride',
             'Leave open air unless actively bleeding',
             'Refer to ED / VVED / PPCC within 2 hours',
-            'Antibiotics + Tetanus injections may be required',
+            ['Antibiotics + Tetanus injections may be required'],
           ],
         },
         {
@@ -2560,7 +2574,7 @@ export const conditionsContent = {
           management: [
             'Gently clean with 0.9% sodium chloride',
             'Cover with low-absorbent dressing to prevent further trauma and absorb exudate',
-            'E.G. Dry island dressing',
+            ['E.G. Dry island dressing'],
             'Refer to GP for review within 24 hours',
           ],
         },
@@ -2586,7 +2600,7 @@ export const conditionsContent = {
           management: [
             'Gently clean with 0.9% sodium chloride',
             'Carefully realign the skin flap (where possible) close to its original position',
-            'Use supplied tweezers and / or gauze moistened with saline',
+            ['Use supplied tweezers and / or gauze moistened with saline'],
             'Apply Melolin plus bandage OR silicone dressing',
             'Refer to GP / PPCC / ED for review within 12 hours',
           ],
@@ -2666,14 +2680,14 @@ export const conditionsContent = {
         'Differentials excluded',
         'No other acute medical conditions',
         'Patient is considered low risk (as per following criteria)',
-      ],
-      lowRiskCriteria: [
-        'Has capacity to make their own decisions',
-        'Able to ambulate',
-        'Competent sober adult able to care for patient in a safe place',
-        'NO red flag criteria met',
-        'Patient is normothermic',
-        'Exclusion of other differentials (AEIOUTIPS)',
+        [
+          'Has capacity to make their own decisions',
+          'Able to ambulate',
+          'Competent sober adult able to care for patient in a safe place',
+          'NO red flag criteria met',
+          'Patient is normothermic',
+          'Exclusion of other differentials (AEIOUTIPS)',
+        ],
       ],
       management: {
         steps: ['Remain with sober adult'],
@@ -2955,8 +2969,10 @@ export const conditionsContent = {
     content: {
       recognition: [
         'Use this guideline for patients meeting either of the following criteria',
-        'Nausea / vomiting that is NOT being tolerated',
-        'OR Prophylactically for spinally immobilised patients',
+        [
+          'Nausea / vomiting that is NOT being tolerated',
+          'OR Prophylactically for spinally immobilised patients',
+        ],
       ],
       stop: {
         trigger: 'IF Altered conscious',
@@ -3149,11 +3165,13 @@ export const conditionsContent = {
       management: [
         'SitRep: Hatzolah dispatch + call ambulance',
         'Protect patient from injury',
-        'IF Risk of injury — Pillow / pad head',
-        'Do NOT forcibly restrict the patient’s body from convulsing',
+        [
+          'IF Risk of injury — Pillow / pad head',
+          'Do NOT forcibly restrict the patient’s body from convulsing',
+        ],
         'IF Available (E.G. prescribed medications) — Assist carer(s) to administer seizure plan',
         'IF Meeting GCSE criteria * — Midazolam, IM',
-        'Only accredited responders may administer Midazolam',
+        ['Only accredited responders may administer Midazolam'],
         'Carefully monitor respiratory status',
       ],
       dosing: [
@@ -3693,14 +3711,16 @@ export const conditionsContent = {
       },
       birthHeadRotation: [
         'With next contraction the baby’s head will turn to face one of the mother’s thighs (restitution)',
-        'This indicates internal rotation of shoulders in preparation for birth of body',
+        ['This indicates internal rotation of shoulders in preparation for birth of body'],
       ],
       birthShouldersAndBody: {
         steps: [
           'May be passive or guided birth',
           'Hold babies head between hands',
-          'Apply gentle downwards pressure to deliver top shoulder',
-          'Apply gentle upwards pressure to deliver bottom shoulder',
+          [
+            'Apply gentle downwards pressure to deliver top shoulder',
+            'Apply gentle upwards pressure to deliver bottom shoulder',
+          ],
           'Support the baby',
         ],
         note: 'Note: Time of baby birth',
@@ -3726,10 +3746,12 @@ export const conditionsContent = {
         newbornResuscitation: 'IF HR < 100 OR Apnoea / Gasping',
         ventilate: [
           '💊 Room Air, Newborn BVM — Ventilate once every…',
-          '1 - 1.5 seconds (40 - 60x p/min)',
-          'Do NOT over inflate the lungs',
+          ['1 - 1.5 seconds (40 - 60x p/min)', 'Do NOT over inflate the lungs'],
         ],
-        reAssess: ['Re-Assess: Heart Rate every 30 seconds', 'And each time manage below as appropriate'],
+        reAssess: [
+          'Re-Assess: Heart Rate every 30 seconds',
+          ['And each time manage below as appropriate'],
+        ],
       },
       disposition: {
         question: 'Re-Assess: Heart Rate every 30 seconds — and each time manage as appropriate',
@@ -3779,9 +3801,9 @@ export const conditionsContent = {
         delivery: [
           'Position: Mother squatting — To allow for gravity to assist expulsion',
           'Placenta birthed by maternal effort',
-          'Advise mother: “To give a little push” to help birth placenta',
+          ['Advise mother: “To give a little push” to help birth placenta'],
           'Use 2 hands to support + remove placenta using a twisting “see saw” motion',
-          'Ease membranes slowly out of the vagina',
+          ['Ease membranes slowly out of the vagina'],
           'Note: Time of placenta delivery',
         ],
         afterDelivery: [
@@ -4110,9 +4132,11 @@ export const medicationsContent = {
       precautions: [
         'Patients should not be administered ≥ 6 mL of methoxyflurane in a 24 hour period, due to increased risk of kidney damage',
         'Limit occupational exposure',
-        'Do NOT administer in a confined space',
-        'Ensure adequate ventilation in ambulance',
-        'Place used Penthrox inhalers in closed bag when not in use',
+        [
+          'Do NOT administer in a confined space',
+          'Ensure adequate ventilation in ambulance',
+          'Place used Penthrox inhalers in closed bag when not in use',
+        ],
       ],
       adverseEffects: ['Dizziness', 'Drowsiness', 'Hypotension', 'Nausea / Vomiting'],
       pregnancy: 'Safe for use in pregnancy. Safe for use while breastfeeding.',
@@ -4145,9 +4169,11 @@ export const medicationsContent = {
       ],
       precautions: [
         'Reduce doses for patients that are:',
-        '- Elderly / frail',
-        '- Weigh less than 60 kgs',
-        '- Have chronic renal failure, CCF or shock',
+        [
+          '- Elderly / frail',
+          '- Weigh less than 60 kgs',
+          '- Have chronic renal failure, CCF or shock',
+        ],
         'The CNS depressant effects of benzodiazepines are enhanced in the presence of narcotics and other tranquilisers including alcohol',
         'Can cause severe respiratory depression in patients with COPD',
         'Patients with myasthenia gravis',
@@ -4196,9 +4222,7 @@ export const medicationsContent = {
       contraindications: ['Bilateral fine crackles on chest auscultation suggestive of APO'],
       precautions: [
         'Reduce doses for patients that are:',
-        '– Elderly / frail',
-        '– Heart failure',
-        '– Renal failure',
+        ['– Elderly / frail', '– Heart failure', '– Renal failure'],
       ],
       adverseEffects: ['Potential for fluid overload with high risk patients or large volumes'],
       dosing: [
@@ -4350,13 +4374,13 @@ export const medicationsContent = {
       ],
       precautions: [
         'Liver toxicity may occur in paracetamol overdose',
-        'Do NOT administer if paracetamol has already been given within past 4 hours',
-        'Do NOT administer if total paracetamol within 24 hours exceeds 4 g in adults',
-        'Do NOT administer if total paracetamol within 24 hours exceeds 60 mg/kg in children',
+        [
+          'Do NOT administer if paracetamol has already been given within past 4 hours',
+          'Do NOT administer if total paracetamol within 24 hours exceeds 4 g in adults',
+          'Do NOT administer if total paracetamol within 24 hours exceeds 60 mg/kg in children',
+        ],
         'Risk of liver toxicity increases in the following circumstances',
-        'Impaired liver function / liver disease',
-        'Elderly / frail patients',
-        'Malnourishment',
+        ['Impaired liver function / liver disease', 'Elderly / frail patients', 'Malnourishment'],
       ],
       adverseEffects: [
         'Rashes or other hypersensitivity reactions',

@@ -8,6 +8,7 @@ scripts/output/pages/
 scripts/output/content/
 scripts/output/audit/
 scripts/output/regen/
+scripts/output/regen-prenest/
 scripts/output/content-v62/
 
 # Temp module the content assembler writes next to contentData.js while it

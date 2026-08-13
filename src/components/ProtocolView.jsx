@@ -43,6 +43,16 @@ function BulletList({ items, depth = 0 }) {
             </li>
           );
         }
+        // An item that is a nested OBJECT (e.g. the ARMS / LEGS sub-blocks under a
+        // spinal deficit) renders as its own block with its own indent, so a
+        // bullet glyph beside it reads as an orphan marker against a second rule.
+        if (item && typeof item === 'object') {
+          return (
+            <li key={i} className="list-none">
+              {renderValue(item, depth + 1)}
+            </li>
+          );
+        }
         // A top-level item immediately followed by a sub-list is the lead-in that
         // introduces it ("The following risk factors also increase…"). Weighting it
         // gives the group a visible head, so the eye lands on the category before
