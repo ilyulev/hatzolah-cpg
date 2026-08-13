@@ -1098,16 +1098,25 @@ function DetailedViewOverlay({ proto, onClose }) {
             );
           }
           const col = sectionColor(section);
+          // The extended tier is reference PROSE, read in paragraphs rather than
+          // scanned for an action. A fully tinted card behind several hundred
+          // words of text is heavy, so these sit on white with the section colour
+          // carried by a left accent instead - the colour still codes the
+          // section, but the text keeps a clean ground.
           return (
             <div
               key={section}
               id={sectionAnchor(section)}
               className="rounded-xl shadow-sm p-4 scroll-mt-2"
-              style={{ background: col.bg, border: `1px solid ${col.border}` }}
+              style={
+                showExt
+                  ? { background: '#ffffff', border: '1px solid #e5e7eb', borderLeft: `4px solid ${col.title}` }
+                  : { background: col.bg, border: `1px solid ${col.border}` }
+              }
             >
               <h3
-                className="font-bold text-sm uppercase tracking-wide mb-3 pb-2 border-b"
-                style={{ color: col.title, borderColor: col.border }}
+                className={`font-bold uppercase tracking-wide mb-3 pb-2 border-b ${showExt ? 'text-[13px]' : 'text-sm'}`}
+                style={{ color: col.title, borderColor: showExt ? '#f1f5f9' : col.border }}
               >
                 {humanizeKey(section)}
               </h3>
