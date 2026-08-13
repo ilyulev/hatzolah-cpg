@@ -22,16 +22,31 @@ function QuickSection({ title, color, children, bodyClassName = 'bg-white border
   );
 }
 
-function BulletList({ items }) {
+// Bullet list with CPG-style nesting. An item that is itself an ARRAY is the
+// sub-list belonging to the item above it, matching the guideline's two-level
+// layout (a lead-in such as "Chest pain associated with ANY of the following…"
+// owning its own indented ▸ items). Flattening those into one level produced an
+// undifferentiated wall of bullets that is hard to read in the field.
+function BulletList({ items, depth = 0 }) {
   if (!items?.length) return null;
   return (
-    <ul className="space-y-1">
-      {items.map((item, i) => (
-        <li key={i} className="text-sm text-gray-700 flex items-start">
-          <span className="text-gray-400 mr-2 mt-0.5 flex-shrink-0">•</span>
-          <span>{item}</span>
-        </li>
-      ))}
+    <ul className={depth === 0 ? 'space-y-1' : 'space-y-1 mt-1 ml-1 pl-3 border-l-2 border-gray-200'}>
+      {items.map((item, i) => {
+        if (Array.isArray(item)) {
+          // Belongs to the preceding bullet, so it is not itself a bullet.
+          return (
+            <li key={i} className="list-none">
+              <BulletList items={item} depth={depth + 1} />
+            </li>
+          );
+        }
+        return (
+          <li key={i} className="text-sm text-gray-700 flex items-start">
+            <span className="text-gray-400 mr-2 mt-0.5 flex-shrink-0">{depth === 0 ? '•' : '▸'}</span>
+            <span>{item && typeof item === 'object' ? renderValue(item, depth + 1) : item}</span>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -699,16 +714,9 @@ function renderValue(val, depth = 0) {
         </div>
       );
     }
-    return (
-      <ul className="space-y-1 ml-2">
-        {val.map((item, i) => (
-          <li key={i} className="flex items-start text-sm text-gray-700">
-            <span className="text-gray-400 mr-2 flex-shrink-0">•</span>
-            {item && typeof item === 'object' ? renderValue(item, depth + 1) : String(item)}
-          </li>
-        ))}
-      </ul>
-    );
+    // Delegate to BulletList so a nested array renders as an indented sub-list
+    // rather than being flattened into the parent level.
+    return <BulletList items={val} />;
   }
   if (typeof val === 'object') {
     // Decision point with workflow branches → jump-link chips
