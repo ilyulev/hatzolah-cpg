@@ -8,8 +8,7 @@
 // Output: scripts/output/v6.2-coverage-audit.md   (pnpm audit-coverage)
 
 import fs from 'fs';
-import os from 'os';
-import path from 'path';
+import { loadAllProtocols } from './lib/load_content.mjs';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const pdf = require('pdf-parse-fork');
@@ -104,12 +103,7 @@ function headersOf(items, titleUpper) {
 const median = (a) => { const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)] || 0; };
 
 async function loadContent() {
-  const src = fs.readFileSync('src/data/contentData.js', 'utf8');
-  const tmp = path.join(os.tmpdir(), `cd-audit-${process.pid}.mjs`);
-  fs.writeFileSync(tmp, src);
-  const m = await import('file://' + tmp);
-  fs.unlinkSync(tmp);
-  return { ...m.assessmentsContent, ...m.conditionsContent, ...m.medicationsContent };
+  return loadAllProtocols();
 }
 
 const content = await loadContent();

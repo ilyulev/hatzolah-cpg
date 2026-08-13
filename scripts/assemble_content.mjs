@@ -29,6 +29,21 @@ const { exportName, add } = GROUPS[group];
 const FILE = 'src/data/contentData.js';
 const REGEN = 'scripts/output/regen';
 
+// App-authored content keys whose value is a JS identifier imported at the top of
+// contentData.js, not literal data (e.g. wound-care's dressingPhotos points at
+// the base64 image module). The regen JSONs cannot express an import, and
+// serialising the resolved value would inline ~75 KB of base64 into this file, so
+// these are re-emitted as the bare identifier and left in their natural position.
+// Shape: exportName -> protocolKey -> { contentKey: identifier }.
+const APP_AUTHORED_REFS = {
+  conditionsContent: { 'wound-care': { dressingPhotos: 'woundDressingPhotos' } },
+};
+
+// A pre-formatted expression the serialiser emits verbatim (no quoting), so an
+// imported identifier survives the eval → re-serialise round-trip.
+class Raw {
+  constructor(code) { this.code = code; }
+}
 
 // ── JS literal serialiser (keeps the file idiomatic: bare keys, single quotes) ──
 const IDENT = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
@@ -39,6 +54,7 @@ function ser(v, ind) {
   const pad = '  '.repeat(ind);
   const padIn = '  '.repeat(ind + 1);
   if (v === null) return 'null';
+  if (v instanceof Raw) return v.code;
   if (typeof v === 'string') return q(v);
   if (typeof v === 'number' || typeof v === 'boolean') return String(v);
   if (Array.isArray(v)) {
@@ -122,6 +138,18 @@ for (const k of order) {
     entry = current[k];
     source = 'unchanged';
     kept++;
+  }
+  // Re-emit app-authored import references (e.g. dressingPhotos) as bare
+  // identifiers instead of the resolved base64 blobs. Overwrites an existing key
+  // in place (order preserved) or appends when regeneration omitted it.
+  const refs = APP_AUTHORED_REFS[exportName]?.[k];
+  if (refs) {
+    entry = { ...entry, content: { ...(entry.content || {}) } };
+    for (const [ck, ident] of Object.entries(refs)) {
+      const had = ck in entry.content;
+      entry.content[ck] = new Raw(ident);
+      report.push(`  ${''.padEnd(12)} ${k.padEnd(34)} ${had ? 'kept' : 'added'} app-ref ${ck} = ${ident}`);
+    }
   }
   const sections = Object.keys(entry.content || {}).length;
   lines.push(`  ${key(k)}: ${ser(entry, 1)},`);

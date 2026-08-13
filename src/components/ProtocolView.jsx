@@ -109,6 +109,15 @@ function DosingCards({ dosingArray }) {
               ⚠ {d.confirm}
             </p>
           )}
+          {/* The CPG's "Go to CPG" row pointing at the full guideline for this
+              drug. Shown as text rather than a link: the Level 1 dose tables
+              reference the FR Anaphylaxis CPG, which is out of a CB responder's
+              scope and so has no tile to navigate to. */}
+          {d.goToCpg && (
+            <p className="mt-2 text-xs text-gray-500">
+              <span aria-hidden>↳ </span>Go to CPG: <span className="font-semibold text-gray-700">{d.goToCpg}</span>
+            </p>
+          )}
           {d.weightTable && (
             <div className="mt-2">
               {/* Label the ratio from the entry rather than hardcoding it - the
@@ -178,7 +187,12 @@ function PhotoCards({ photos }) {
 // Humanise a camelCase content key, e.g. "primarySurvey" → "Primary Survey".
 // Whole-key clinical acronyms are upper-cased ("cpr" → "CPR", "rosc" → "ROSC").
 const KEY_ACRONYMS = new Set(['cpr', 'rosc', 'aed', 'gcs', 'avpu', 'dolors', 'opqrst', 'copd', 'bgl', 'gtn', 'ed']);
+// Headings a camelCase key cannot express. `pregnancy` is the long-standing key
+// for a block the CPG heads "PREGNANCY / POSTPARTUM" - rendering it as just
+// "Pregnancy" drops the postpartum half of the scope on four medications.
+const KEY_LABELS = { pregnancy: 'Pregnancy / Postpartum' };
 function humanizeKey(k) {
+  if (KEY_LABELS[k]) return KEY_LABELS[k];
   if (KEY_ACRONYMS.has(k.toLowerCase())) return k.toUpperCase();
   return k
     .replace(/([A-Z])/g, ' $1')
@@ -461,7 +475,13 @@ function RuleRows({ rules }) {
       {rules.map((r, i) => (
         <div key={i} className="rounded-lg px-3 py-2" style={{ background: CPG.navyTint }}>
           <div className="flex items-start gap-1.5">
-            <span className="text-[10px] font-extrabold uppercase mt-0.5 flex-shrink-0" style={{ color: CPG.navy }}>If</span>
+            {/* The CPG prints the operator as a black chip and it is not always
+                IF: hypoglycaemia's carbohydrate row is ONCE (a temporal gate,
+                "once the patient can swallow"), which is not the same
+                instruction as IF. Honour an explicit `op` when the data sets it. */}
+            <span className="text-[10px] font-extrabold uppercase mt-0.5 flex-shrink-0" style={{ color: CPG.navy }}>
+              {r.op || 'If'}
+            </span>
             <span className="text-sm font-semibold text-gray-900">{r.if}</span>
           </div>
           <div className="flex items-start gap-1.5 mt-1">
@@ -481,9 +501,15 @@ function DispositionCards({ node }) {
   return (
     <div className="space-y-2">
       {node.question && <p className="text-sm font-semibold text-gray-900">{node.question}</p>}
-      {(node.options || []).map((o, i) => (
-        <div key={i} className="rounded-lg border px-3 py-2 bg-white" style={{ borderColor: CPG.navyBorder }}>
-          <p className="text-sm font-extrabold" style={{ color: CPG.navy }}>{o.label}</p>
+      {(node.options || []).map((o, i) => {
+        // `tone` carries the CPG's own colour coding where an option set is
+        // graded rather than merely alternative - the p30 safety-netting handout
+        // traffic-lights Ambulance Victoria / VVED / Nurse-On-Call from most to
+        // least urgent, which is how a patient reads it at a glance.
+        const tone = { red: CPG.red, amber: CPG.amber, green: CPG.green }[o.tone] || CPG.navy;
+        return (
+        <div key={i} className="rounded-lg border px-3 py-2 bg-white" style={{ borderColor: `${tone}55`, borderLeftWidth: 4, borderLeftColor: tone }}>
+          <p className="text-sm font-extrabold" style={{ color: tone }}>{o.label}</p>
           {Array.isArray(o.criteria) && o.criteria.length > 0 && (
             <ul className="mt-1 space-y-0.5">
               {o.criteria.map((c, j) => (
@@ -494,12 +520,13 @@ function DispositionCards({ node }) {
             </ul>
           )}
           {o.action && (
-            <p className="mt-1.5 text-sm font-semibold rounded px-2 py-1" style={{ background: CPG.greenTint, color: '#065f46' }}>
+            <p className="mt-1.5 text-sm font-semibold rounded px-2 py-1" style={{ background: `${tone}1a`, color: tone }}>
               {o.action}
             </p>
           )}
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
@@ -866,7 +893,13 @@ function ClinicalApproachFlowchart({ onNavigate }) {
       {line(170, 46, 170, 63)}
       {line(140, 110, 92, 148)}
       {line(200, 110, 250, 148)}
-      {line(87, 192, 160, 228)}
+      {/* p10: both branches converge on RESPONDER ACTION. UNWELL runs down into
+          the Primary Survey and out of its bottom into Responder Action; WELL
+          bypasses the Primary Survey down the right margin. Only Responder
+          Action continues to Assess. This used to draw Primary Survey and
+          Responder Action as two parallel edges into Assess, which loses the
+          fact that a Primary Survey is always followed by Responder Action. */}
+      {line(160, 171, 176, 171)}
       {line(252, 192, 180, 228)}
       {line(170, 270, 170, 287)}
       {line(140, 328, 88, 366)}

@@ -919,6 +919,7 @@ export const assessmentsContent = {
               'Large burns',
             ],
             action: 'Call 000',
+            tone: 'red',
           },
           {
             label: 'Medical Urgency — Victorian Virtual Emergency Department',
@@ -937,6 +938,7 @@ export const assessmentsContent = {
               'Menstrual issues or early mastitis',
             ],
             action: 'www.VVED.org.au — you will need a device with a camera to access VVED. VVED is free, has translator services and is available 24/7. Wait times are typically less than 30 minutes, however this may fluctuate.',
+            tone: 'amber',
           },
           {
             label: 'Medical Uncertainty — Nurse-On-Call',
@@ -948,6 +950,7 @@ export const assessmentsContent = {
               'You want advice or information about health services in your area',
             ],
             action: 'Call 1300 60 60 24 — Nurse-On-Call is free and is available 24/7. If you need translator services call 131 450 and ask to be transferred to Nurse-On-Call.',
+            tone: 'green',
           },
         ],
       },
@@ -1298,6 +1301,7 @@ export const conditionsContent = {
           initial: '0.3 mg (Epi-Pen)',
           repeat: 'Can repeat initial dose ONCE only at 5/60',
           max: 'Consult',
+          goToCpg: 'Anaphylaxis CPG',
         },
         {
           drug: 'Adrenaline',
@@ -1307,6 +1311,7 @@ export const conditionsContent = {
           initial: '0.15 mg (Epi-Pen Jr)',
           repeat: 'Can repeat initial dose ONCE only at 5/60',
           max: 'Consult',
+          goToCpg: 'Anaphylaxis CPG',
         },
       ],
       furtherNotes: [
@@ -2642,6 +2647,7 @@ export const conditionsContent = {
           'Puncture: A narrow aperture wound which extends some distance into the tissues',
         ],
       },
+      dressingPhotos: woundDressingPhotos,
     },
   },
   'alcohol-intoxication': {
@@ -2768,7 +2774,7 @@ export const conditionsContent = {
         },
         oralCarbohydrates: {
           rules: [
-            { if: 'Can swallow safely', then: 'Advise: Eat long lasting carbohydrates' },
+            { op: 'ONCE', if: 'Can swallow safely', then: 'Advise: Eat long lasting carbohydrates' },
           ],
           notes: ['Within 20 minutes – E.G. Sandwich, fruit, glass of milk'],
         },

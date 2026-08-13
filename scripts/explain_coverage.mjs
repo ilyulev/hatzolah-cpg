@@ -19,8 +19,7 @@
 //   node scripts/explain_coverage.mjs                       # sample protocols
 //   node scripts/explain_coverage.mjs dehydration:75-76     # a specific one
 import fs from 'fs';
-import os from 'os';
-import path from 'path';
+import { loadAllProtocols } from './lib/load_content.mjs';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const pdf = require('pdf-parse-fork');
@@ -61,12 +60,7 @@ await pdf(fs.readFileSync(PDF), {
   },
 });
 
-const src = fs.readFileSync('src/data/contentData.js', 'utf8');
-const tmp = path.join(os.tmpdir(), `cd-mw-${process.pid}.mjs`);
-fs.writeFileSync(tmp, src);
-const m = await import('file://' + tmp);
-fs.unlinkSync(tmp);
-const all = { ...m.assessmentsContent, ...m.conditionsContent, ...m.medicationsContent };
+const all = await loadAllProtocols();
 
 const words = (s) => (s.toLowerCase().match(/[a-z0-9]+/g) || []);
 

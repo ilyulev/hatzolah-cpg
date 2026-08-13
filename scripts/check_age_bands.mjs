@@ -12,17 +12,9 @@
 // "> N" in that case: the neighbouring band already covers exactly N.
 //
 //   pnpm check-age-bands        (exit 1 if any overlap is found)
-import fs from 'fs';
-import os from 'os';
-import path from 'path';
+import { loadAllProtocols } from './lib/load_content.mjs';
 
-const src = fs.readFileSync('src/data/contentData.js', 'utf8');
-const tmp = path.join(os.tmpdir(), `cd-agebands-${process.pid}.mjs`);
-fs.writeFileSync(tmp, src);
-const m = await import('file://' + tmp);
-fs.unlinkSync(tmp);
-
-const all = { ...m.assessmentsContent, ...m.conditionsContent, ...m.medicationsContent };
+const all = await loadAllProtocols();
 const unitRe = '(year|month|hour|week|day)';
 const hits = [];
 
