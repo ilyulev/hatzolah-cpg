@@ -52,13 +52,30 @@
     // assets during local dev/preview, masking code changes. PWA still active in prod.
     var isLocalhost = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
     if ('serviceWorker' in navigator && !isLocalhost) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(function(registration) {
-            console.log('SW registered: ', registration);
-          }).catch(function(registrationError) {
-            console.log('SW registration failed: ', registrationError);
-          });
+      window.addEventListener('load', function () {
+        // updateViaCache:'none' stops the HTTP cache from serving a stale copy of
+        // the worker script itself — otherwise the browser can compare the new
+        // deploy against a cached script and conclude nothing changed.
+        navigator.serviceWorker.register('service-worker.js', { updateViaCache: 'none' })
+          .then(function (registration) {
+            registration.update();
+            // Check again when the app is brought back to the foreground, which
+            // is how a phone-installed PWA is normally used.
+            document.addEventListener('visibilitychange', function () {
+              if (document.visibilityState === 'visible') registration.update();
+            });
+          })
+          .catch(function (err) { console.log('SW registration failed: ', err); });
+
+        // A new worker taking control means fresh content is available. Reload
+        // once so the responder is never reading a stale protocol. Guarded so it
+        // cannot loop.
+        var refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', function () {
+          if (refreshing) return;
+          refreshing = true;
+          window.location.reload();
+        });
       });
     }
     

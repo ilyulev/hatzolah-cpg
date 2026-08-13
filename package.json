@@ -21,7 +21,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/stamp_sw.mjs",
     "preview": "vite preview",
     "predeploy": "pnpm run build",
     "deploy": "pnpx gh-pages -d dist",
