@@ -10,6 +10,11 @@ scripts/output/audit/
 scripts/output/regen/
 scripts/output/content-v62/
 
+# Temp module the content assembler writes next to contentData.js while it
+# evaluates the current exports. Removed in a finally block, but a hard crash
+# can still leave one behind - never commit it.
+src/data/.cd-assemble-*.mjs
+
 # Local CPG source PDF (do not commit binary)
 source/*.pdf
 

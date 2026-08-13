@@ -18,6 +18,11 @@
  *   The CB version is simpler; the FR version has full clinical detail.
  */
 
+// Product photos of the supplied wound dressings (CPG p117). Kept in their own
+// module because they are base64-inlined images; see the file header. Referenced
+// by the 'wound-care' protocol's `dressingPhotos` key below.
+import { woundDressingPhotos } from './extensions/woundDressingPhotos.js';
+
 // ─────────────────────────────────────────────
 // ASSESSMENTS
 // ─────────────────────────────────────────────

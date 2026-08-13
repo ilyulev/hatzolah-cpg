@@ -147,6 +147,34 @@ function DosingCards({ dosingArray }) {
   );
 }
 
+// Product photo panel: an array of { src, caption, size }. Used for CPG panels
+// that are photographs rather than text (e.g. the supplied wound dressings on
+// p117). Images are inline base64 data URIs, so they render offline. Cards wrap
+// responsively - a phone shows them stacked, wider screens two-up.
+function PhotoCards({ photos }) {
+  if (!photos?.length) return null;
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {photos.map((p, i) => (
+        <figure key={i} className="bg-white border border-green-200 rounded-lg p-2 flex flex-col">
+          <img
+            src={p.src}
+            alt={p.caption || ''}
+            loading="lazy"
+            className="w-full h-auto rounded object-contain bg-white"
+          />
+          {(p.caption || p.size) && (
+            <figcaption className="mt-1.5 text-center">
+              {p.caption && <span className="block text-xs font-bold text-gray-900">{p.caption}</span>}
+              {p.size && <span className="block text-xs text-gray-500">{p.size}</span>}
+            </figcaption>
+          )}
+        </figure>
+      ))}
+    </div>
+  );
+}
+
 // Humanise a camelCase content key, e.g. "primarySurvey" → "Primary Survey".
 // Whole-key clinical acronyms are upper-cased ("cpr" → "CPR", "rosc" → "ROSC").
 const KEY_ACRONYMS = new Set(['cpr', 'rosc', 'aed', 'gcs', 'avpu', 'dolors', 'opqrst', 'copd', 'bgl', 'gtn', 'ed']);
@@ -608,6 +636,12 @@ function renderValue(val, depth = 0) {
     // Paediatric Assessment Triangle: objects with side + signs → triangle diagram
     if (val.length && val.every((o) => o && typeof o === 'object' && 'side' in o && Array.isArray(o.signs))) {
       return <PaediatricTriangle sides={val} />;
+    }
+    // Photo panel: objects carrying an image src → product photo cards. Must
+    // precede the uniform-object-array table check below, or {src,caption,size}
+    // would render as a text table.
+    if (val.length && val.every((o) => o && typeof o === 'object' && typeof o.src === 'string')) {
+      return <PhotoCards photos={val} />;
     }
     // IF → THEN rule rows
     if (val.length && val.every((o) => o && typeof o === 'object' && 'if' in o && 'then' in o)) {

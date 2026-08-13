@@ -10,8 +10,8 @@
 // Source of the new content: scripts/output/regen/<key>.json (written by the
 // regeneration workflow). A protocol with no regen file keeps its current value.
 import fs from 'fs';
-import os from 'os';
 import path from 'path';
+import { pathToFileURL } from 'url';
 
 const GROUPS = {
   assessments: { exportName: 'assessmentsContent', add: ['time-critical', 'safety-netting'] },
@@ -28,6 +28,7 @@ if (!GROUPS[group]) {
 const { exportName, add } = GROUPS[group];
 const FILE = 'src/data/contentData.js';
 const REGEN = 'scripts/output/regen';
+
 
 // ── JS literal serialiser (keeps the file idiomatic: bare keys, single quotes) ──
 const IDENT = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
@@ -61,10 +62,22 @@ function ser(v, ind) {
 
 // ── load current module (for entries with no regen file, and for key order) ──
 const src = fs.readFileSync(FILE, 'utf8');
-const tmp = path.join(os.tmpdir(), `cd-assemble-${process.pid}.mjs`);
+// Write the temp copy ALONGSIDE contentData.js, not in os.tmpdir(): the module
+// carries relative imports (e.g. ./extensions/woundDressingPhotos.js) that only
+// resolve from src/data/. Importing from /tmp threw ERR_MODULE_NOT_FOUND.
+const tmp = path.join(path.dirname(FILE), `.cd-assemble-${process.pid}.mjs`);
 fs.writeFileSync(tmp, src);
-const mod = await import('file://' + tmp);
-fs.unlinkSync(tmp);
+let mod;
+try {
+  // pathToFileURL, not 'file://' + tmp: this path is relative, so string
+  // concatenation yields file://src/data/... where "src" parses as the URL HOST
+  // and node rejects it (ERR_INVALID_FILE_URL_HOST).
+  mod = await import(pathToFileURL(tmp).href);
+} finally {
+  // finally, not a bare unlink: a failed import used to leave the temp module
+  // behind in src/data/, where it got swept into a commit.
+  fs.rmSync(tmp, { force: true });
+}
 const current = mod[exportName];
 if (!current) throw new Error(`${exportName} not found in ${FILE}`);
 
