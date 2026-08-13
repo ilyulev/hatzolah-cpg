@@ -76,8 +76,8 @@ function BulletList({ items, depth = 0 }) {
                 which reads as "belongs to the line above" rather than as a peer. */}
             {depth === 0 ? (
               <span
-                className="mr-2.5 flex-shrink-0 rounded-full mt-[9px]"
-                style={{ width: 7, height: 7, background: CPG.navy, opacity: isLeadIn ? 0.85 : 0.6 }}
+                className="mr-2.5 flex-shrink-0 rounded-full mt-2"
+                style={{ width: 9, height: 9, background: CPG.navy, opacity: isLeadIn ? 1 : 0.8 }}
                 aria-hidden
               />
             ) : (
