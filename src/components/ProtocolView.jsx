@@ -70,13 +70,25 @@ function BulletList({ items, depth = 0 }) {
               isLeadIn ? 'font-medium text-gray-900' : 'text-gray-800'
             }`}
           >
-            <span
-              className="mr-2 flex-shrink-0 select-none"
-              style={{ color: CPG.navy, opacity: isLeadIn ? 0.8 : 0.45, fontSize: depth === 0 ? '15px' : '12px', lineHeight: '1.6' }}
-              aria-hidden
-            >
-              {depth === 0 ? '•' : '▸'}
-            </span>
+            {/* A CSS circle rather than a "•" glyph: the glyph renders at roughly
+                4px regardless of font-size and washes out at low opacity. This
+                gives a crisp, consistently sized dot. Sub-items keep a chevron,
+                which reads as "belongs to the line above" rather than as a peer. */}
+            {depth === 0 ? (
+              <span
+                className="mr-2.5 flex-shrink-0 rounded-full mt-[9px]"
+                style={{ width: 7, height: 7, background: CPG.navy, opacity: isLeadIn ? 0.85 : 0.6 }}
+                aria-hidden
+              />
+            ) : (
+              <span
+                className="mr-2 flex-shrink-0 select-none font-bold"
+                style={{ color: CPG.navy, opacity: 0.65, fontSize: '14px', lineHeight: '1.7' }}
+                aria-hidden
+              >
+                ▸
+              </span>
+            )}
             <span>{item && typeof item === 'object' ? renderValue(item, depth + 1) : item}</span>
           </li>
         );
