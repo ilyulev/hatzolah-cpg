@@ -1,6 +1,6 @@
 {
   "name": "hatzolah-cpg-pwa",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Hatzolah Clinical Practice Guidelines PWA with fuzzy search",
   "private": true,
   "homepage": "https://ilyulev.github.io/hatzolah-cpg",
