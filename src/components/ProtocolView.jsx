@@ -14,7 +14,7 @@ import { PRACTICE_LEVELS, CATEGORY_COLORS } from '../data/contentData';
 function QuickSection({ title, color, children, bodyClassName = 'bg-white border border-gray-100', bodyStyle, id }) {
   return (
     <div id={id} className="rounded-xl overflow-hidden mb-3 scroll-mt-2">
-      <div className="px-4 py-2 font-semibold text-sm" style={{ background: color + '33', color }}>
+      <div className="px-4 py-2.5 font-bold text-[15px] tracking-wide" style={{ background: color + '33', color }}>
         {title}
       </div>
       <div className={`px-4 py-3 ${bodyClassName}`} style={bodyStyle}>{children}</div>
@@ -30,7 +30,10 @@ function QuickSection({ title, color, children, bodyClassName = 'bg-white border
 function BulletList({ items, depth = 0 }) {
   if (!items?.length) return null;
   return (
-    <ul className={depth === 0 ? 'space-y-1' : 'space-y-1 mt-1 ml-1 pl-3 border-l-2 border-gray-200'}>
+    <ul
+      className={depth === 0 ? 'space-y-2' : 'space-y-1.5 mt-2 mb-1 ml-1 pl-3'}
+      style={depth > 0 ? { borderLeft: `2px solid ${CPG.navy}22` } : undefined}
+    >
       {items.map((item, i) => {
         if (Array.isArray(item)) {
           // Belongs to the preceding bullet, so it is not itself a bullet.
@@ -40,9 +43,29 @@ function BulletList({ items, depth = 0 }) {
             </li>
           );
         }
+        // A top-level item immediately followed by a sub-list is the lead-in that
+        // introduces it ("The following risk factors also increase…"). Weighting it
+        // gives the group a visible head, so the eye lands on the category before
+        // reading its items rather than meeting an undifferentiated column.
+        const isLeadIn = depth === 0 && Array.isArray(items[i + 1]);
         return (
-          <li key={i} className="text-sm text-gray-700 flex items-start">
-            <span className="text-gray-400 mr-2 mt-0.5 flex-shrink-0">{depth === 0 ? '•' : '▸'}</span>
+          <li
+            key={i}
+            // medium, not bold: these lead-ins run to three or four lines, and a
+            // block of bold that long is heavier to read than the plain text it
+            // introduces. Weight plus the darker ink is enough to mark the head
+            // of a group; the indent and rule below carry the rest.
+            className={`flex items-start text-[15px] leading-relaxed ${
+              isLeadIn ? 'font-medium text-gray-900' : 'text-gray-800'
+            }`}
+          >
+            <span
+              className="mr-2 flex-shrink-0 select-none"
+              style={{ color: CPG.navy, opacity: isLeadIn ? 0.8 : 0.45, fontSize: depth === 0 ? '15px' : '12px', lineHeight: '1.6' }}
+              aria-hidden
+            >
+              {depth === 0 ? '•' : '▸'}
+            </span>
             <span>{item && typeof item === 'object' ? renderValue(item, depth + 1) : item}</span>
           </li>
         );
@@ -528,8 +551,8 @@ function DispositionCards({ node }) {
           {Array.isArray(o.criteria) && o.criteria.length > 0 && (
             <ul className="mt-1 space-y-0.5">
               {o.criteria.map((c, j) => (
-                <li key={j} className="flex items-start text-sm text-gray-700">
-                  <span className="text-gray-400 mr-2 flex-shrink-0">•</span>{c}
+                <li key={j} className="flex items-start text-[15px] leading-relaxed text-gray-800">
+                  <span className="mr-2 flex-shrink-0 select-none" style={{ color: CPG.navy, opacity: 0.45 }} aria-hidden>•</span>{c}
                 </li>
               ))}
             </ul>
@@ -628,7 +651,7 @@ function BranchChips({ node }) {
   const twoUp = node.branches.length === 2;
   return (
     <div>
-      {node.question && <p className="text-sm text-gray-700 mb-2">{node.question}</p>}
+      {node.question && <p className="text-[15px] leading-relaxed text-gray-800 mb-2">{node.question}</p>}
       <div className={twoUp ? 'grid grid-cols-2 gap-2' : 'flex flex-wrap gap-2'}>
         {node.branches.map((b, i) => {
           const sameLabel = !b.condition || b.condition.toLowerCase() === b.label.toLowerCase();
@@ -663,7 +686,7 @@ function BranchChips({ node }) {
 function renderValue(val, depth = 0) {
   if (val === null || val === undefined) return null;
   if (typeof val === 'string' || typeof val === 'number' || typeof val === 'boolean') {
-    return <span className="text-sm text-gray-700">{String(val)}</span>;
+    return <span className="text-[15px] leading-relaxed text-gray-800">{String(val)}</span>;
   }
   if (Array.isArray(val)) {
     // Dosing arrays get the readable DosingCards (as in the quick view) rather
