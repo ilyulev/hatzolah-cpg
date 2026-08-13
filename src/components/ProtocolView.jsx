@@ -1031,11 +1031,10 @@ function DifferencesBlock({ differences }) {
 
 function DetailedViewOverlay({ proto, onClose }) {
   const [showFlow, setShowFlow] = useState(false);
+  // The 📖 button alone switches tiers: quick view is the Hatzolah protocol,
+  // and 📖 opens the full protocol where one exists. No secondary toggle.
   const ext = extendedContent[proto.key];
-  // Default to the extended tier when there is one - that is what the 📖 button
-  // is for once a protocol has a full protocol behind it.
-  const [tier, setTier] = useState(ext ? 'extended' : 'main');
-  const showExt = ext && tier === 'extended';
+  const showExt = Boolean(ext);
   const c = (showExt ? ext.content : proto.content) || {};
   const Flowchart = c._flowchart ? FLOWCHARTS[c._flowchart] : null;
   const sections = Object.entries(c)
@@ -1067,32 +1066,10 @@ function DetailedViewOverlay({ proto, onClose }) {
         </button>
       </div>
 
-      {/* Main <-> Extended toggle. Only shown when the protocol actually has an
-          extended tier, so protocols without one keep the previous behaviour. */}
-      {ext && (
-        <div className="flex-shrink-0 bg-gray-900 px-4 pb-3 flex gap-1">
-          {[['main', 'Hatzolah'], ['extended', 'Full protocol']].map(([id, label]) => (
-            <button
-              key={id}
-              onClick={() => setTier(id)}
-              className={`flex-1 text-xs font-bold rounded-lg py-2 transition-colors ${
-                tier === id ? 'bg-white text-gray-900' : 'bg-white bg-opacity-10 text-gray-300'
-              }`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
-      )}
 
       {/* Detailed scrollable content — pb clears the BottomNav overlaying us */}
       <div className="flex-1 overflow-y-auto p-4 pb-24 bg-gray-50 space-y-4">
-        {showExt && (
-          <>
-            <ExtendedHeader ext={ext} />
-            <DifferencesBlock differences={ext.differences} />
-          </>
-        )}
+        {showExt && <ExtendedHeader ext={ext} />}
         {Flowchart && !showExt && (
           <div className="bg-white rounded-xl shadow-sm p-4">
             <button
@@ -1138,6 +1115,9 @@ function DetailedViewOverlay({ proto, onClose }) {
             </div>
           );
         })}
+        {/* Differences sit at the very bottom, after the reference content: they
+            are a closing caveat, not the first thing to read. */}
+        {showExt && <DifferencesBlock differences={ext.differences} />}
       </div>
     </div>
   );

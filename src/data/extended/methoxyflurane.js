@@ -1,15 +1,31 @@
-// Extended (full) protocol for Methoxyflurane, merged from the NSW Ambulance and
-// St John NZ clinical practice guidelines.
+// Extended ("full") protocol for Methoxyflurane, merged from the NSW Ambulance
+// and St John NZ clinical practice guidelines.
 //
 // PROVENANCE AND STATUS
 // This is REFERENCE material, not Hatzolah scope. The Hatzolah CPG governs what a
 // responder may do and which numbers apply; this layer exists to give background
-// the Hatzolah CPG does not carry. Where the two services state the same thing,
-// it is stated once; where only one service says it, the statement is attributed
-// inline. Where an external service CONTRADICTS Hatzolah, the Hatzolah value
-// stands and the difference is recorded in `differences` rather than silently
-// resolved - a responder who meets a different number elsewhere needs to know
-// which one governs them.
+// the Hatzolah CPG does not carry. Where the two services state the same thing it
+// is stated once; where only one says it, the statement is attributed inline.
+//
+// SECTION ORDER
+// Administration leads, because that is the part of the external guidance with the
+// most practical value at the patient's side. Differences from the Hatzolah CPG
+// are rendered last by ProtocolView, after the reference content.
+//
+// CONTRAINDICATION vs CAUTION
+// The two services classify the same item differently - renal impairment is a
+// contraindication for St John NZ and a precaution for NSW. The Hatzolah CPG
+// decides which list an item belongs to: it holds pre-existing renal disease as a
+// CONTRAINDICATION, so the renal material sits there only and is deliberately not
+// repeated under cautions.
+//
+// ONSET AND DURATION
+// Merged into a single set of figures rather than one column per service. The
+// apparent conflict is not one: NSW's "up to 30 minutes" is how long a bottle
+// lasts in use, while NZ's "2-5 minutes" is how quickly the effect wears off after
+// stopping - different quantities. Onset differs only trivially (NSW 2-3 min, NZ
+// 1-2 min) and is given as the combined range. The bottle-duration figure agrees
+// with the Hatzolah CPG's own "3 mL typically lasts for 25 minutes continuous use".
 export const methoxyflurane = {
   sources: [
     {
@@ -28,8 +44,6 @@ export const methoxyflurane = {
     },
   ],
 
-  // Points where the external guidelines and the Hatzolah CPG do not agree.
-  // Hatzolah always governs; these are shown so the difference is visible.
   differences: [
     {
       field: 'Maximum dose in children',
@@ -52,9 +66,23 @@ export const methoxyflurane = {
   ],
 
   content: {
-    mechanismOfAction: [
-      'An inhalational analgesic and central nervous system depressant. (NSW, NZ)',
-      'The mechanism of action is not clear. (NZ)',
+    administration: [
+      'Wherever possible, have the patient self-administer. (NZ)',
+      'Administer 3 mL (one dose) at a time and always use the charcoal filter — this absorbs exhaled methoxyflurane and limits exposure to personnel. (NZ)',
+      'Do not put more than 3 mL in the inhaler at any one time; more increases the risk of droplet inhalation. (NSW)',
+      'Instruct the patient to breathe out through the inhaler. (NZ)',
+      'Do not give supplementary oxygen through the inhaler — it significantly increases the amount lost to evaporation. Oxygen may be given by nasal prongs alongside methoxyflurane. (NSW, NZ)',
+      'If the dose is not fully used, place the inhaler in a closed plastic bag; it may be reused by the same patient. (NZ)',
+      'Do not leave methoxyflurane with a patient who is not being transported to a medical facility by ambulance. (NZ)',
+      'Warn the patient not to drive or operate machinery until fully recovered from drowsiness, and to take extra care as a pedestrian. (NSW)',
+      'Store below 30°C. (NSW)',
+    ],
+
+    onsetAndDuration: [
+      'Onset: 1 – 3 minutes.',
+      'Analgesia wears off 2 – 5 minutes after administration stops.',
+      'One 3 mL bottle lasts approximately 25 – 30 minutes of continuous use.',
+      'Presentation: a 3 mL bottle with an inhaler.',
     ],
 
     indications: [
@@ -69,7 +97,7 @@ export const methoxyflurane = {
 
     contraindications: [
       'Malignant hyperthermia — personal or family history. (NSW, NZ)',
-      'Known renal impairment. (NZ)',
+      'Renal impairment. Methoxyflurane impairs renal function in a dose-related manner through the fluoride released during metabolism, and may cause polyuric or oliguric renal failure. (NSW, NZ)',
       'Known severe allergy. (NZ)',
       '15 mL of methoxyflurane (5 doses) administered within the last week — frequent administration increases the risk of renal impairment. (NZ)',
       'Head injury or loss of consciousness. (NSW)',
@@ -82,31 +110,11 @@ export const methoxyflurane = {
       'Administration within a confined space. (NZ)',
       'Acute exacerbation of chronic pain. (NZ)',
       'Hepatic impairment — avoid where there are signs of liver damage, especially after previous methoxyflurane or halothane anaesthesia. (NSW)',
-      'Renal impairment — methoxyflurane impairs renal function in a dose-related manner; give the lowest effective dose, especially in aged or obese patients. (NSW)',
       'Diabetic patients — increased likelihood of nephropathy if renal function is impaired, polyuric, obese, or not optimally controlled. (NSW)',
       'Elderly patients — possible reduction in blood pressure or heart rate. (NSW)',
       'Paediatric use — give the minimum effective dose to produce analgesia. (NSW)',
+      'Obese patients — give the lowest effective dose. (NSW)',
     ],
-
-    administration: [
-      'Wherever possible, have the patient self-administer. (NZ)',
-      'Administer 3 mL (one dose) at a time and always use the charcoal filter — this absorbs exhaled methoxyflurane and limits exposure to personnel. (NZ)',
-      'Do not put more than 3 mL in the inhaler at any one time; more increases the risk of droplet inhalation. (NSW)',
-      'Instruct the patient to breathe out through the inhaler. (NZ)',
-      'Do not give supplementary oxygen through the inhaler — it significantly increases the amount lost to evaporation. Oxygen may be given by nasal prongs alongside methoxyflurane. (NSW, NZ)',
-      'If the dose is not fully used, place the inhaler in a closed plastic bag; it may be reused by the same patient. (NZ)',
-      'Do not leave methoxyflurane with a patient who is not being transported to a medical facility by ambulance. (NZ)',
-      'Store below 30°C. (NSW)',
-    ],
-
-    onsetAndDuration: {
-      headers: ['', 'NSW Ambulance', 'St John NZ'],
-      rows: [
-        ['Onset', '2 – 3 minutes', '1 – 2 minutes'],
-        ['Duration', 'Up to 30 minutes', '2 – 5 minutes after stopping'],
-        ['Preparation', '3 mL amber bottle, external inhaler', '3 mL bottle with plastic inhaler'],
-      ],
-    },
 
     adverseEffects: [
       'Common (over 1%): dizziness, drowsiness, headache, feeling light-headed, sedation. (NSW, NZ)',
@@ -130,17 +138,17 @@ export const methoxyflurane = {
       'Personnel regularly exposed to patients using inhalers should be aware of the relevant occupational health and safety guidance for inhalational agents. (NSW)',
     ],
 
-    pharmacokinetics: [
+    mechanismAndPharmacokinetics: [
+      'An inhalational analgesic and central nervous system depressant. The mechanism of action is not clear. (NSW, NZ)',
       'Approximately 20% is exhaled; the remainder is metabolised in the liver. (NSW, NZ)',
       'Bio-transformation produces free fluoride, oxalic acid, difluoromethoxyacetic acid and dichloroacetic acid; 50–70% of the absorbed dose is metabolised. (NSW)',
-      'High concentrations of fluoride ions are associated with renal impairment — the reason known renal impairment is a contraindication and why a maximum dose exists. (NZ)',
+      'High concentrations of fluoride ions are associated with renal impairment — the reason renal impairment is a contraindication and why a maximum dose exists. (NZ)',
     ],
 
     furtherNotes: [
       'Malignant hyperthermia is a rare inherited disorder of muscle metabolism; exposure can produce a life-threatening hypermetabolic state with severe hyperthermia. Affected patients, or those with a family history, usually know about it. (NZ)',
       'Renal failure already on dialysis is neither a contraindication nor a caution — further renal impairment is of no clinical consequence once a patient is dialysed. (NZ)',
       'Kidney stones and renal colic are neither a contraindication nor a caution; they are rarely associated with renal impairment. (NZ)',
-      'Warn the patient not to drive or operate machinery until fully recovered from drowsiness, and to take extra care as a pedestrian. (NSW)',
     ],
   },
 };
