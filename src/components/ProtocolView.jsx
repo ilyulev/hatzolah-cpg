@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 // NB: lucide-react 0.263 uses the older icon names (AlertOctagon, not OctagonAlert).
 import { ArrowLeft, BookOpen, X, AlertOctagon, ArrowRight } from 'lucide-react';
 import { PRACTICE_LEVELS, CATEGORY_COLORS } from '../data/contentData';
+import { extendedContent } from '../data/extended/index.js';
 
 // ─── Quick View content renderers ─────────────────────────────────────────────
 
@@ -871,6 +872,7 @@ export function ProtocolView({ proto, userLevel, onBack }) {
         </button>
       </div>
 
+
       {/* Reference banner */}
       {isReference && (
         <div className="flex-shrink-0 bg-amber-50 border-b border-amber-200 px-4 py-2 flex items-center space-x-2">
@@ -967,9 +969,74 @@ const FLOWCHARTS = { clinicalApproach: ClinicalApproachFlowchart };
 // data order varies (e.g. vital-signs stores notes before its table).
 const TRAILING_KEYS = new Set(['notes', 'note']);
 
+// Source chips + the "this is not your scope" banner for the extended tier.
+function ExtendedHeader({ ext }) {
+  return (
+    <div className="mb-3">
+      <div className="rounded-lg border px-3 py-2 mb-2" style={{ borderColor: CPG.amberBorder, background: CPG.amberTint }}>
+        <p className="text-[13px] font-semibold" style={{ color: CPG.amber }}>
+          Reference only — not Hatzolah scope
+        </p>
+        <p className="text-xs text-gray-700 mt-0.5">
+          Background from other ambulance services. The Hatzolah CPG governs what you may do and
+          which numbers apply.
+        </p>
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {ext.sources.map((s, i) => (
+          <a
+            key={i}
+            href={s.url}
+            target="_blank"
+            rel="noreferrer"
+            className="text-[11px] rounded-full px-2.5 py-1 font-semibold"
+            style={{ background: CPG.navyTint, color: CPG.navy }}
+          >
+            {s.service} · {s.ref} ↗
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Where the external guidance and the Hatzolah CPG disagree. Shown rather than
+// silently resolved: a responder who meets a different number elsewhere needs to
+// know which one governs them.
+function DifferencesBlock({ differences }) {
+  if (!differences?.length) return null;
+  return (
+    <div className="rounded-xl p-4 mb-3" style={{ background: CPG.redTint, border: `1px solid ${CPG.red}33` }}>
+      <h3 className="font-bold text-sm uppercase tracking-wide mb-2" style={{ color: CPG.red }}>
+        Differences from the Hatzolah CPG
+      </h3>
+      <div className="space-y-2.5">
+        {differences.map((d, i) => (
+          <div key={i}>
+            <p className="text-[13px] font-bold text-gray-900">{d.field}</p>
+            <p className="text-[13px] text-gray-800 mt-0.5">
+              <span className="font-semibold" style={{ color: CPG.green }}>Hatzolah (follow this): </span>
+              {d.hatzolah}
+            </p>
+            <p className="text-[13px] text-gray-700 mt-0.5">
+              <span className="font-semibold">Other services: </span>{d.external}
+            </p>
+            {d.note && <p className="text-xs text-gray-500 italic mt-0.5">{d.note}</p>}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function DetailedViewOverlay({ proto, onClose }) {
   const [showFlow, setShowFlow] = useState(false);
-  const c = proto.content || {};
+  const ext = extendedContent[proto.key];
+  // Default to the extended tier when there is one - that is what the 📖 button
+  // is for once a protocol has a full protocol behind it.
+  const [tier, setTier] = useState(ext ? 'extended' : 'main');
+  const showExt = ext && tier === 'extended';
+  const c = (showExt ? ext.content : proto.content) || {};
   const Flowchart = c._flowchart ? FLOWCHARTS[c._flowchart] : null;
   const sections = Object.entries(c)
     .filter(([k]) => !k.startsWith('_')) // metadata keys (e.g. _flowchart) aren't sections
@@ -985,7 +1052,9 @@ function DetailedViewOverlay({ proto, onClose }) {
         </button>
         <div className="flex-1 min-w-0">
           <h2 className="text-white font-bold text-base truncate">{proto.title}</h2>
-          <p className="text-gray-400 text-xs">Full protocol detail</p>
+          <p className="text-gray-400 text-xs">
+            {ext ? (showExt ? 'Full protocol — NSW / St John NZ' : 'Hatzolah CPG — full detail') : 'Full protocol detail'}
+          </p>
         </div>
         {/* Same position as the opener in ProtocolView's header — the 📖 button
             toggles the detailed view both ways (users tap where they opened it). */}
@@ -998,9 +1067,33 @@ function DetailedViewOverlay({ proto, onClose }) {
         </button>
       </div>
 
+      {/* Main <-> Extended toggle. Only shown when the protocol actually has an
+          extended tier, so protocols without one keep the previous behaviour. */}
+      {ext && (
+        <div className="flex-shrink-0 bg-gray-900 px-4 pb-3 flex gap-1">
+          {[['main', 'Hatzolah'], ['extended', 'Full protocol']].map(([id, label]) => (
+            <button
+              key={id}
+              onClick={() => setTier(id)}
+              className={`flex-1 text-xs font-bold rounded-lg py-2 transition-colors ${
+                tier === id ? 'bg-white text-gray-900' : 'bg-white bg-opacity-10 text-gray-300'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* Detailed scrollable content — pb clears the BottomNav overlaying us */}
       <div className="flex-1 overflow-y-auto p-4 pb-24 bg-gray-50 space-y-4">
-        {Flowchart && (
+        {showExt && (
+          <>
+            <ExtendedHeader ext={ext} />
+            <DifferencesBlock differences={ext.differences} />
+          </>
+        )}
+        {Flowchart && !showExt && (
           <div className="bg-white rounded-xl shadow-sm p-4">
             <button
               onClick={() => setShowFlow((v) => !v)}
