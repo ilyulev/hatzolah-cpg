@@ -23,6 +23,7 @@
 //                 would be exactly the kind of defect the v6.2 audit found, so
 //                 this protocol has no extended tier at all.
 import { adrenaline } from './adrenaline.js';
+import { allergyMild } from './allergy-mild.js';
 import { aspirin } from './aspirin.js';
 import { glucagon } from './glucagon.js';
 import { glucosePaste } from './glucose-paste.js';
@@ -38,6 +39,9 @@ import { salbutamol } from './salbutamol.js';
 
 export const extendedContent = {
   adrenaline,
+  // The first CONDITION protocol in this tier - the rest are pharmacology.
+  // What transfers here is the pathway, not a drug.
+  'allergy-mild': allergyMild,
   aspirin,
   glucagon,
   'glucose-paste': glucosePaste,
