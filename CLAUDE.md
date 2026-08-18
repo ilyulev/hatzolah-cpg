@@ -263,6 +263,27 @@ To change protocol content:
 Derived artifacts under `scripts/output/{pages,content,audit,regen}/` are gitignored and
 regenerable. The audit report `scripts/output/v6.2-page-audit.md` is tracked.
 
+### Photographs — the complete inventory
+The CPG's raster images were enumerated from the PDF's own image XObjects (via the pdf.js build
+inside `pdf-parse-fork`). **There are no others — do not go looking, and never source a product
+photo from outside the CPG.** In particular the whole Pharmacology section (p138–163) is text and
+vector fill: not one of the 15 drug pages carries a photograph.
+
+| Page | Image | Status |
+|---|---|---|
+| p1, p4, p32, p101, p118, p137 | cover + section dividers | not used |
+| p12 | Paediatric Assessment Triangle | rendered as an SVG |
+| p19 | pain faces scale | rendered as a shape |
+| p117 | three wound dressings | `extensions/woundDressingPhotos.js` |
+| p129, p132 | Epi-Pen, Epi-Pen Jr, blue pMDI puffer | `extensions/devicePhotos.js` |
+
+A dosing entry names a device photo with a token (`photo: 'epipen-adult'`) that `ProtocolView`
+resolves against `devicePhotos`; the base64 never enters `contentData.js`. Because the regen JSONs
+are built from the text layer and know nothing about it, `assemble_content.mjs` re-applies the
+tokens after regeneration by matching on the **route text** (never an array index — a stale index
+would attach the adult photo to the paediatric dose). `pnpm check-device-photos` fails on a token
+that does not resolve, since an unknown token renders nothing at all.
+
 ### Rules learned the hard way
 - The CPG is the only authority. Do not fill gaps from general medical knowledge, and do not
   "correct" the CPG toward standard practice. Invented content caused real defects here.

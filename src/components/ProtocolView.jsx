@@ -7,6 +7,10 @@ import React, { useState } from 'react';
 import { ArrowLeft, BookOpen, X, AlertOctagon, ArrowRight } from 'lucide-react';
 import { PRACTICE_LEVELS, CATEGORY_COLORS } from '../data/contentData';
 import { extendedContent } from '../data/extended/index.js';
+// Device photographs, looked up by the short token a dosing entry carries in
+// its `photo` field. Which bytes to draw is a rendering concern, so the map
+// lives here rather than being wired through contentData.js.
+import { devicePhotos } from '../data/extensions/devicePhotos.js';
 
 // ─── Quick View content renderers ─────────────────────────────────────────────
 
@@ -147,7 +151,15 @@ function DosingCards({ dosingArray }) {
   if (!dosingArray?.length) return null;
   return (
     <div className="space-y-2">
-      {dosingArray.map((d, i) => (
+      {dosingArray.map((d, i) => {
+        // The CPG prints a photo of the device beside the dose it belongs to on
+        // p129 / p132 - yellow Epi-Pen, green Epi-Pen Jr, blue puffer - because
+        // colour is how you pick the right one out of the kit under pressure.
+        // Each card is one device/dose pairing, so the photo sits in the card
+        // header rather than inside a grid cell, where it would be too cramped
+        // to read on a phone.
+        const photo = d.photo ? devicePhotos[d.photo] : null;
+        return (
         <div key={i} className="bg-white border border-green-200 rounded-lg p-3">
           {/* The drug name. A condition protocol can dose several drugs (Asthma
               gives Salbutamol, Ipratropium and Adrenaline), and this field was
@@ -156,6 +168,23 @@ function DosingCards({ dosingArray }) {
           {d.drug && <p className="text-sm font-extrabold text-gray-900 mb-0.5">{d.drug}</p>}
           {d.indication && <p className="text-xs font-bold text-green-800 uppercase mb-1">{d.indication}</p>}
           {d.demographic && <p className="text-xs text-gray-500 mb-2">👥 {d.demographic}</p>}
+          {photo && (
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              // Intrinsic size so the browser can reserve the right box before
+              // the image decodes; without it w-auto measures 0 and the dosing
+              // grid jumps sideways as each card paints.
+              width={photo.width}
+              height={photo.height}
+              loading="lazy"
+              // Sized by HEIGHT, not width: the auto-injectors are long and thin
+              // (233x51) and the puffer is stubby (169x61), so matching widths
+              // made the puffer tower over the pens. Equal height reads as a row
+              // of kit items at consistent scale.
+              className="h-10 w-auto rounded mb-2"
+            />
+          )}
           <div className="grid grid-cols-2 gap-1 text-sm">
             {d.route && <div><span className="text-gray-500 text-xs">Route: </span><span className="font-medium">{d.route}</span></div>}
             {d.initial && <div><span className="text-gray-500 text-xs">Initial: </span><span className="font-bold text-green-800">{d.initial}</span></div>}
@@ -212,7 +241,8 @@ function DosingCards({ dosingArray }) {
             </div>
           )}
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

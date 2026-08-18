@@ -39,6 +39,30 @@ const APP_AUTHORED_REFS = {
   conditionsContent: { 'wound-care': { dressingPhotos: 'woundDressingPhotos' } },
 };
 
+// The `photo` token on a dosing entry naming the device photograph to draw
+// beside it (see src/data/extensions/devicePhotos.js). Like dressingPhotos this
+// is app-authored - the regen JSONs are built from the text layer and know
+// nothing about it - so it has to be re-applied after regeneration or the next
+// assemble run silently deletes the photos.
+//
+// Rules match on the ROUTE TEXT rather than an array index: if regeneration
+// reorders or rewrites the dosing table, a stale index would quietly attach the
+// adult Epi-Pen photo to the paediatric dose. Matching on the route either finds
+// the right row or finds nothing, and finding nothing is a hard error below.
+const DOSING_PHOTO_RULES = [
+  { route: /Epi-Pen\s*—\s*yellow device/, photo: 'epipen-adult' },
+  { route: /Epi-Pen\s*—\s*green device/, photo: 'epipen-jr' },
+  { route: /^pMDI/, photo: 'pmdi-puffer' },
+];
+// Only these protocols carry device photos: p129 and p132 are the only pages in
+// the CPG that print one, plus the Pharmacology entries for the same two drugs.
+// The FR versions of Anaphylaxis and Asthma are deliberately absent - their own
+// pages show no photograph.
+const DOSING_PHOTO_PROTOCOLS = {
+  conditionsContent: ['anaphylaxis-cb', 'asthma-cb'],
+  medicationsContent: ['adrenaline', 'salbutamol-cb', 'salbutamol-fr'],
+};
+
 // A pre-formatted expression the serialiser emits verbatim (no quoting), so an
 // imported identifier survives the eval → re-serialise round-trip.
 class Raw {
@@ -150,6 +174,21 @@ for (const k of order) {
       entry.content[ck] = new Raw(ident);
       report.push(`  ${''.padEnd(12)} ${k.padEnd(34)} ${had ? 'kept' : 'added'} app-ref ${ck} = ${ident}`);
     }
+  }
+  // Re-apply the device-photo tokens on dosing rows (see DOSING_PHOTO_RULES).
+  if (DOSING_PHOTO_PROTOCOLS[exportName]?.includes(k)) {
+    const dosing = entry.content?.dosing;
+    if (!Array.isArray(dosing)) throw new Error(`${k}: expected a dosing array to attach device photos to`);
+    let hits = 0;
+    const patched = dosing.map((d) => {
+      const rule = DOSING_PHOTO_RULES.find((r) => r.route.test(d.route || ''));
+      if (!rule) return d;
+      hits++;
+      return { ...d, photo: rule.photo };
+    });
+    if (!hits) throw new Error(`${k}: no dosing route matched a device-photo rule - did the route wording change?`);
+    entry = { ...entry, content: { ...entry.content, dosing: patched } };
+    report.push(`  ${''.padEnd(12)} ${k.padEnd(34)} device photo on ${hits} dosing row(s)`);
   }
   const sections = Object.keys(entry.content || {}).length;
   lines.push(`  ${key(k)}: ${ser(entry, 1)},`);
