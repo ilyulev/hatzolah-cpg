@@ -23,40 +23,75 @@
 //                 would be exactly the kind of defect the v6.2 audit found, so
 //                 this protocol has no extended tier at all.
 import { adrenaline } from './adrenaline.js';
+import { airwayObstructionFr } from './airway-obstruction-fr.js';
 import { allergyMild } from './allergy-mild.js';
+import { alteredConsciousnessFr } from './altered-consciousness-fr.js';
+import { anaphylaxisFr } from './anaphylaxis-fr.js';
 import { aspirin } from './aspirin.js';
+import { asthmaFr } from './asthma-fr.js';
+import { birthNewborn } from './birth-newborn.js';
+import { burns } from './burns.js';
+import { cardiacChestPain } from './cardiac-chest-pain.js';
+import { chestTrauma } from './chest-trauma.js';
+import { dehydration } from './dehydration.js';
+import { falls } from './falls.js';
 import { glucagon } from './glucagon.js';
 import { glucosePaste } from './glucose-paste.js';
 import { gtn } from './gtn.js';
+import { headTrauma } from './head-trauma.js';
+import { hypoglycaemia } from './hypoglycaemia.js';
+import { infectionSepsis } from './infection-sepsis.js';
 import { ipratropium } from './ipratropium.js';
 import { methoxyflurane } from './methoxyflurane.js';
 import { midazolam } from './midazolam.js';
+import { nauseaVomiting } from './nausea-vomiting.js';
 import { normalSaline } from './normal-saline.js';
 import { ondansetron } from './ondansetron.js';
 import { oxygen } from './oxygen.js';
+import { painRelief } from './pain-relief.js';
 import { paracetamol } from './paracetamol.js';
 import { salbutamol } from './salbutamol.js';
+import { seizure } from './seizure.js';
+import { spinalTrauma } from './spinal-trauma.js';
+import { stroke } from './stroke.js';
+import { woundCare } from './wound-care.js';
 
 export const extendedContent = {
   adrenaline,
-  // The first CONDITION protocol in this tier - the rest are pharmacology.
-  // What transfers here is the pathway, not a drug.
+  'airway-obstruction-fr': airwayObstructionFr,
   'allergy-mild': allergyMild,
+  'altered-consciousness-fr': alteredConsciousnessFr,
+  'anaphylaxis-fr': anaphylaxisFr,
   aspirin,
+  'asthma-fr': asthmaFr,
+  'birth-newborn': birthNewborn,
+  burns,
+  'cardiac-chest-pain': cardiacChestPain,
+  'chest-trauma': chestTrauma,
+  dehydration,
+  falls,
   glucagon,
   'glucose-paste': glucosePaste,
   gtn,
+  'head-trauma': headTrauma,
+  hypoglycaemia,
+  'infection-sepsis': infectionSepsis,
   ipratropium,
   methoxyflurane,
   midazolam,
+  'nausea-vomiting': nauseaVomiting,
   'normal-saline': normalSaline,
   ondansetron,
   oxygen,
+  'pain-relief': painRelief,
   paracetamol,
+  seizure,
+  'spinal-trauma': spinalTrauma,
+  stroke,
+  'wound-care': woundCare,
   // One drug, two Hatzolah entries: the CB protocol is puffer-only and the FR
-  // protocol adds the nebulised routes. The reference material is the same drug,
-  // so both point at it - the practice-level split is a Hatzolah scope decision
-  // and is enforced by the main protocol, not by this tier.
+  // protocol adds nebulised routes. The reference material is the same drug, so
+  // both point at it; the practice-level split is enforced by the main protocol.
   'salbutamol-cb': salbutamol,
   'salbutamol-fr': salbutamol,
 };

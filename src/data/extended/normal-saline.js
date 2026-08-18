@@ -133,7 +133,7 @@ export const normalSaline = {
 
     furtherNotes: [
       'Cardiogenic shock from poor right ventricular function — commonly after an acute inferior myocardial infarction — is more likely to respond to fluid than shock from poor left ventricular function.',
-      'In trauma, tranexamic acid is not a priority in itself and is usually given alongside the first dose of fluid.',
+      
       'Once fluid has been given for hypovolaemia from fluid loss, the patient should usually be recommended for ambulance transport to an emergency department. Staying in the community is only considered where no more than one litre (or 20 mL/kg in a child) was needed and the underlying condition is clearly minor and improving.',
     ],
   },

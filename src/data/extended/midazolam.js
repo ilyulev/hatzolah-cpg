@@ -99,12 +99,12 @@ export const midazolam = {
     indications: [
       'Generalised seizures continuing for more than five minutes, or recurrent seizures.',
       'Seizures complicating a hypertensive disorder of pregnancy.',
-      'Acute behavioural disturbance causing a mild to moderate risk to safety, where droperidol is unavailable or has not worked.',
+      'Acute behavioural disturbance causing a mild to moderate risk to safety, where first-line sedation is unavailable or has not worked.',
       'Agitation in the trauma or critically ill patient.',
       'Sedation for a procedure — joint relocation, limb realignment or a difficult extrication — after analgesia has been given.',
-      'Pain with severe muscle spasm, or severe anxiety, where an opiate alone is not achieving adequate analgesia and ketamine is not appropriate.',
+      'Pain with severe muscle spasm, or severe anxiety, where analgesia alone is not achieving adequate relief.',
       'Severe anxiety associated with COPD.',
-      'Distress or pain once transcutaneous pacing is started, and distressing psychological reactions following ketamine.',
+      
       'Consciousness interfering with CPR during cardiac arrest, and sedation after return of spontaneous circulation.',
       'Anxiety or breathlessness in the last days of life that has not responded to an opiate.',
     ],
