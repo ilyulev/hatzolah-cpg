@@ -15,7 +15,7 @@
 //   everything else           -> stale-while-revalidate (instant, self-healing)
 // Offline still works: anything already cached is served when the network fails,
 // which is the whole point of this app in the field.
-const VERSION = '202608130751-59da137';
+const VERSION = '202608180523-adc4ec2';
 const CACHE_NAME = `hatzolah-cpg-${VERSION}`;
 const OFFLINE_URL = '/hatzolah-cpg/index.html';
 
