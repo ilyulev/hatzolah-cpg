@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 // NB: lucide-react 0.263 uses the older icon names (AlertOctagon, not OctagonAlert).
 import { ArrowLeft, BookOpen, X, AlertOctagon, ArrowRight } from 'lucide-react';
 import { PRACTICE_LEVELS, CATEGORY_COLORS } from '../data/contentData';
+import { useBackLayer } from '../hooks/useBackNavigation.jsx';
 import { extendedContent } from '../data/extended/index.js';
 // Device photographs, looked up by the short token a dosing entry carries in
 // its `photo` field. Which bytes to draw is a rendering concern, so the map
@@ -878,6 +879,10 @@ function QuickProtocolContent({ proto }) {
 
 export function ProtocolView({ proto, userLevel, onBack }) {
   const [showDetailed, setShowDetailed] = useState(false);
+
+  // While the 📖 overlay is up it owns Back, so a back press or edge swipe
+  // closes the overlay instead of leaving the protocol underneath it.
+  useBackLayer(showDetailed, () => setShowDetailed(false));
 
   const levelConfig = PRACTICE_LEVELS[proto.level] || PRACTICE_LEVELS.FR;
   const isReference = !proto.universal && (

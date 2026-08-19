@@ -210,6 +210,40 @@ localStorage key:  'hatzolah_cpg_level'
 value:             'CB' | 'FR' | 'SR'
 ```
 
+### Back navigation
+There is no router, so "what does Back do?" is answered by a registry in
+`src/hooks/useBackNavigation.jsx`. Any view that can be backed out of declares a **layer**:
+
+```jsx
+useBackLayer(showDetailed, () => setShowDetailed(false));   // while open, Back closes me
+```
+
+The innermost live layer wins, so the 📖 overlay closes before the protocol page under it.
+Layers are mirrored into real history entries (`pushState` with no URL — the address never
+changes, so the PWA scope and `start_url` stay intact), and **every back action is routed through
+`history.back()`**; the `popstate` handler is the only place a layer is popped. That single path is
+what keeps history depth and layer depth from drifting. Three things therefore work at once: the
+left-edge swipe, the OS back button/gesture, and the browser back arrow. This matters because the
+manifest is `display: standalone` — once installed there is no browser chrome, and Android's back
+button used to drop straight out of the app.
+
+Two traps, both already paid for:
+- **The context API object must keep a stable identity** (`BackApiContext` is separate from
+  `BackDepthContext` for this reason). Layers key their registration effect off it; if it changed
+  per render every layer would re-register at once, and since React runs child effects *before*
+  parent effects they would come back in the wrong order — an overlay ranked below its own page.
+- **Back-out-of-scope resets.** Changing practice level resets every stack, so layers vanish
+  without a back press; the provider hands those history entries back rather than leaving stale
+  ones that eat the next press.
+
+The gesture (`src/hooks/useEdgeSwipeBack.js`) must start within 28 px of the **left edge**.
+Not full-width: `ProtocolView` has seven `overflow-x-auto` regions (dose tables, age-band tab
+strips, branch chips), and a full-width horizontal gesture would fight them — scrolling a wide
+dosing table sideways would throw you out to the category list. None of those regions reach the
+screen edge. The drag translates `<main>`, and the transform is **cleared**, never left at
+`translateX(0)`: a transform makes the element a containing block for its `fixed` descendants,
+which would re-anchor the 📖 overlay to `<main>` instead of the viewport.
+
 ### ProtocolView — fixed header rule (NON-NEGOTIABLE)
 The header containing the 📖 (detailed view) button **must never scroll**. Use flex layout —
 **do not remove `flex-shrink-0`** from the header. The detailed view opens as a full-screen modal

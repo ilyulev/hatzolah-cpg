@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useUserLevel } from './hooks/useUserLevel';
+import { useBack, useBackLayer } from './hooks/useBackNavigation.jsx';
+import { useEdgeSwipeBack } from './hooks/useEdgeSwipeBack';
 import { LevelSelection } from './components/LevelSelection';
 import { HomeScreen } from './components/HomeScreen';
 import { CategoryView } from './components/CategoryView';
@@ -36,6 +38,31 @@ function App() {
   const patchStack = (id, patch) =>
     setStacks((s) => ({ ...s, [id]: { ...s[id], ...patch } }));
 
+  const home = stacks.home;
+  const meds = stacks.medications;
+
+  const active = ['home', 'medications', 'alerts', 'info', 'halakha'].includes(section)
+    ? section
+    : 'home'; // unknown section falls back to Home
+
+  // ── Back layers ────────────────────────────────────────────────────────────
+  // Declared outermost-first. Whichever is innermost at the time absorbs the
+  // back action, so the 📖 overlay closes before the protocol page does. These
+  // hooks must stay above the early returns below.
+  useBackLayer(active === 'home' && home.view !== 'grid',
+    () => patchStack('home', { view: 'grid', category: null, protocol: null }));
+  useBackLayer(active === 'home' && home.view === 'protocol',
+    () => patchStack('home', { view: 'category', protocol: null }));
+  useBackLayer(active === 'medications' && meds.view === 'protocol',
+    () => patchStack('medications', { view: 'list', protocol: null }));
+  useBackLayer(active === 'info' && stacks.info?.topic === 'acronyms',
+    () => patchStack('info', { topic: null }));
+  useBackLayer(showLevelSheet, () => setShowLevelSheet(false));
+
+  const { goBack, canGoBack } = useBack();
+  const mainRef = useRef(null);
+  useEdgeSwipeBack(mainRef, canGoBack, goBack);
+
   if (!loaded) {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
@@ -49,17 +76,10 @@ function App() {
   }
 
   // ── Section bodies ─────────────────────────────────────────────────────────
-  const home = stacks.home;
-  const meds = stacks.medications;
-
   // Drill-down views render WITHOUT TopBar (they have their own headers),
   // but the BottomNav stays visible so tabs are always reachable.
   let body = null;
   let showTopBar = true;
-
-  const active = ['home', 'medications', 'alerts', 'info', 'halakha'].includes(section)
-    ? section
-    : 'home'; // unknown section falls back to Home
 
   if (active === 'home') {
     if (home.view === 'protocol' && home.protocol) {
@@ -130,7 +150,9 @@ function App() {
         <TopBar userLevel={userLevel} onLevelChipTap={() => setShowLevelSheet(true)} />
       )}
 
-      <main className="flex-1 overflow-y-auto">{body}</main>
+      {/* ref carries the edge-swipe gesture; the drag translates this element,
+          so the view's own header travels with its content. */}
+      <main ref={mainRef} className="flex-1 overflow-y-auto">{body}</main>
 
       <BottomNav active={active} onSelect={setSection} />
 
