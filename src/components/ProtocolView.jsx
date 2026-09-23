@@ -19,11 +19,11 @@ import { devicePhotos } from '../data/extensions/devicePhotos.js';
 // wash so safety caveats catch the eye rather than reading as filler).
 function QuickSection({ title, color, children, bodyClassName = 'bg-white border border-gray-100', bodyStyle, id }) {
   return (
-    <div id={id} className="rounded-xl overflow-hidden mb-3 scroll-mt-2">
-      <div className="px-4 py-2.5 font-bold text-[15px] tracking-wide" style={{ background: color + '33', color }}>
+    <div id={id} className="overflow-hidden scroll-mt-2">
+      <div className="px-4 py-1.5 font-bold text-[15px] tracking-wide" style={{ background: color + '33', color }}>
         {title}
       </div>
-      <div className={`px-4 py-3 ${bodyClassName}`} style={bodyStyle}>{children}</div>
+      <div className={`px-4 py-2 ${bodyClassName}`} style={bodyStyle}>{children}</div>
     </div>
   );
 }
@@ -302,6 +302,10 @@ const CPG = {
   red: '#eb1f27', redTint: '#fdece6', green: '#00a64f', greenTint: '#e9f4ea',
   // CPG yellow flags are #ffc000; use a darker amber for readable title text.
   amber: '#b45309', amberTint: '#fdf3d9', amberBorder: '#ffc00055',
+  // Adverse effects sit one step below contraindications in severity: not a
+  // "do not give" (red), but "watch for these". Orange separates them from
+  // both red contraindications and amber precautions.
+  orange: '#c2410c', orangeTint: '#fff0e6', orangeBorder: '#fb923c55',
 };
 
 // Per-section colours matching the CPG's own colour-coding. Keys are content
@@ -324,7 +328,7 @@ const SECTION_COLORS = {
   // Pharmacology sections. These used to be styled by a bespoke medication
   // branch; now they earn their colours the same way every other section does.
   contraindications: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
-  adverseEffects: { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' },
+  adverseEffects: { title: CPG.orange, bg: CPG.orangeTint, border: CPG.orangeBorder },
   precautions: { title: CPG.amber, bg: CPG.amberTint, border: CPG.amberBorder },
   indications: { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' },
 };
@@ -332,6 +336,7 @@ const SECTION_COLORS = {
 // after the CPG's own headings. Enumerating every one is unmaintainable, so an
 // exact match wins first and the long tail falls back to the heading's sense.
 const RED_SECTION = { title: CPG.red, bg: CPG.redTint, border: '#eb1f2733' };
+const ORANGE_SECTION = { title: CPG.orange, bg: CPG.orangeTint, border: CPG.orangeBorder };
 const AMBER_SECTION = { title: CPG.amber, bg: CPG.amberTint, border: CPG.amberBorder };
 const GREEN_SECTION = { title: CPG.green, bg: CPG.greenTint, border: '#00a64f33' };
 const NAVY_SECTION = { title: CPG.navy, bg: '#ffffff', border: CPG.navyBorder };
@@ -344,7 +349,8 @@ const sectionColor = (key) => {
   // otherwise flatten all three tiers to red and lose the gradient entirely.
   if (/^potentially/.test(k)) return GREEN_SECTION;
   if (/^emergent/.test(k)) return AMBER_SECTION;
-  if (/stop|immediate|redflag|danger|donot|critical|contraindication|adverse|primarysurvey|rapidassessment|haemorrhage|escalation|rosc|ineffectivebreathing|unresponsive|agescope/.test(k)) return RED_SECTION;
+  if (/adverse|sideeffect/.test(k)) return ORANGE_SECTION;
+  if (/stop|immediate|redflag|danger|donot|critical|contraindication|primarysurvey|rapidassessment|haemorrhage|escalation|rosc|ineffectivebreathing|unresponsive|agescope/.test(k)) return RED_SECTION;
   if (/yellowflag|precaution|caution/.test(k)) return AMBER_SECTION;
   if (/definition|recognition|principle|overview|indication|furthernote/.test(k)) return GREEN_SECTION;
   return NAVY_SECTION;
@@ -853,7 +859,7 @@ function QuickProtocolContent({ proto }) {
       {sections.map(([section, value]) => {
         if (isStopShape(value)) {
           return (
-            <div key={section} id={sectionAnchor(section)} className="mb-3">
+            <div key={section} id={sectionAnchor(section)} className="mb-2">
               {renderValue(value)}
             </div>
           );
@@ -931,7 +937,7 @@ export function ProtocolView({ proto, userLevel, onBack }) {
       {/* SCROLLABLE CONTENT AREA */}
       <div className="flex-1 overflow-y-auto bg-gray-50 p-3">
         {proto.summary && (
-          <p className="text-sm text-gray-500 italic mb-3 px-1">{proto.summary}</p>
+          <p className="text-sm text-gray-500 italic mb-2 px-1">{proto.summary}</p>
         )}
         <QuickProtocolContent proto={proto} />
       </div>
@@ -1115,7 +1121,7 @@ function DetailedViewOverlay({ proto, onClose }) {
 
 
       {/* Detailed scrollable content — pb clears the BottomNav overlaying us */}
-      <div className="flex-1 overflow-y-auto p-4 pb-24 bg-gray-50 space-y-4">
+      <div className="flex-1 overflow-y-auto p-3 pb-24 bg-gray-50 space-y-2">
         {showExt && <ExtendedHeader ext={ext} />}
         {Flowchart && !showExt && (
           <div className="bg-white rounded-xl shadow-sm p-4">
@@ -1154,7 +1160,7 @@ function DetailedViewOverlay({ proto, onClose }) {
             <div
               key={section}
               id={sectionAnchor(section)}
-              className="rounded-xl shadow-sm p-4 scroll-mt-2"
+              className="rounded shadow-sm p-3 scroll-mt-2"
               style={
                 showExt
                   ? { background: '#ffffff', border: '1px solid #e5e7eb', borderLeft: `4px solid ${col.title}` }
@@ -1162,7 +1168,7 @@ function DetailedViewOverlay({ proto, onClose }) {
               }
             >
               <h3
-                className={`font-bold uppercase tracking-wide mb-3 pb-2 border-b ${showExt ? 'text-[13px]' : 'text-sm'}`}
+                className={`font-bold uppercase tracking-wide mb-2 pb-1.5 border-b ${showExt ? 'text-[13px]' : 'text-sm'}`}
                 style={{ color: col.title, borderColor: showExt ? '#f1f5f9' : col.border }}
               >
                 {humanizeKey(section)}
