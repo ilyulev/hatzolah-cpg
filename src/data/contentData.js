@@ -3972,9 +3972,9 @@ export const medicationsContent = {
   },
   glucagon: {
     title: 'Glucagon',
-    level: 'SR',
+    level: 'FR',
     category: 'endocrine',
-    summary: 'Hypoglycaemia — not responding or cannot swallow. Accredited only.',
+    summary: 'Hypoglycaemia — not responding or cannot swallow. IM.',
     content: {
       indications: ['BGL < 4 mmol/L AND NOT responding OR CAN\'T swallow safely'],
       contraindications: ['MUST be accredited to administer IM Glucagon'],
@@ -4087,9 +4087,9 @@ export const medicationsContent = {
   },
   ipratropium: {
     title: 'Ipratropium Bromide',
-    level: 'SR',
+    level: 'FR',
     category: 'respiratory',
-    summary: 'Asthma/wheeze — no improvement after 20 mins Salbutamol. Accredited only.',
+    summary: 'Asthma/wheeze — no improvement after 20 mins Salbutamol.',
     content: {
       indications: ['Difficulty breathing & Wheezing', 'Difficulty breathing & Asthma history'],
       contraindications: ['Atropine hypersensitivity (including hypersensitivity to Atropines derivatives)'],

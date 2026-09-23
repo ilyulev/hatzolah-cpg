@@ -40,7 +40,7 @@ uses Tailwind v4 (see *Tailwind v4 Setup*).
 | Medications | 15 | `medicationsContent` |
 | **Total** | **60** | |
 
-By level: `ALL` 6 · `CB` 11 · `FR` 39 · `SR` 4.
+By level: `ALL` 6 · `CB` 11 · `FR` 41 · `SR` 2.
 
 ---
 
@@ -50,8 +50,8 @@ By level: `ALL` 6 · `CB` 11 · `FR` 39 · `SR` 4.
 | ID | Full Name | Colour | Scope |
 |----|-----------|--------|-------|
 | CB | Code Blue (Level 1) | Blue | Basic first aid. Simplified protocols. Epi-Pen and Glucose Paste only. Every CB incident must be escalated to Ambulance or FR/SR. |
-| FR | First Responder | Green | Full paramedic scope. Oral and nebulised medications. 12-lead ECG if accredited. |
-| SR | Senior Responder | Amber | All FR scope plus IV access, IM injections (Glucagon, Midazolam), nebulised Ipratropium. |
+| FR | First Responder | Green | Full paramedic scope. Oral and nebulised medications, plus IM Glucagon (the only IM med at FR; all Hatzolah FR are accredited for it). 12-lead ECG if accredited. |
+| SR | Senior Responder | Amber | All FR scope plus IV access and IM Midazolam. |
 
 ### Visibility Rules
 ```
